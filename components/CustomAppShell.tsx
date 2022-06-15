@@ -1,6 +1,5 @@
 import {
   AppShell,
-  Aside,
   Burger,
   Group,
   Header,
@@ -9,23 +8,25 @@ import {
   Space,
   Text,
   useMantineTheme,
-} from "@mantine/core";
-import React, { useState } from "react";
-import NavItem from "./NavItem";
-import Link from "next/link";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+} from "@mantine/core"
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined"
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined"
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined"
+import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined"
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined"
+import { getSession, signOut, useSession } from "next-auth/react"
+import Link from "next/link"
+import React, { useState } from "react"
+import NavItem from "./NavItem"
 
 interface ICustomAppShellProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const CustomAppShell = ({ children }: ICustomAppShellProps) => {
-  const theme = useMantineTheme();
-  const [opened, setOpened] = useState<boolean>(false);
+  const theme = useMantineTheme()
+  const [opened, setOpened] = useState<boolean>(false)
+  const { data: session } = useSession()
 
   return (
     <AppShell
@@ -52,27 +53,42 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
               href="/"
               icon={<ChatBubbleOutlineOutlinedIcon />}
               label="Feed"
-            />
-            <NavItem
-              href="/drafts"
-              icon={<ModeEditOutlinedIcon />}
-              label="Drafts"
-            />
-            <NavItem
-              href="/create"
-              icon={<AddCircleOutlineOutlinedIcon />}
-              label="Add post"
+              onClick={() => setOpened(false)}
             />
             <NavItem
               href="/todos"
               icon={<LibraryAddCheckOutlinedIcon />}
               label="Todos"
+              onClick={() => setOpened(false)}
             />
-            <NavItem
-              href="/api/auth/signin"
-              icon={<ExitToAppOutlinedIcon />}
-              label="Login"
-            />
+            {session ? (
+              <>
+                <NavItem
+                  href="/drafts"
+                  icon={<ModeEditOutlinedIcon />}
+                  label="Drafts"
+                  onClick={() => setOpened(false)}
+                />
+                <NavItem
+                  href="/create"
+                  icon={<AddCircleOutlineOutlinedIcon />}
+                  label="Add post"
+                  onClick={() => setOpened(false)}
+                />
+                <NavItem
+                  href="/"
+                  icon={<AddCircleOutlineOutlinedIcon />}
+                  label="Sign out"
+                  onClick={() => signOut()}
+                />
+              </>
+            ) : (
+              <NavItem
+                href="/api/auth/signin"
+                icon={<ExitToAppOutlinedIcon />}
+                label="Login"
+              />
+            )}
           </Navbar.Section>
         </Navbar>
       }
@@ -102,7 +118,7 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={opened}
-                onClick={() => setOpened((o) => !o)}
+                onClick={() => setOpened(!opened)}
                 size="sm"
                 color={theme.colors.gray[6]}
               />
@@ -119,7 +135,7 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
     >
       {children}
     </AppShell>
-  );
-};
+  )
+}
 
-export default CustomAppShell;
+export default CustomAppShell

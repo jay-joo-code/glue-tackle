@@ -1,32 +1,32 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout";
-import Router from "next/router";
-import Flex from "components/Flex";
-import { Box, Button, Paper, Title } from "@mantine/core";
-import Link from "next/link";
+import React, { useState } from "react"
+import Layout from "../components/Layout"
+import Router from "next/router"
+import Flex from "components/Flex"
+import { Box, Button, Paper, Title } from "@mantine/core"
+import Link from "next/link"
 
 const Draft: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
 
   const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const body = { title, content };
+      const body = { title, content }
       await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      });
-      await Router.push("/drafts");
+      })
+      await Router.puwsh("/drafts")
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <div>
-      <Paper p="xl" m="xl" radius="md">
+      <Paper>
         <form onSubmit={submitData} style={{ maxWidth: "500px" }}>
           <Title order={1} mb="md">
             New post
@@ -86,7 +86,7 @@ const Draft: React.FC = () => {
         }
       `}</style>
     </div>
-  );
-};
+  )
+}
 
-export default Draft;
+export default Draft

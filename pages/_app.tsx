@@ -23,6 +23,11 @@ const App = ({ Component, pageProps }: AppProps) => {
         }}
         defaultProps={{
           Text: { component: "p" },
+          Paper: {
+            p: "xl",
+            m:"xl",
+            radius:"md"
+          }
         }}
       >
         <NotificationsProvider>

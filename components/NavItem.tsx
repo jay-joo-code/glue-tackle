@@ -1,15 +1,16 @@
-import { Button, Group, Text, ThemeIcon, useMantineTheme } from "@mantine/core";
-import Link from "next/link";
-import React from "react";
+import { Button, Group, Text, ThemeIcon, useMantineTheme } from "@mantine/core"
+import Link from "next/link"
+import React from "react"
 
 interface INavItemProps {
-  icon: React.ReactNode;
-  label: string;
-  href: string;
+  icon: React.ReactNode
+  label: string
+  href: string
+  onClick?: () => void
 }
 
-const NavItem = ({ icon, label, href }: INavItemProps) => {
-  const theme = useMantineTheme();
+const NavItem = ({ icon, label, href, onClick }: INavItemProps) => {
+  const theme = useMantineTheme()
 
   return (
     <Link href={href}>
@@ -18,6 +19,7 @@ const NavItem = ({ icon, label, href }: INavItemProps) => {
         fullWidth
         style={{ display: "flex", justifyContent: "flex-start" }}
         mb="sm"
+        onClick={onClick}
       >
         <Group style={{ width: "100%" }}>
           <ThemeIcon color={theme.colors.blue[5]} variant="light">
@@ -27,7 +29,7 @@ const NavItem = ({ icon, label, href }: INavItemProps) => {
         </Group>
       </Button>
     </Link>
-  );
-};
+  )
+}
 
-export default NavItem;
+export default NavItem

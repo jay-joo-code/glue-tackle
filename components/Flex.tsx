@@ -1,25 +1,20 @@
-import { Group, GroupProps } from "@mantine/core";
-import React from "react";
-import styled from "styled-components";
+import { Group, GroupProps } from "@mantine/core"
+import React from "react"
 
 interface IFlexProps extends GroupProps {
-  justify?: React.CSSProperties["alignItems"];
+  justify?: React.CSSProperties["alignItems"]
 }
 
-const Flex = ({ justify, ...rest }: IFlexProps) => {
-  return <StyledGroup {...rest} justify={justify} />;
-};
-
-interface IStyledGroupProps {
-  justify?: IFlexProps["justify"];
+const Flex = ({ justify, grow, ...rest }: IFlexProps) => {
+  return (
+    <Group
+      {...rest}
+      sx={() => ({
+        justifyContent: justify,
+        flexGrow: grow ? 1 : 0,
+      })}
+    />
+  )
 }
 
-const StyledGroup = styled(Group)<IStyledGroupProps>`
-  /* justify */
-  justify-content: ${(props) => props.justify && props.justify};
-
-  /* grow */
-  flex-grow: ${(props) => props.grow && 1};
-`;
-
-export default Flex;
+export default Flex
