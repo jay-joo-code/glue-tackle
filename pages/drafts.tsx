@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import { useSession, getSession } from "next-auth/react";
 import prisma from "../lib/prisma";
-import { Post as TPost } from "@prisma/client";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -30,11 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 type Props = {
-  drafts: (TPost & {
-    author: {
-      name: string;
-    };
-  })[];
+  drafts: PostProps[];
 };
 
 const Drafts: React.FC<Props> = (props) => {
