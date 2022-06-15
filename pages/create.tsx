@@ -18,7 +18,7 @@ const Draft: React.FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       })
-      await Router.puwsh("/drafts")
+      await Router.push("/drafts")
     } catch (error) {
       console.error(error)
     }
