@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
+import Flex from "components/Flex";
+import { Box, Button, Paper, Title } from "@mantine/core";
+import Link from "next/link";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -22,10 +25,12 @@ const Draft: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div>
-        <form onSubmit={submitData}>
-          <h1>New Draft</h1>
+    <div>
+      <Paper p="xl" m="xl" radius="md">
+        <form onSubmit={submitData} style={{ maxWidth: "500px" }}>
+          <Title order={1} mb="md">
+            New post
+          </Title>
           <input
             autoFocus
             onChange={(e) => setTitle(e.target.value)}
@@ -40,12 +45,18 @@ const Draft: React.FC = () => {
             rows={8}
             value={content}
           />
-          <input disabled={!content || !title} type="submit" value="Create" />
-          <a className="back" href="#" onClick={() => Router.push("/")}>
-            or Cancel
-          </a>
+          <Flex align="center" justify="flex-end">
+            <Link href="/">
+              <Button variant="subtle" color="gray">
+                Cancel
+              </Button>
+            </Link>
+            <Button type="submit" disabled={!content || !title}>
+              Create
+            </Button>
+          </Flex>
         </form>
-      </div>
+      </Paper>
       <style jsx>{`
         .page {
           background: white;
@@ -74,7 +85,7 @@ const Draft: React.FC = () => {
           margin-left: 1rem;
         }
       `}</style>
-    </Layout>
+    </div>
   );
 };
 

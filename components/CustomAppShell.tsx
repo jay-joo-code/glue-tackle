@@ -6,13 +6,18 @@ import {
   Header,
   MediaQuery,
   Navbar,
+  Space,
   Text,
   useMantineTheme,
 } from "@mantine/core";
 import React, { useState } from "react";
 import NavItem from "./NavItem";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import Link from "next/link";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 interface ICustomAppShellProps {
   children: React.ReactNode;
@@ -40,29 +45,44 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 260 }}
+          width={{ sm: 200 }}
         >
           <Navbar.Section grow mt="md">
+            <NavItem
+              href="/"
+              icon={<ChatBubbleOutlineOutlinedIcon />}
+              label="Feed"
+            />
+            <NavItem
+              href="/drafts"
+              icon={<ModeEditOutlinedIcon />}
+              label="Drafts"
+            />
+            <NavItem
+              href="/create"
+              icon={<AddCircleOutlineOutlinedIcon />}
+              label="Add post"
+            />
+            <NavItem
+              href="/todos"
+              icon={<LibraryAddCheckOutlinedIcon />}
+              label="Todos"
+            />
             <NavItem
               href="/api/auth/signin"
               icon={<ExitToAppOutlinedIcon />}
               label="Login"
             />
-            {/* <NavItem
-              href="/api/auth/signin"
-              icon={<ExitToAppOutlinedIcon />}
-              label="Login"
-            /> */}
           </Navbar.Section>
         </Navbar>
       }
-      aside={
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-            <Text>Application sidebar</Text>
-          </Aside>
-        </MediaQuery>
-      }
+      // aside={
+      //   <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+      //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+      //       <Text>Application sidebar</Text>
+      //     </Aside>
+      //   </MediaQuery>
+      // }
       // footer={
       //   <Footer height={60} p="md">
       //     Application footer
@@ -76,6 +96,9 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
           style={{ display: "flex", alignItems: "center" }}
         >
           <Group spacing="sm">
+            <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+              <Space pl="sm" />
+            </MediaQuery>
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={opened}

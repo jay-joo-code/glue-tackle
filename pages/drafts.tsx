@@ -37,15 +37,15 @@ const Drafts: React.FC<Props> = (props) => {
 
   if (!session) {
     return (
-      <Layout>
+      <div>
         <h1>My Drafts</h1>
         <div>You need to be authenticated to view this page.</div>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
+    <div>
       <div className="page">
         <h1>My Drafts</h1>
         <main>
@@ -70,7 +70,7 @@ const Drafts: React.FC<Props> = (props) => {
           margin-top: 2rem;
         }
       `}</style>
-    </Layout>
+    </div>
   );
 };
 

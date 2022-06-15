@@ -14,12 +14,12 @@ export default async function handle(
   const session = await getSession({ req });
 
   switch (req.method) {
-    case "get":
+    case "GET":
       const posts = await prisma.post.findMany();
       res.json(posts);
       break;
 
-    case "post":
+    case "POST":
       if (session) {
         const result = await prisma.post.create({
           data: {
