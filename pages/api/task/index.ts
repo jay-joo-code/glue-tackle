@@ -32,13 +32,13 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         return
       }
 
-      const result = await prisma.task.create({
+      const task = await prisma.task.create({
         data: {
           name: req.body?.name,
           user: { connect: { email: session?.user?.email } },
         },
       })
-      res.json(result)
+      res.json(task)
       break
 
     default:

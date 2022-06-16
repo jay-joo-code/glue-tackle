@@ -12,9 +12,6 @@ const TaskItem = ({ task }: ITaskItemProps) => {
   const { mutate } = useSWRConfig()
 
   const handleChange = async () => {
-    await api.put(`/api/task/${task?.id}`, {
-      isComplete: !task?.isComplete,
-    })
     mutate(
       "/api/task",
       (prevTasks) => {
@@ -33,6 +30,9 @@ const TaskItem = ({ task }: ITaskItemProps) => {
         revalidate: false,
       }
     )
+    api.put(`/api/task/${task?.id}`, {
+      isComplete: !task?.isComplete,
+    })
   }
 
   return (

@@ -12,10 +12,13 @@ const Todos = () => {
   const { data: tasks, mutate } = useSWR("/api/task")
 
   const createTask = async () => {
-    await api.post("/api/task", {
+    const { data: newTask } = await api.post("/api/task", {
       name: newTaskName,
     })
-    mutate((tasks) => [...tasks, { id: tasks?.length + 1, name: newTaskName }])
+
+    mutate((tasks) => [newTask, ...tasks], {
+      revalidate: false,
+    })
     setNewTaskName("")
   }
 
