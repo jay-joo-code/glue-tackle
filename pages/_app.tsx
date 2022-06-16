@@ -6,7 +6,6 @@ import SWRProvider from "components/SWRProvider"
 import { SessionProvider } from "next-auth/react"
 import { AppProps } from "next/app"
 import Head from "next/head"
-import { SWRConfig } from "swr"
 import "./../styles/reset.css"
 
 const App = ({ Component, pageProps }: AppProps) => {
