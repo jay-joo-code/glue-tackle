@@ -17,6 +17,9 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         where: {
           user: { email: session.user.email },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       })
       res.json(tasks)
       break
