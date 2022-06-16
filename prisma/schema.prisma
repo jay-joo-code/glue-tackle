@@ -59,8 +59,20 @@ model User {
   posts         Post[]
   accounts      Account[]
   sessions      Session[]
+  tasks Task[]
 
   @@map(name: "users")
+}
+
+model Task {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  name          String?
+  userId Int @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "tasks")
 }
 
 model VerificationToken {

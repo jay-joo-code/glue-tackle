@@ -77,7 +77,7 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
                 />
                 <NavItem
                   href="/"
-                  icon={<AddCircleOutlineOutlinedIcon />}
+                  icon={<ExitToAppOutlinedIcon />}
                   label="Sign out"
                   onClick={() => signOut()}
                 />
@@ -126,7 +126,7 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
 
             <Link href="/">
               <Text size="xl" weight={700} color={theme.colors.blue[5]}>
-                Todolist
+                Test
               </Text>
             </Link>
           </Group>

@@ -1,15 +1,17 @@
-import React from "react";
-import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
-import { useSession, getSession } from "next-auth/react";
-import prisma from "../lib/prisma";
+import React from "react"
+import { GetServerSideProps } from "next"
+import Layout from "../components/Layout"
+import Post, { PostProps } from "../components/Post"
+import { useSession, getSession } from "next-auth/react"
+import prisma from "../lib/prisma"
+import Flex from "components/Flex"
+import PostCard from "components/PostCard"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
+  const session = await getSession({ req })
   if (!session) {
-    res.statusCode = 403;
-    return { props: { drafts: [] } };
+    res.statusCode = 403
+    return { props: { drafts: [] } }
   }
 
   const drafts = await prisma.post.findMany({
@@ -22,18 +24,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         select: { name: true },
       },
     },
-  });
+  })
   return {
     props: { drafts },
-  };
-};
+  }
+}
 
 type Props = {
-  drafts: PostProps[];
-};
+  drafts: PostProps[]
+}
 
 const Drafts: React.FC<Props> = (props) => {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
 
   if (!session) {
     return (
@@ -41,37 +43,16 @@ const Drafts: React.FC<Props> = (props) => {
         <h1>My Drafts</h1>
         <div>You need to be authenticated to view this page.</div>
       </div>
-    );
+    )
   }
 
   return (
-    <div>
-      <div className="page">
-        <h1>My Drafts</h1>
-        <main>
-          {props.drafts.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
+    <Flex direction="column" style={{ maxWidth: "500px" }} px="md" spacing="xl">
+      {props?.drafts?.map((post) => (
+        <PostCard key={post?.id} post={post} />
+      ))}
+    </Flex>
+  )
+}
 
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-export default Drafts;
+export default Drafts

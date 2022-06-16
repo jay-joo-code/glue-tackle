@@ -1,10 +1,12 @@
-import { MantineProvider } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
-import CustomAppShell from "components/CustomAppShell";
-import { SessionProvider } from "next-auth/react";
-import { AppProps } from "next/app";
-import "./../styles/reset.css";
+import { MantineProvider } from "@mantine/core"
+import { ModalsProvider } from "@mantine/modals"
+import { NotificationsProvider } from "@mantine/notifications"
+import CustomAppShell from "components/CustomAppShell"
+import SWRProvider from "components/SWRProvider"
+import { SessionProvider } from "next-auth/react"
+import { AppProps } from "next/app"
+import { SWRConfig } from "swr"
+import "./../styles/reset.css"
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -25,21 +27,23 @@ const App = ({ Component, pageProps }: AppProps) => {
           Text: { component: "p" },
           Paper: {
             p: "xl",
-            m:"xl",
-            radius:"md"
-          }
+            m: "xl",
+            radius: "md",
+          },
         }}
       >
         <NotificationsProvider>
           <ModalsProvider>
-            <CustomAppShell>
-              <Component {...pageProps} />
-            </CustomAppShell>
+            <SWRProvider>
+              <CustomAppShell>
+                <Component {...pageProps} />
+              </CustomAppShell>
+            </SWRProvider>
           </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
     </SessionProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

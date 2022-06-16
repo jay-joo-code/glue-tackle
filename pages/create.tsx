@@ -25,9 +25,9 @@ const Draft: React.FC = () => {
   }
 
   return (
-    <div>
-      <Paper>
-        <form onSubmit={submitData} style={{ maxWidth: "500px" }}>
+    <Flex justify="center">
+      <Paper style={{ maxWidth: "500px" }}>
+        <form onSubmit={submitData}>
           <Title order={1} mb="md">
             New post
           </Title>
@@ -85,7 +85,7 @@ const Draft: React.FC = () => {
           margin-left: 1rem;
         }
       `}</style>
-    </div>
+    </Flex>
   )
 }
 
