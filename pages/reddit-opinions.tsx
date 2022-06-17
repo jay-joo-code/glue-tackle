@@ -22,7 +22,7 @@ const RedditOpinions = () => {
 
   return (
     <Flex direction="column" align="stretch" spacing="xs">
-      <Paper>
+      <Paper sx={() => ({ maxWidth: "100%" })} mx="0" my="xs">
         <Input
           value={router?.query?.query || ""}
           onChange={(e) =>
@@ -36,7 +36,7 @@ const RedditOpinions = () => {
           }
         />
       </Paper>
-      <Paper>
+      <Paper sx={() => ({ maxWidth: "100%" })} mx="0" my="xs">
         {comments?.map((comment) => (
           <CommentItem key={comment?.permalink} comment={comment} />
         ))}
