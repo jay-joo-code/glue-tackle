@@ -1,4 +1,4 @@
-import { Input, Paper } from "@mantine/core"
+import { Input, Paper, Title } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import CommentItem from "components/CommentItem"
 import Flex from "components/Flex"
@@ -21,7 +21,7 @@ const RedditOpinions = () => {
   }, [debouncedQuery])
 
   return (
-    <Flex direction="column" align="stretch" spacing="xs">
+    <Flex direction="column" align="stretch" spacing="xs" px="sm">
       <Paper sx={() => ({ maxWidth: "100%" })} mx="0" my="xs">
         <Input
           value={router?.query?.query || ""}
@@ -36,6 +36,12 @@ const RedditOpinions = () => {
           }
         />
       </Paper>
+      {/* <Paper sx={() => ({ maxWidth: "100%" })} mx="0" my="xs">
+        <Flex align="center" justify="space-between">
+          <Title order={1}>{router?.query?.query}</Title>
+          <Title order={1}>{router?.query?.query}</Title>
+        </Flex>
+      </Paper> */}
       <Paper sx={() => ({ maxWidth: "100%" })} mx="0" my="xs">
         {comments?.map((comment) => (
           <CommentItem key={comment?.permalink} comment={comment} />

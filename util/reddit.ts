@@ -3,6 +3,7 @@ import { courseKeywords } from "./redditKeywords"
 
 export interface IRedditComment {
   body: string
+  responseTo: string
   permalink: string
   ups: number
   createdAt: Date
@@ -15,10 +16,10 @@ export const fetchRedditComments = async (query: string) => {
   const { data } = await api.get(
     `https://www.reddit.com/r/Cornell/search/.json?q=${encodeURIComponent(
       query
-    )}&limit=30&restrict_sr=1&sr_nsfw=`
+    )}%20NOT%20schedule&limit=20&restrict_sr=1&sr_nsfw=`
   )
 
-  const recurseReplies = (replies, url) => {
+  const recurseReplies = (replies, url, responseTo) => {
     if (!replies) return
 
     replies?.data?.children?.map((reply) => {
@@ -38,11 +39,12 @@ export const fetchRedditComments = async (query: string) => {
       // )
       allComments.push({
         body: reply?.data?.body,
+        responseTo,
         permalink: reply?.data?.permalink,
         ups: reply?.data?.ups,
         createdAt: new Date(reply?.data?.created_utc),
       })
-      recurseReplies(reply?.data?.replies, url)
+      recurseReplies(reply?.data?.replies, url, reply?.data?.body)
     })
   }
 
@@ -63,11 +65,16 @@ export const fetchRedditComments = async (query: string) => {
         // )
         allComments.push({
           body: comment?.data?.body,
+          responseTo: postData[0]?.data?.children[0]?.data?.title,
           permalink: comment?.data?.permalink,
           ups: comment?.data?.ups,
           createdAt: new Date(comment?.data?.created_utc),
         })
-        recurseReplies(comment?.data?.replies, post?.data?.url)
+        recurseReplies(
+          comment?.data?.replies,
+          post?.data?.url,
+          comment?.data?.body
+        )
       })
     }
   })

@@ -126,7 +126,7 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
 
             <Link href="/">
               <Text size="xl" weight={700} color={theme.colors.blue[5]}>
-                Test
+                Sentiment
               </Text>
             </Link>
           </Group>
