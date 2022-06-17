@@ -42,6 +42,7 @@ export const courseKeywords = {
   bad: -1,
   retaking: -1,
   retake: -1,
+  unfair: -1,
   complacent: -1,
   // sick: -1,
 

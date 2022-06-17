@@ -16,7 +16,7 @@ export const fetchRedditComments = async (query: string) => {
   const { data } = await api.get(
     `https://www.reddit.com/r/Cornell/search/.json?q=${encodeURIComponent(
       query
-    )}%20NOT%20schedule&limit=20&restrict_sr=1&sr_nsfw=`
+    )}%20NOT%20schedule&limit=30&restrict_sr=1&sr_nsfw=`
   )
 
   const recurseReplies = (replies, url, responseTo) => {
