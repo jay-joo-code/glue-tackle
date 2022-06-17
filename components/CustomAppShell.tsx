@@ -46,13 +46,13 @@ const CustomAppShell = ({ children }: ICustomAppShellProps) => {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 200 }}
+          width={{ sm: 240 }}
         >
           <Navbar.Section grow mt="md">
             <NavItem
-              href="/"
+              href="/reddit-opinions"
               icon={<ChatBubbleOutlineOutlinedIcon />}
-              label="Feed"
+              label="Reddit opinions"
               onClick={() => setOpened(false)}
             />
             <NavItem
