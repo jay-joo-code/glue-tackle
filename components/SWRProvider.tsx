@@ -7,11 +7,6 @@ interface ISWRProviderProps {
 }
 
 const SWRProvider = ({ children }: ISWRProviderProps) => {
-  // function NetworkException({ message, status }) {
-  //   this.status = status
-  //   this.message = message
-  // }
-
   return (
     <SWRConfig
       value={{

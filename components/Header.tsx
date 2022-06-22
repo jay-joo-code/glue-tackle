@@ -1,211 +1,107 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import {
+  ActionIcon,
+  Box,
+  Burger,
+  Button,
+  MediaQuery,
+  Text,
+  Tooltip,
+  useMantineTheme,
+} from "@mantine/core"
+import Link from "next/link"
+import React, { useState } from "react"
+import Flex from "./Flex"
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
+import NavList from "./NavList"
 
-const Header: React.FC = () => {
-  const router = useRouter();
-  const isActive: (pathname: string) => boolean = (pathname) =>
-    router.pathname === pathname;
+const Header = () => {
+  const [opened, setOpened] = useState<boolean>(true)
+  const theme = useMantineTheme()
+  const HEIGHT = 48
 
-  const {data: session, status} = useSession();
-
-  let left = (
-    <div className="left">
-      <Link href="/">
-        <a className="bold" data-active={isActive("/")}>
-          Feed
-        </a>
-      </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </div>
-  );
-
-  let right = null;
-
-  if (status === 'loading') {
-    left = (
-      <div className="left">
-        <Link href="/">
-          <a className="bold" data-active={isActive("/")}>
-            Feed
-          </a>
-        </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          .left a[data-active="true"] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
-      </div>
-    );
-    right = (
-      <div className="right">
-        <p>Validating session ...</p>
-        <style jsx>{`
-          .right {
-            margin-left: auto;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  if (!session) {
-    right = (
-      <div className="right">
-        <Link href="/api/auth/signin">
-          <a data-active={isActive("/signup")}>Log in</a>
-        </Link>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid black;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  if (session) {
-    left = (
-      <div className="left">
-        <Link href="/">
-          <a className="bold" data-active={isActive("/")}>
-            Feed
-          </a>
-        </Link>
-        <Link href="/drafts">
-          <a data-active={isActive("/drafts")}>My drafts</a>
-        </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          .left a[data-active="true"] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
-      </div>
-    );
-    right = (
-      <div className="right">
-        <p>
-          {session.user.name} ({session.user.email})
-        </p>
-        <Link href="/create">
-          <button>
-            <a>New post</a>
-          </button>
-        </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
-        </button>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          p {
-            display: inline-block;
-            font-size: 13px;
-            padding-right: 1rem;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid black;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-
-          button {
-            border: none;
-          }
-        `}</style>
-      </div>
-    );
-  }
+  const headerButtons = [
+    {
+      label: "Search",
+      icon: <SearchOutlinedIcon />,
+    },
+    {
+      label: "Settings",
+      icon: <SettingsOutlinedIcon />,
+    },
+  ]
 
   return (
-    <nav>
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
-    </nav>
-  );
-};
+    <Box>
+      {/* header */}
+      <Box>
+        <Flex
+          justify="space-between"
+          sx={(theme) => ({
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 2,
+            background: theme.colors.brand[0],
+            height: `${HEIGHT}px`,
+          })}
+          py="sm"
+          px="md"
+        >
+          <Flex>
+            <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+              <Burger
+                opened={opened}
+                onClick={() => setOpened(!opened)}
+                size="sm"
+                color={theme.colors.gray[6]}
+              />
+            </MediaQuery>
 
-export default Header;
+            <Link href="/">
+              <Text size="md" weight={700} color={theme.colors.brand[5]}>
+                Template
+              </Text>
+            </Link>
+          </Flex>
+          <Flex>
+            <Button variant="light" color="dark" size="xs" compact>
+              Sign in
+            </Button>
+            {headerButtons?.map(({ label, icon }) => (
+              <Tooltip key={label} label="Search">
+                <ActionIcon variant="hover">{icon}</ActionIcon>
+              </Tooltip>
+            ))}
+          </Flex>
+        </Flex>
+        <Box
+          sx={(theme) => ({
+            height: `${HEIGHT}px`,
+          })}
+        />
+      </Box>
+
+      {/* mobile nav overlay */}
+      {opened && (
+        <Box
+          sx={(theme) => ({
+            position: "fixed",
+            top: HEIGHT,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 5,
+            background: theme.colors.gray[0],
+          })}
+          p="md"
+        >
+          <NavList />
+        </Box>
+      )}
+    </Box>
+  )
+}
+
+export default Header
