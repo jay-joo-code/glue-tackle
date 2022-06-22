@@ -16,7 +16,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import NavList from "./NavList"
 
 const Header = () => {
-  const [opened, setOpened] = useState<boolean>(true)
+  const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
   const HEIGHT = 48
 
@@ -55,7 +55,7 @@ const Header = () => {
                 opened={opened}
                 onClick={() => setOpened(!opened)}
                 size="sm"
-                color={theme.colors.gray[6]}
+                color={theme.colors.dark[9]}
               />
             </MediaQuery>
 
@@ -78,6 +78,7 @@ const Header = () => {
         </Flex>
         <Box
           sx={(theme) => ({
+            background: theme.colors.brand[0],
             height: `${HEIGHT}px`,
           })}
         />
