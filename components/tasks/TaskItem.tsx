@@ -2,7 +2,7 @@ import { Checkbox, Text } from "@mantine/core"
 import { Task } from "@prisma/client"
 import api from "lib/api"
 import { useSWRConfig } from "swr"
-import Flex from "./Flex"
+import Flex from "../Flex"
 
 interface ITaskItemProps {
   task: Task

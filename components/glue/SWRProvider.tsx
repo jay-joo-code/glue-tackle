@@ -11,7 +11,9 @@ const SWRProvider = ({ children }: ISWRProviderProps) => {
     <SWRConfig
       value={{
         fetcher: async (url) => {
-          const res = await fetch(url)
+          const BASE_URL = "/api"
+          const res = await fetch(`${BASE_URL}${url}`)
+
           if (!res.ok) {
             const errorInfo = await res.json()
 

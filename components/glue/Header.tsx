@@ -3,6 +3,7 @@ import {
   Box,
   Burger,
   Button,
+  Container,
   MediaQuery,
   Text,
   Tooltip,
@@ -32,9 +33,9 @@ const Header = () => {
   ]
 
   return (
-    <Box>
+    <Container>
       {/* header */}
-      <Box>
+      <Container>
         <Flex
           justify="space-between"
           sx={(theme) => ({
@@ -76,17 +77,17 @@ const Header = () => {
             ))}
           </Flex>
         </Flex>
-        <Box
+        <Container
           sx={(theme) => ({
             background: theme.colors.brand[0],
             height: `${HEIGHT}px`,
           })}
         />
-      </Box>
+      </Container>
 
       {/* mobile nav overlay */}
       {opened && (
-        <Box
+        <Container
           sx={(theme) => ({
             position: "fixed",
             top: HEIGHT,
@@ -97,11 +98,12 @@ const Header = () => {
             background: theme.colors.gray[0],
           })}
           p="md"
+          pt="xl"
         >
-          <NavList />
-        </Box>
+          <NavList closeNavOverlay={() => setOpened(false)} />
+        </Container>
       )}
-    </Box>
+    </Container>
   )
 }
 

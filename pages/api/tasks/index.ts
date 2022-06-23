@@ -6,17 +6,15 @@ import { withSentry } from "@sentry/nextjs"
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
 
-  if (!session) {
-    res.status(401).send({ message: "Unauthorized" })
-    return
-  }
+  // if (!session) {
+  //   res.status(401).send({ message: "Unauthorized" })
+  //   return
+  // }
 
   switch (req.method) {
     case "GET":
+      // TODO: infinite scroll
       const tasks = await prisma.task.findMany({
-        where: {
-          user: { email: session.user.email },
-        },
         orderBy: {
           createdAt: "desc",
         },
@@ -25,19 +23,16 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       break
 
     case "POST":
-      if (!req.body?.name || req.body?.name?.length === 0) {
-        res
-          .status(400)
-          .send({ message: "Enter the task name to create a task" })
-        return
-      }
+      const data = session
+        ? {
+            user: { connect: { email: session?.user?.email } },
+          }
+        : {}
 
       const task = await prisma.task.create({
-        data: {
-          name: req.body?.name,
-          user: { connect: { email: session?.user?.email } },
-        },
+        data,
       })
+
       res.json(task)
       break
 

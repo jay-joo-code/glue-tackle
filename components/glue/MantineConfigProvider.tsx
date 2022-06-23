@@ -41,15 +41,14 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           xs: 4,
           sm: 8,
           md: 12,
-          lg: 16,
-          xl: 20,
+          lg: 20,
+          xl: 28,
         },
       }}
       defaultProps={{
         Text: { component: "p" },
         Paper: {
-          p: "xl",
-          m: "xl",
+          p: "md",
           radius: "md",
         },
         ActionIcon: {
