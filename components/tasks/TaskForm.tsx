@@ -28,8 +28,6 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
 
   const [debouncedFormValues] = useDebouncedValue(form.values, 500)
 
-  console.log("initialValues", initialValues)
-
   useEffect(() => {
     if (initialValues?.isValidated) {
       const { hasErrors } = form.validate()
