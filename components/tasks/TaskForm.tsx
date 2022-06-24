@@ -7,6 +7,7 @@ import Flex from "components/glue/Flex"
 import api from "lib/api"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
+import { useSWRConfig } from "swr"
 import { z } from "zod"
 
 interface ITaskFormProps {
@@ -19,6 +20,7 @@ const schema = z.object({
 
 const TaskForm = ({ initialValues }: ITaskFormProps) => {
   const router = useRouter()
+  const { mutate } = useSWRConfig()
 
   const form = useForm({
     initialValues,
@@ -29,11 +31,15 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
   const [debouncedFormValues] = useDebouncedValue(form.values, 500)
 
   useEffect(() => {
+    // autosave only works for validated documents
+    // because form validations run before saving
+    // the whole form would be bright red with errors if
+    // autosave worked with unvalidated documents
     if (initialValues?.isValidated) {
       const { hasErrors } = form.validate()
 
       if (!hasErrors) {
-        handleSubmit(debouncedFormValues)
+        handleSave(debouncedFormValues)
         showNotification({
           message: "Changes saved",
           color: "green",
@@ -44,8 +50,14 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
     // eslint-disable-next-line
   }, [debouncedFormValues])
 
-  const handleSubmit = async (values: Task) => {
+  const handleSave = async (values: Task) => {
     await api.put(`/tasks/${router?.query?.id}`, values)
+    mutate("/tasks/my-tasks")
+  }
+
+  const handleSubmit = (values) => {
+    handleSave(values)
+    router.push("/tasks/my-tasks")
   }
 
   return (
@@ -55,7 +67,7 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
         <Stack>
           <TextInput label="Name" {...form.getInputProps("name")} />
           <Flex justify="flex-end">
-            <Button onClick={() => router.push("/tasks/my-tasks")}>Save</Button>
+            <Button type="submit">Save</Button>
           </Flex>
         </Stack>
       </form>
