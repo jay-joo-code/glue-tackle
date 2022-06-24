@@ -35,8 +35,8 @@ const Header = () => {
             left: 0,
             right: 0,
             zIndex: 2,
-            background: theme.colors.brand[0],
             height: `${HEIGHT}px`,
+            background: "#FFFFFF",
           })}
           py="sm"
           px="md"
@@ -66,7 +66,6 @@ const Header = () => {
         </Flex>
         <Container
           sx={(theme) => ({
-            background: theme.colors.brand[0],
             height: `${HEIGHT}px`,
           })}
         />

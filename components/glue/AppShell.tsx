@@ -18,13 +18,11 @@ const AppShell = ({ children }: IAppShellProps) => {
     <Container
       sx={(theme) => ({
         overflow: "hidden",
-        background: theme.colors.brand[0],
       })}
     >
       <Header />
       <Container
         sx={(theme) => ({
-          background: theme.colors.brand[0],
           minHeight: "100vh",
         })}
       >
