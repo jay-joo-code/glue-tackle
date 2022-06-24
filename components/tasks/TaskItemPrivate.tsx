@@ -40,19 +40,22 @@ const TaskItemPrivate = ({ task }: ITaskItemPrivateProps) => {
   const handleDelete = async () => {}
 
   const modals = useModals()
-  const openConfirmModal = () =>
+  const openConfirmModal = (event) => {
+    event?.stopPropagation()
+
     modals.openConfirmModal({
       title: "Confirm delete",
       children: (
         <Text size="sm">
           Are you sure you want to delete this task? Your action cannot be
-          undone
+          undone.
         </Text>
       ),
       labels: { confirm: "Confirm", cancel: "Cancel" },
       // onCancel: () => console.log('Cancel'),
       onConfirm: () => handleDelete(),
     })
+  }
 
   return (
     <Link href={`/tasks/edit/${task?.id}`}>

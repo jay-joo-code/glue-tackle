@@ -31,16 +31,14 @@ export default async function handle(
     case "PUT": {
       const result = await prisma.task.update({
         where: { id: Number(req?.query?.id) },
-        data: req?.body,
+        data: { ...req?.body, isValidated: !!session },
       })
 
-      console.log("result", req.body, result)
       res.json(result)
       break
     }
 
     case "DELETE": {
-      console.log("req?.body", req?.body)
       const result = await prisma.task.update({
         where: { id: Number(req?.query?.id) },
         data: req?.body,

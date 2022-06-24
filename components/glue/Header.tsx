@@ -15,22 +15,13 @@ import Flex from "./Flex"
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import NavList from "./NavList"
+import AuthButton from "./AuthButton"
+import IconButton from "./IconButton"
 
 const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
   const HEIGHT = 48
-
-  const headerButtons = [
-    {
-      label: "Search",
-      icon: <SearchOutlinedIcon />,
-    },
-    {
-      label: "Settings",
-      icon: <SettingsOutlinedIcon />,
-    },
-  ]
 
   return (
     <Container>
@@ -67,14 +58,10 @@ const Header = () => {
             </Link>
           </Flex>
           <Flex>
-            <Button variant="light" color="dark" size="xs" compact>
-              Sign in
-            </Button>
-            {headerButtons?.map(({ label, icon }) => (
-              <Tooltip key={label} label="Search">
-                <ActionIcon variant="hover">{icon}</ActionIcon>
-              </Tooltip>
-            ))}
+            <IconButton tooltipLabel="Search" variant="hover" color="gray">
+              <SearchOutlinedIcon />
+            </IconButton>
+            <AuthButton />
           </Flex>
         </Flex>
         <Container

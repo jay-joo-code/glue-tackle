@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core"
+import { NextLink } from "@mantine/next"
 import React from "react"
 
 interface IMantineConfigProviderProps {
@@ -25,15 +26,27 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
             "#1971C2",
             "#1864AB",
           ],
+          // dark: [
+          //   "#EAEBEC",
+          //   "#EAEBEC",
+          //   "#D6D6D8",
+          //   "#C1C2C5",
+          //   "#A6A7AB",
+          //   "#909296",
+          //   "#5C5F66",
+          //   "#373A40",
+          //   "#2C2E33",
+          //   "#25262B",
+          // ],
           gray: [
-            "#FFFFFF",
             "#F8F9FA",
             "#F1F3F5",
             "#E9ECEF",
             "#CED4DA",
-            "#ADB5BD",
             "#868E96",
+            "#686F77",
             "#495057",
+            "#3F454C",
             "#343A40",
             "#212529",
           ],
@@ -60,6 +73,10 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           transition: "fade",
           position: "bottom",
           placement: "center",
+        },
+        Menu: {
+          transition: "fade",
+          p: "sm",
         },
       }}
     >

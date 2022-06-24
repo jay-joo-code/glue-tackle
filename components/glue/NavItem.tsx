@@ -13,7 +13,6 @@ interface INavItemProps {
 const NavItem = ({ icon, label, href, onClick }: INavItemProps) => {
   const theme = useMantineTheme()
   const router = useRouter()
-  console.log("router.pathname", router.pathname)
 
   return (
     <Link href={href}>
