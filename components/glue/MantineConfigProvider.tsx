@@ -11,6 +11,7 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
       withGlobalStyles
       withNormalizeCSS
       theme={{
+        primaryColor: "brand",
         colors: {
           brand: [
             "#F7FCFF",
@@ -57,6 +58,8 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
         },
         Tooltip: {
           transition: "fade",
+          position: "bottom",
+          placement: "center",
         },
       }}
     >

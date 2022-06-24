@@ -6,42 +6,24 @@ import { withSentry } from "@sentry/nextjs"
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
 
-  // if (!session) {
-  //   res.status(401).send({ message: "Unauthorized" })
-  //   return
-  // }
+  if (!session) {
+    res.status(401).send({ message: "Unauthorized" })
+    return
+  }
 
   switch (req.method) {
     case "GET":
       // TODO: infinite scroll
       const tasks = await prisma.task.findMany({
         where: {
-          isValidated: true,
-        },
-        include: {
-          user: true,
+          user: { email: session.user.email },
         },
         orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
       })
       res.json(tasks)
       break
-
-    case "POST":
-      const data = session
-        ? {
-            user: { connect: { email: session?.user?.email } },
-          }
-        : {}
-
-      const task = await prisma.task.create({
-        data,
-      })
-
-      res.json(task)
-      break
-
     default:
       break
   }

@@ -1,17 +1,36 @@
-import { Container } from "@mantine/core"
-import React from "react"
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined"
+import AlignHorizontalLeftOutlinedIcon from "@mui/icons-material/AlignHorizontalLeftOutlined"
+import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined"
+import { signIn, useSession } from "next-auth/react"
 import Flex from "./Flex"
 import NavItem from "./NavItem"
-import AlignHorizontalLeftOutlinedIcon from "@mui/icons-material/AlignHorizontalLeftOutlined"
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined"
-import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined"
 
 export interface INavListProps {
   closeNavOverlay: () => void
 }
 
 const NavList = ({ closeNavOverlay }: INavListProps) => {
-  const NAV_ELEMENTS = [
+  const { status } = useSession()
+
+  const PRIVATE_NAV = [
+    {
+      label: "My tasks",
+      href: "/tasks/my-tasks",
+      icon: <InsertEmoticonOutlinedIcon />,
+    },
+  ]
+
+  const PUBLIC_NAV = [
+    {
+      label: "Sign in",
+      href: "/api/auth/signin",
+      icon: <InsertEmoticonOutlinedIcon />,
+    },
+  ]
+
+  const DYNAMIC_NAV = status === "authenticated" ? PRIVATE_NAV : PUBLIC_NAV
+
+  const NAV = [
     {
       label: "All tasks",
       href: "/tasks",
@@ -22,16 +41,12 @@ const NavList = ({ closeNavOverlay }: INavListProps) => {
       href: "/tasks/edit",
       icon: <AddOutlinedIcon />,
     },
-    {
-      label: "My tasks",
-      href: "/tasks/my-tasks",
-      icon: <InsertEmoticonOutlinedIcon />,
-    },
+    ...DYNAMIC_NAV,
   ]
 
   return (
     <Flex direction="column" spacing="sm">
-      {NAV_ELEMENTS?.map(({ label, href, icon }) => (
+      {NAV?.map(({ label, href, icon }) => (
         <NavItem
           key={label}
           label={label}
