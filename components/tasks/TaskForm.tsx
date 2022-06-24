@@ -4,7 +4,6 @@ import { useDebouncedValue } from "@mantine/hooks"
 import { showNotification } from "@mantine/notifications"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
-import FormAutosave from "components/glue/FormAutosave"
 import api from "lib/api"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
@@ -29,17 +28,19 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
 
   const [debouncedFormValues] = useDebouncedValue(form.values, 500)
 
-  useEffect(() => {
-    // TODO: submit form programatically
-    // formRef.current && formRef.current.dispatchEvent(new Event("submit"))
-    const { hasErrors } = form.validate()
+  console.log("initialValues", initialValues)
 
-    if (!hasErrors) {
-      handleSubmit(debouncedFormValues)
-      showNotification({
-        message: "Changes saved",
-        color: "green",
-      })
+  useEffect(() => {
+    if (initialValues?.isValidated) {
+      const { hasErrors } = form.validate()
+
+      if (!hasErrors) {
+        handleSubmit(debouncedFormValues)
+        showNotification({
+          message: "Changes saved",
+          color: "green",
+        })
+      }
     }
 
     // eslint-disable-next-line
@@ -60,7 +61,6 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
           </Flex>
         </Stack>
       </form>
-      <FormAutosave onSave={form.onSubmit(handleSubmit)} values={form.values} />
     </Paper>
   )
 }
