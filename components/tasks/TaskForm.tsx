@@ -1,15 +1,13 @@
-import {
-  Button,
-  Container,
-  Paper,
-  Stack,
-  TextInput,
-  Title,
-} from "@mantine/core"
+import { Button, Paper, Stack, TextInput, Title } from "@mantine/core"
 import { useForm, zodResolver } from "@mantine/form"
+import { useDebouncedValue } from "@mantine/hooks"
+import { showNotification } from "@mantine/notifications"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
-import React from "react"
+import FormAutosave from "components/glue/FormAutosave"
+import api from "lib/api"
+import { useRouter } from "next/router"
+import { useEffect, useRef } from "react"
 import { z } from "zod"
 
 interface ITaskFormProps {
@@ -21,28 +19,48 @@ const schema = z.object({
 })
 
 const TaskForm = ({ initialValues }: ITaskFormProps) => {
-  // TODO: debounced autosave on change
+  const router = useRouter()
 
   const form = useForm({
     initialValues,
     schema: zodResolver(schema),
   })
+  const formRef = useRef<HTMLFormElement>(null)
 
-  const handleSubmit = (values: Task) => {
-    console.log("values", values)
+  const [debouncedFormValues] = useDebouncedValue(form.values, 500)
+
+  useEffect(() => {
+    // TODO: submit form programatically
+    // formRef.current && formRef.current.dispatchEvent(new Event("submit"))
+    const { hasErrors } = form.validate()
+
+    if (!hasErrors) {
+      handleSubmit(debouncedFormValues)
+      showNotification({
+        message: "Changes saved",
+        color: "green",
+      })
+    }
+
+    // eslint-disable-next-line
+  }, [debouncedFormValues])
+
+  const handleSubmit = async (values: Task) => {
+    await api.put(`/tasks/${router?.query?.id}`, values)
   }
 
   return (
     <Paper>
       <Title></Title>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form ref={formRef} onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput label="Name" {...form.getInputProps("name")} />
           <Flex justify="flex-end">
-            <Button type="submit">Save</Button>
+            <Button onClick={() => router.push("/tasks/my-tasks")}>Save</Button>
           </Flex>
         </Stack>
       </form>
+      <FormAutosave onSave={form.onSubmit(handleSubmit)} values={form.values} />
     </Paper>
   )
 }

@@ -14,6 +14,11 @@ export default async function handle(
   //   return
   // }
 
+  if (!req?.query?.id) {
+    res.status(401).send({ message: "Invalid request: No id specified" })
+    return
+  }
+
   switch (req.method) {
     case "GET": {
       const result = await prisma.task.findUnique({
@@ -24,11 +29,12 @@ export default async function handle(
     }
 
     case "PUT": {
-      console.log("req?.body", req?.body)
       const result = await prisma.task.update({
         where: { id: Number(req?.query?.id) },
         data: req?.body,
       })
+
+      console.log("result", req.body, result)
       res.json(result)
       break
     }
