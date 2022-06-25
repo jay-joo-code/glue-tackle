@@ -1,16 +1,18 @@
 import { Avatar, Button, Menu } from "@mantine/core"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import MenuDivider from "./MenuDivider"
 import MenuItem from "./MenuItem"
 
 const AuthButton = () => {
   const { status, data } = useSession()
+  const router = useRouter()
 
   if (status !== "authenticated") {
     return (
       <Link href="/api/auth/signin">
-        <Button variant="light" color="gray" size="xs">
+        <Button variant="light" color="dark" size="xs">
           Sign in
         </Button>
       </Link>
@@ -40,7 +42,7 @@ const AuthButton = () => {
 
       <MenuDivider />
 
-      <MenuItem href="/api/auth/signout" color="red">
+      <MenuItem onClick={() => signOut({ redirect: false })} color="red">
         Sign out
       </MenuItem>
     </Menu>

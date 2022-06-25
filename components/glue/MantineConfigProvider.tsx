@@ -14,6 +14,9 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
       theme={{
         primaryColor: "brand",
         colors: {
+          // don't override gray, dark colors
+          // because a lot of default component styles
+          // depend on them
           brand: [
             "#F7FCFF",
             "#F3FAFF",
@@ -25,30 +28,6 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
             "#1C7ED6",
             "#1971C2",
             "#1864AB",
-          ],
-          // dark: [
-          //   "#EAEBEC",
-          //   "#EAEBEC",
-          //   "#D6D6D8",
-          //   "#C1C2C5",
-          //   "#A6A7AB",
-          //   "#909296",
-          //   "#5C5F66",
-          //   "#373A40",
-          //   "#2C2E33",
-          //   "#25262B",
-          // ],
-          gray: [
-            "#F8F9FA",
-            "#F1F3F5",
-            "#E9ECEF",
-            "#CED4DA",
-            "#868E96",
-            "#686F77",
-            "#495057",
-            "#3F454C",
-            "#343A40",
-            "#212529",
           ],
         },
         spacing: {
@@ -77,6 +56,9 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
         Menu: {
           transition: "fade",
           p: "sm",
+        },
+        Container: {
+          p: 0,
         },
       }}
     >

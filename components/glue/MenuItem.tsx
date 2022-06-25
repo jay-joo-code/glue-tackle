@@ -4,9 +4,16 @@ import React from "react"
 
 interface IMenuItemProps extends MenuItemProps<"a"> {}
 
-const MenuItem = ({ children, ...rest }: IMenuItemProps) => {
+const MenuItem = ({ children, href, ...rest }: IMenuItemProps) => {
+  if (href) {
+    return (
+      <Menu.Item component={NextLink} href={href} py="sm" {...rest}>
+        {children}
+      </Menu.Item>
+    )
+  }
   return (
-    <Menu.Item component={NextLink} py="sm" {...rest}>
+    <Menu.Item py="sm" {...rest}>
       {children}
     </Menu.Item>
   )
