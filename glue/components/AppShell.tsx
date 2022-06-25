@@ -1,5 +1,5 @@
 import { Container, useMantineTheme } from "@mantine/core"
-import useIsMobile from "hooks/isMobile"
+import useIsMobile from "glue/hooks/isMobile"
 import { useSession } from "next-auth/react"
 import React, { useState } from "react"
 import Header from "./Header"
