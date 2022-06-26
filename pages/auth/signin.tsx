@@ -1,13 +1,11 @@
-import { Button, Center, Container, Stack, Text, Title } from "@mantine/core"
-import Flex from "components/glue/Flex"
+import { Button, Image, Stack, Text, Title } from "@mantine/core"
+import { showNotification } from "@mantine/notifications"
+import Flex from "glue/components/Flex"
 import { GetServerSideProps } from "next"
 import { Provider } from "next-auth/providers"
 import { getProviders, getSession, signIn } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
-import { showNotification } from "@mantine/notifications"
-import GithubLogo from "assets/logos/github-logo.svg"
-import GoogleLogo from "assets/logos/google-logo.svg"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
@@ -70,10 +68,27 @@ const Signin = ({ providers }: ISigninProps) => {
     }
   }, [router?.query?.error])
 
-  // TODO: resize svg
   const PROVIDER_NAME_TO_LOGO = {
-    Google: <GoogleLogo />,
-    GitHub: <GithubLogo />,
+    Google: (
+      <Image
+        src="/glue/logos/google-logo.png"
+        alt="google logo"
+        sx={(theme) => ({
+          height: "20px",
+          width: "20px",
+        })}
+      />
+    ),
+    GitHub: (
+      <Image
+        src="/glue/logos/github-logo.png"
+        alt="github logo"
+        sx={(theme) => ({
+          height: "20px",
+          width: "20px",
+        })}
+      />
+    ),
   }
 
   return (
@@ -87,7 +102,15 @@ const Signin = ({ providers }: ISigninProps) => {
       <Stack>
         <Title order={1}>Login</Title>
         <Text color="dimmed">Sign in to access your account</Text>
-        <Stack mt="lg">
+        <Stack
+          mt="lg"
+          sx={(theme) => ({
+            "& > svg": {
+              height: "20px",
+              width: "20px",
+            },
+          })}
+        >
           {providers &&
             Object.values(providers)?.map((provider) => (
               <Button
@@ -97,18 +120,7 @@ const Signin = ({ providers }: ISigninProps) => {
                 onClick={() => signIn(provider.id)}
                 variant="outline"
                 radius="xl"
-                leftIcon={
-                  <Container
-                    sx={(theme) => ({
-                      "& svg": {
-                        height: "12px",
-                        width: "12px",
-                      },
-                    })}
-                  >
-                    {PROVIDER_NAME_TO_LOGO[provider?.name]}
-                  </Container>
-                }
+                leftIcon={PROVIDER_NAME_TO_LOGO[provider?.name]}
               >
                 Sign in with {provider.name}
               </Button>

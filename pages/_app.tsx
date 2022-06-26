@@ -6,7 +6,7 @@ import MantineConfigProvider from "glue/components/MantineConfigProvider"
 import SWRProvider from "glue/components/SWRProvider"
 import { SessionProvider } from "next-auth/react"
 import { AppProps } from "next/app"
-import "./../styles/reset.css"
+import "glue/styles/reset.css"
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
