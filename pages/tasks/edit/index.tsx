@@ -1,4 +1,4 @@
-import api from "lib/api"
+import api from "lib/glue/api"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 

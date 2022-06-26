@@ -1,6 +1,6 @@
 import { Task } from "@prisma/client"
 import TaskForm from "components/tasks/TaskForm"
-import api from "lib/api"
+import api from "lib/glue/api"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
