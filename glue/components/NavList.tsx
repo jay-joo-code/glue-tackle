@@ -1,42 +1,19 @@
+import { Button } from "@mantine/core"
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined"
 import AlignHorizontalLeftOutlinedIcon from "@mui/icons-material/AlignHorizontalLeftOutlined"
-import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined"
-import { signIn, useSession } from "next-auth/react"
+import useIsMobile from "glue/hooks/isMobile"
 import Flex from "./Flex"
 import NavItem from "./NavItem"
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined"
 
 export interface INavListProps {
-  closeNavOverlay: () => void
+  closeNavOverlay?: () => void
 }
 
 const NavList = ({ closeNavOverlay }: INavListProps) => {
-  const { status } = useSession()
+  const isMobile = useIsMobile()
 
-  const PRIVATE_NAV = [
-    // {
-    //   label: "My tasks",
-    //   href: "/tasks/my-tasks",
-    //   icon: <InsertEmoticonOutlinedIcon />,
-    // },
-    // {
-    //   label: "Sign out",
-    //   href: "/api/auth/signout",
-    //   icon: <ExitToAppOutlinedIcon />,
-    // },
-  ]
-
+  // private navigation is defined in AuthButton.tsx
   const PUBLIC_NAV = [
-    // {
-    //   label: "Sign in",
-    //   href: "/api/auth/signin",
-    //   icon: <InsertEmoticonOutlinedIcon />,
-    // },
-  ]
-
-  const DYNAMIC_NAV = status === "authenticated" ? PRIVATE_NAV : PUBLIC_NAV
-
-  const NAV = [
     {
       label: "All tasks",
       href: "/tasks",
@@ -47,19 +24,37 @@ const NavList = ({ closeNavOverlay }: INavListProps) => {
       href: "/tasks/edit",
       icon: <AddOutlinedIcon />,
     },
-    ...DYNAMIC_NAV,
   ]
 
+  if (isMobile) {
+    return (
+      <Flex direction="column" spacing="sm">
+        {PUBLIC_NAV?.map(({ label, href, icon }) => (
+          <NavItem
+            key={label}
+            label={label}
+            href={href}
+            icon={icon}
+            onClick={() => closeNavOverlay && closeNavOverlay()}
+          />
+        ))}
+      </Flex>
+    )
+  }
+
   return (
-    <Flex direction="column" spacing="sm">
-      {NAV?.map(({ label, href, icon }) => (
-        <NavItem
+    <Flex direction="row" spacing="md" align="center">
+      {PUBLIC_NAV?.map(({ label, href }) => (
+        <Button
+          component="a"
           key={label}
-          label={label}
           href={href}
-          icon={icon}
-          onClick={() => closeNavOverlay()}
-        />
+          variant="light"
+          color="gray"
+          compact
+        >
+          {label}
+        </Button>
       ))}
     </Flex>
   )

@@ -17,11 +17,13 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import NavList from "./NavList"
 import AuthButton from "./AuthButton"
 import IconButton from "./IconButton"
+import useIsMobile from "glue/hooks/isMobile"
 
 const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
   const HEIGHT = 48
+  const isMobile = useIsMobile()
 
   return (
     <Container>
@@ -61,6 +63,7 @@ const Header = () => {
             <IconButton tooltipLabel="Search" variant="hover" color="gray">
               <SearchOutlinedIcon />
             </IconButton>
+            {!isMobile && <NavList />}
             <AuthButton />
           </Flex>
         </Flex>
