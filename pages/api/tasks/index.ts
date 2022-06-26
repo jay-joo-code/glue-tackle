@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import prisma from "../../../lib/prisma"
+import prisma from "lib/glue/prisma"
 import { getSession } from "next-auth/react"
 import { withSentry } from "@sentry/nextjs"
 

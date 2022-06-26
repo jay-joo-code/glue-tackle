@@ -1,6 +1,6 @@
 import { Button, Image, Stack, Text, Title } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
-import Flex from "glue/components/Flex"
+import Flex from "components/glue/Flex"
 import { GetServerSideProps } from "next"
 import { Provider } from "next-auth/providers"
 import { getProviders, getSession, signIn } from "next-auth/react"

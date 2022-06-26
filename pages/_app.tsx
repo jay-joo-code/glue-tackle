@@ -1,12 +1,12 @@
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
-import AppDefaultHead from "glue/components/AppDefaultHead"
-import AppShell from "glue/components/AppShell"
-import MantineConfigProvider from "glue/components/MantineConfigProvider"
-import SWRProvider from "glue/components/SWRProvider"
+import AppDefaultHead from "components/glue/AppDefaultHead"
+import AppShell from "components/glue/AppShell"
+import MantineConfigProvider from "components/glue/MantineConfigProvider"
+import SWRProvider from "components/glue/SWRProvider"
 import { SessionProvider } from "next-auth/react"
 import { AppProps } from "next/app"
-import "glue/styles/reset.css"
+import "styles/glue/reset.css"
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
