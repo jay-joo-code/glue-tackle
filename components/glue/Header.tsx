@@ -34,8 +34,11 @@ const Header = () => {
             zIndex: 2,
             height: `${HEIGHT}px`,
             background: "rgba(255, 255, 255, 0.92)",
+
             [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
               maxWidth: "85vw",
+              paddingLeft: 0,
+              paddingRight: 0,
             },
           })}
           py="sm"
