@@ -54,7 +54,14 @@ const Header = () => {
             </MediaQuery>
 
             <Link href="/">
-              <Text size="md" weight={700} color={theme.colors.brand[5]}>
+              <Text
+                size="md"
+                weight={700}
+                color={theme.colors.brand[5]}
+                sx={(theme) => ({
+                  cursor: "pointer",
+                })}
+              >
                 Template
               </Text>
             </Link>

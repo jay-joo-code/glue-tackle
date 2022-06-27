@@ -1,10 +1,11 @@
 import { Button, Paper, Stack, TextInput, Title } from "@mantine/core"
 import { useForm, zodResolver } from "@mantine/form"
-import { useDebouncedValue } from "@mantine/hooks"
+import { useDebouncedValue, useLocalStorage } from "@mantine/hooks"
 import { showNotification } from "@mantine/notifications"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
 import api from "lib/glue/api"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
 import { useSWRConfig } from "swr"
@@ -21,6 +22,18 @@ const schema = z.object({
 const TaskForm = ({ initialValues }: ITaskFormProps) => {
   const router = useRouter()
   const { mutate } = useSWRConfig()
+  const [localStorageValue, setLocalStorageValue] = useLocalStorage({
+    key: "auth-redirect-form-value-task",
+    defaultValue: null,
+  })
+  const { status, data: sessionData } = useSession()
+
+  useEffect(() => {
+    if (localStorageValue) {
+      form.setValues(localStorageValue)
+      setLocalStorageValue(null)
+    }
+  }, [])
 
   const form = useForm({
     initialValues,
@@ -46,23 +59,30 @@ const TaskForm = ({ initialValues }: ITaskFormProps) => {
         })
       }
     }
-
-    // eslint-disable-next-line
   }, [debouncedFormValues])
 
   const handleSave = async (values: Task) => {
-    await api.put(`/tasks/${router?.query?.id}`, values)
+    await api.put(`/tasks/${router?.query?.id}`, { ...values })
     mutate("/tasks/my-tasks")
   }
 
   const handleSubmit = (values) => {
-    handleSave(values)
-    router.push("/tasks/my-tasks")
+    if (status === "unauthenticated") {
+      setLocalStorageValue(values)
+      // const path = `/api/auth/signin?redirectPath=/tasks/edit/${initialValues?.id}`
+
+      router.push({
+        pathname: "/auth/signin",
+        query: { callbackUrl: `/tasks/edit/${initialValues?.id}` },
+      })
+    } else {
+      handleSave(values)
+      router.push("/tasks/my-tasks")
+    }
   }
 
   return (
     <Paper>
-      <Title></Title>
       <form ref={formRef} onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput label="Name" {...form.getInputProps("name")} />

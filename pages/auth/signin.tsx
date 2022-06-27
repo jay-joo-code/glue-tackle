@@ -117,7 +117,11 @@ const Signin = ({ providers }: ISigninProps) => {
                 key={provider.name}
                 color="dark"
                 fullWidth
-                onClick={() => signIn(provider.id)}
+                onClick={() =>
+                  signIn(provider.id, {
+                    callbackUrl: router?.query?.callbackUrl as string,
+                  })
+                }
                 variant="outline"
                 radius="xl"
                 leftIcon={PROVIDER_NAME_TO_LOGO[provider?.name]}

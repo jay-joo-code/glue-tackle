@@ -29,9 +29,21 @@ export default async function handle(
     }
 
     case "PUT": {
+      const userData = session
+        ? {
+            user: { connect: { email: session?.user?.email } },
+          }
+        : {}
+
+      const data = { ...req?.body, isValidated: !!session, ...userData }
+      delete data.id
+      delete data.createdAt
+      delete data.updatedAt
+      delete data.userId
+
       const result = await prisma.task.update({
         where: { id: Number(req?.query?.id) },
-        data: { ...req?.body, isValidated: !!session },
+        data,
       })
 
       res.json(result)
@@ -39,9 +51,8 @@ export default async function handle(
     }
 
     case "DELETE": {
-      const result = await prisma.task.update({
+      const result = await prisma.task.delete({
         where: { id: Number(req?.query?.id) },
-        data: req?.body,
       })
       res.json(result)
       break

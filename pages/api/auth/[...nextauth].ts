@@ -9,6 +9,7 @@ const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
 export default authHandler
 
 const options = {
+  // TODO: change auth method to JWT
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,

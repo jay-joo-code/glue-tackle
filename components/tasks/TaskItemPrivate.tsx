@@ -5,6 +5,9 @@ import Flex from "components/glue/Flex"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 import IconButton from "components/glue/IconButton"
 import Link from "next/link"
+import api from "lib/glue/api"
+import { showNotification } from "@mantine/notifications"
+import { mutate } from "swr"
 
 interface ITaskItemPrivateProps {
   task: Task
@@ -37,7 +40,15 @@ const TaskItemPrivate = ({ task }: ITaskItemPrivateProps) => {
   //   })
   // }
 
-  const handleDelete = async () => {}
+  const handleDelete = async () => {
+    await api.delete(`/tasks/${task?.id}`)
+    mutate("/tasks/my-tasks")
+    showNotification({
+      title: "Task deleted",
+      message: "The task was successfully deleted.",
+      color: "green",
+    })
+  }
 
   const modals = useModals()
   const openConfirmModal = (event) => {
