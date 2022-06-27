@@ -76,7 +76,7 @@ const Header = () => {
         />
       </Flex>
 
-      {/* mobile nav overlay */}
+      {/* mobile fullscreen nav */}
       {opened && (
         <Container
           sx={(theme) => ({
