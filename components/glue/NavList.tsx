@@ -50,7 +50,7 @@ const NavList = ({ closeNavOverlay }: INavListProps) => {
           key={label}
           href={href}
           variant="light"
-          color="gray"
+          color="button-dark"
           compact
         >
           {label}

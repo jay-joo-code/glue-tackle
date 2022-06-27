@@ -10,7 +10,7 @@ const AuthButton = () => {
   if (status !== "authenticated") {
     return (
       <Link href="/api/auth/signin">
-        <Button variant="light" color="gray" compact>
+        <Button variant="light" color="button-dark" compact>
           Sign in
         </Button>
       </Link>
