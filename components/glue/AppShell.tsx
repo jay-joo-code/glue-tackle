@@ -1,7 +1,5 @@
-import { Container, useMantineTheme } from "@mantine/core"
-import useIsMobile from "hooks/glue/isMobile"
-import { useSession } from "next-auth/react"
-import React, { useState } from "react"
+import { Container } from "@mantine/core"
+import React from "react"
 import Header from "./Header"
 
 interface IAppShellProps {
@@ -9,15 +7,13 @@ interface IAppShellProps {
 }
 
 const AppShell = ({ children }: IAppShellProps) => {
-  const theme = useMantineTheme()
-  const [opened, setOpened] = useState<boolean>(false)
-  const { data: session } = useSession()
-  const isMobile = useIsMobile()
-
   return (
     <Container
       sx={(theme) => ({
         overflow: "hidden",
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+          maxWidth: "85vw",
+        },
       })}
     >
       <Header />

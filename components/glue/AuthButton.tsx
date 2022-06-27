@@ -1,13 +1,11 @@
 import { Avatar, Button, Menu } from "@mantine/core"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import MenuDivider from "./MenuDivider"
 import MenuItem from "./MenuItem"
 
 const AuthButton = () => {
   const { status, data } = useSession()
-  const router = useRouter()
 
   if (status !== "authenticated") {
     return (

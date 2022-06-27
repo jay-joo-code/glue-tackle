@@ -6,11 +6,6 @@ import { withSentry } from "@sentry/nextjs"
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
 
-  // if (!session) {
-  //   res.status(401).send({ message: "Unauthorized" })
-  //   return
-  // }
-
   switch (req.method) {
     case "GET":
       // TODO: infinite scroll
@@ -43,6 +38,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       break
 
     default:
+      res.status(500).send("Invalid http method")
       break
   }
 }

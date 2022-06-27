@@ -1,23 +1,16 @@
 import {
-  ActionIcon,
-  Box,
   Burger,
-  Button,
   Container,
   MediaQuery,
   Text,
-  Tooltip,
   useMantineTheme,
 } from "@mantine/core"
-import Link from "next/link"
-import React, { useState } from "react"
-import Flex from "./Flex"
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
-import NavList from "./NavList"
-import AuthButton from "./AuthButton"
-import IconButton from "./IconButton"
 import useIsMobile from "hooks/glue/isMobile"
+import Link from "next/link"
+import { useState } from "react"
+import AuthButton from "./AuthButton"
+import Flex from "./Flex"
+import NavList from "./NavList"
 
 const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
@@ -28,7 +21,7 @@ const Header = () => {
   return (
     <Container>
       {/* header */}
-      <Container>
+      <Flex justify="center">
         <Flex
           justify="space-between"
           sx={(theme) => ({
@@ -36,9 +29,14 @@ const Header = () => {
             top: 0,
             left: 0,
             right: 0,
+            marginLeft: "auto",
+            marginRight: "auto",
             zIndex: 2,
             height: `${HEIGHT}px`,
-            background: "#FFFFFF",
+            background: "rgba(255, 255, 255, 0.92)",
+            [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+              maxWidth: "85vw",
+            },
           })}
           py="sm"
           px="md"
@@ -67,9 +65,6 @@ const Header = () => {
             </Link>
           </Flex>
           <Flex>
-            <IconButton tooltipLabel="Search" variant="hover" color="gray">
-              <SearchOutlinedIcon />
-            </IconButton>
             {!isMobile && <NavList />}
             <AuthButton />
           </Flex>
@@ -79,7 +74,7 @@ const Header = () => {
             height: `${HEIGHT}px`,
           })}
         />
-      </Container>
+      </Flex>
 
       {/* mobile nav overlay */}
       {opened && (
