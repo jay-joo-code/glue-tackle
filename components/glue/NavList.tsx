@@ -14,11 +14,16 @@ const NavList = ({ closeNavOverlay }: INavListProps) => {
 
   // private navigation is defined in AuthButton.tsx
   const PUBLIC_NAV = [
-    // {
-    //   label: "All tasks",
-    //   href: "/tasks",
-    //   icon: <AlignHorizontalLeftOutlinedIcon />,
-    // },
+    {
+      label: "All tasks",
+      href: "/tasks",
+      icon: <AlignHorizontalLeftOutlinedIcon />,
+    },
+    {
+      label: "Create task",
+      href: "/tasks/edit",
+      icon: <AddOutlinedIcon />,
+    },
   ]
 
   if (isMobile) {

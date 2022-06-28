@@ -7,6 +7,13 @@ import MenuItem from "./MenuItem"
 const AuthButton = () => {
   const { status, data } = useSession()
 
+  const PUBLIC_NAV = [
+    {
+      label: "My tasks",
+      href: "/tasks/my-tasks",
+    },
+  ]
+
   if (status !== "authenticated") {
     return (
       <Link href="/api/auth/signin">
@@ -36,7 +43,11 @@ const AuthButton = () => {
         />
       }
     >
-      <MenuItem href="/tasks/my-tasks">My tasks</MenuItem>
+      {PUBLIC_NAV?.map(({ label, href }) => (
+        <MenuItem key={label} href={href}>
+          {label}
+        </MenuItem>
+      ))}
 
       <MenuDivider />
 
