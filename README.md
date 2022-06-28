@@ -37,3 +37,15 @@ DELETE /api/task/:id
 - defaults to draft on create
 - update requests set status to published
 - read requests can filter for status
+
+
+# Scripts
+
+**Pushing changes to Glue**
+
+```bash
+$ git checkout glue-master
+$ git cherry-pick <commit-hash>
+$ git push
+```
+
