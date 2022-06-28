@@ -8,7 +8,6 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
     case "GET":
-      // TODO: infinite scroll
       const tasks = await prisma.task.findMany({
         where: {
           isValidated: true,
@@ -19,8 +18,10 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         orderBy: {
           createdAt: "desc",
         },
+        skip: Number(req?.query?.page) * Number(req?.query?.limit),
+        take: Number(req?.query?.limit),
       })
-      res.json(tasks)
+      res.send(tasks)
       break
 
     case "POST":
@@ -34,13 +35,14 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
         data,
       })
 
-      res.json(task)
+      res.send(task)
       break
 
     default:
       res.status(500).send("Invalid http method")
       break
   }
+  return res.end()
 }
 
 export default withSentry(handle)

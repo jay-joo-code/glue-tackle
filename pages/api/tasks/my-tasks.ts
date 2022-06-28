@@ -27,6 +27,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     default:
       break
   }
+  return res.end()
 }
 
 export default withSentry(handle)

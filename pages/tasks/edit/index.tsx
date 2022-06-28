@@ -3,6 +3,8 @@ import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 
 const TasksEdit = () => {
+  // TODO: abandon this architecture?
+  // back doesn't work in /edit/:id, since /edit immediately reroutes
   const router = useRouter()
 
   const createTasks = async () => {

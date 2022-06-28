@@ -10,7 +10,7 @@ import { showNotification } from "@mantine/notifications"
 import { mutate } from "swr"
 
 interface ITaskItemPrivateProps {
-  task: Task
+  task?: Task
 }
 
 const TaskItemPrivate = ({ task }: ITaskItemPrivateProps) => {
@@ -70,7 +70,7 @@ const TaskItemPrivate = ({ task }: ITaskItemPrivateProps) => {
 
   return (
     <Link href={`/tasks/edit/${task?.id}`}>
-      <Paper my="md">
+      <Paper my="md" withBorder>
         <Flex justify="space-between">
           <Text>{task?.name}</Text>
           <IconButton
