@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
 import prisma from "lib/glue/prisma"
 
+// TODO: abstract out common handlers
+// should be done after creating multiple real applications though
+// not possible to predict all use cases
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
