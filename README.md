@@ -1,31 +1,22 @@
 # Jay Boilerplate
 
-# CRUD files generation
+# Setup
 
-## Frontend
+- [ ] rename .env.glue to .env
+- [ ] add glue remote with `git add remote glue https://github.com/jay-joo-code/glue-root.git`
+- [ ]
 
-| Function | Path |
-| ---------------- | ---------------- |
-| Some content     | Other content    |****
+# Scripts
 
-public task list /task
+**Pushing changes to Glue**
 
-public task list /task
-task details /task/:id
-create task /task/edit
-edit task /task/edit/:id
+```bash
+$ git checkout glue-master
+$ git cherry-pick <commit-hash>
+$ git push
+```
 
-## Backend
-
-GET /api/task/
-POST /api/task/
-
-(authorization required)
-GET /api/task/:id
-PUT /api/task/:id
-DELETE /api/task/:id
-
-## Logic
+# Logic
 
 ### Required property validation
 
@@ -38,14 +29,4 @@ DELETE /api/task/:id
 - update requests set status to published
 - read requests can filter for status
 
-
-# Scripts
-
-**Pushing changes to Glue**
-
-```bash
-$ git checkout glue-master
-$ git cherry-pick <commit-hash>
-$ git push
-```
 
