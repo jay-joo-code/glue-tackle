@@ -7,6 +7,7 @@
 ```bash
 $ git add remote glue https://github.com/jay-joo-code/glue-root.git
 $ git switch -c glue-master glue/master
+$ git push glue HEAD:master # after a commit
 ```
 - [ ]
 
