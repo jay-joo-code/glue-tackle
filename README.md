@@ -3,7 +3,12 @@
 # Setup
 
 - [ ] rename .env.glue to .env
-- [ ] add glue remote with `git add remote glue https://github.com/jay-joo-code/glue-root.git`
+- [ ] add glue remote:
+```bash
+$ git add remote glue https://github.com/jay-joo-code/glue-root.git
+$ git checkout -b glue-master
+$ git push -u glue glue-master:master
+```
 - [ ]
 
 # Scripts
