@@ -74,6 +74,13 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           m: 0,
         },
       }}
+      styles={{
+        Container: {
+          root: {
+            maxWidth: "unset",
+          },
+        },
+      }}
     >
       {children}
     </MantineProvider>

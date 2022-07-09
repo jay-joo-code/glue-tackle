@@ -23,7 +23,7 @@ const Header = () => {
       {/* header */}
       <Flex justify="center">
         <Flex
-          justify="space-between"
+          justify="center"
           sx={(theme) => ({
             position: "fixed",
             top: 0,
@@ -36,7 +36,6 @@ const Header = () => {
             background: "rgba(255, 255, 255, 0.92)",
 
             [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-              maxWidth: "85vw",
               paddingLeft: 0,
               paddingRight: 0,
             },
@@ -44,32 +43,43 @@ const Header = () => {
           py="sm"
           px="md"
         >
-          <Flex>
-            <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened(!opened)}
-                size="sm"
-                color={theme.colors.dark[9]}
-              />
-            </MediaQuery>
+          <Flex
+            justify="space-between"
+            sx={(theme) => ({
+              width: "100%",
 
-            <Link href="/">
-              <Text
-                size="md"
-                weight={700}
-                color={theme.colors.brand[5]}
-                sx={(theme) => ({
-                  cursor: "pointer",
-                })}
-              >
-                Template
-              </Text>
-            </Link>
-          </Flex>
-          <Flex>
-            {!isMobile && <NavList />}
-            <AuthButton />
+              [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+                width: "85vw",
+              },
+            })}
+          >
+            <Flex>
+              <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+                <Burger
+                  opened={opened}
+                  onClick={() => setOpened(!opened)}
+                  size="sm"
+                  color={theme.colors.dark[9]}
+                />
+              </MediaQuery>
+
+              <Link href="/">
+                <Text
+                  size="md"
+                  weight={700}
+                  color={theme.colors.brand[5]}
+                  sx={(theme) => ({
+                    cursor: "pointer",
+                  })}
+                >
+                  prosys
+                </Text>
+              </Link>
+            </Flex>
+            <Flex>
+              {!isMobile && <NavList />}
+              <AuthButton />
+            </Flex>
           </Flex>
         </Flex>
         <Container
