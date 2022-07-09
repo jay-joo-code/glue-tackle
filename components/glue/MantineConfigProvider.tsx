@@ -41,6 +41,10 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
             "#2C2E33",
             "#1A1B1E",
           ],
+
+          // text array values
+          // [muted, light, regular, dark]
+          "text-blue": ["#BCC8D5", "#9AADC0", "#617181", "#3B4550"],
         },
         spacing: {
           xs: 4,
