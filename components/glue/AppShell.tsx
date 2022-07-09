@@ -1,5 +1,6 @@
 import { Container } from "@mantine/core"
 import React from "react"
+import Flex from "./Flex"
 import Header from "./Header"
 
 interface IAppShellProps {
@@ -8,23 +9,21 @@ interface IAppShellProps {
 
 const AppShell = ({ children }: IAppShellProps) => {
   return (
-    <Container
-      sx={(theme) => ({
-        overflow: "hidden",
-        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-          maxWidth: "85vw",
-        },
-      })}
-    >
+    <Flex direction="column" align="center">
       <Header />
       <Container
         sx={(theme) => ({
           minHeight: "100vh",
+
+          [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+            width: "85vw",
+            maxWidth: "unset",
+          },
         })}
       >
         {children}
       </Container>
-    </Container>
+    </Flex>
   )
 }
 

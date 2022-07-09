@@ -71,6 +71,7 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
         },
         Container: {
           p: 0,
+          m: 0,
         },
       }}
     >
