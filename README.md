@@ -13,6 +13,12 @@ $ git switch -c glue-master glue/master
 $ git push glue HEAD:master # after a commit
 ```
 
+### Database
+
+1. Create a new Prisma Data Platform project `https://cloud.prisma.io/projects/create`
+2. Follow the steps to create a new project.
+3. Copy paste the connection string starting with `postgres://...` to the `DATABASE_URL` in the `.env` file
+
 ### Google auth
 
 1. Go to `https://console.cloud.google.com`
