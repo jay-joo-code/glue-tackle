@@ -49,7 +49,7 @@ const AuthButton = () => {
         </MenuItem>
       ))}
 
-      <MenuDivider />
+      {PUBLIC_NAV?.length > 0 && <MenuDivider />}
 
       <MenuItem onClick={() => signOut({ redirect: false })} color="red">
         Sign out
