@@ -29,7 +29,7 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
             "#1971C2",
             "#1864AB",
           ],
-          "button-dark": [
+          "button-gray": [
             "#F5F5F5",
             "#E0E1E2",
             "#D6D6D8",
