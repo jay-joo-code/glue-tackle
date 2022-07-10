@@ -1,15 +1,13 @@
+import crudEndpoints from "constants/crudEndpoints"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
-import prisma from "lib/glue/prisma"
 
-// TODO: abstract out common handlers
-// should be done after creating multiple real applications though
-// not possible to predict all use cases
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const session = await getSession({ req })
+  const model = crudEndpoints[req?.query?.model as string]?.model
 
   // TODO: conditional authorization (if object has a connected User)
   // if (!session) {
@@ -24,7 +22,7 @@ export default async function handle(
 
   switch (req.method) {
     case "GET": {
-      const result = await prisma.task.findUnique({
+      const result = await model.findUnique({
         where: { id: Number(req?.query?.id) },
       })
       res.json(result)
@@ -44,7 +42,7 @@ export default async function handle(
       delete data.updatedAt
       delete data.userId
 
-      const result = await prisma.task.update({
+      const result = await model.update({
         where: { id: Number(req?.query?.id) },
         data,
       })
@@ -54,7 +52,7 @@ export default async function handle(
     }
 
     case "DELETE": {
-      const result = await prisma.task.delete({
+      const result = await model.delete({
         where: { id: Number(req?.query?.id) },
       })
       res.json(result)

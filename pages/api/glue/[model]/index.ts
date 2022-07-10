@@ -1,38 +1,36 @@
 import { withSentry } from "@sentry/nextjs"
-import endpoints from "constants/glue/crudEndpoints"
+import crudEndpoints from "constants/crudEndpoints"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
+import qs from "qs"
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
-  const model = endpoints[req?.query?.model as string]?.model
+  const query = qs.parse(req?.url?.split("?")[1])
+  const model = crudEndpoints[req?.query?.model as string]?.model
+  delete query?.model
 
   switch (req.method) {
     case "GET":
       const skip =
-        req?.query?.page && req?.query?.limit
-          ? Number(req?.query?.page) * Number(req?.query?.limit)
+        query?.page && query?.limit
+          ? Number(query?.page) * Number(query?.limit)
           : undefined
-      const take = req?.query?.limit ? Number(req?.query?.limit) : undefined
+      const take = query?.limit ? Number(query?.limit) : undefined
 
-      delete req?.query?.page
-      delete req?.query?.limit
-      delete req?.query?.model
-
-      const where = {
-        ...req?.query,
-      }
+      delete query?.page
+      delete query?.limit
 
       const docs = await model.findMany({
-        where,
         include: {
           user: true,
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
         skip,
         take,
+        ...query,
       })
 
       res.send(docs)
