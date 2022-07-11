@@ -54,8 +54,9 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           xl: 28,
         },
         fontSizes: {
-          lg: 30,
-          xl: 36,
+          md: 16,
+          lg: 20,
+          xl: 24,
         },
       }}
       defaultProps={{
