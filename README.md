@@ -46,9 +46,13 @@ git push glue HEAD:master # to push a commit to glue/master
 1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/)
 2. [Create a new Vercel project](https://vercel.com/new) (this deployment should fail)
 3. [Configure Vercel integration in Sentry](https://sentry.io/settings/jay-joo-org/integrations/vercel/138276/)
-4. Wait 3 - 10 minutes until Sentry env variables are added.
-5. Redeploy
-6. Add Vercel production endpoint to OAuth providers' redirect URLs.
+4. Add `?schema=public&connection_limit=1` at the end of the `DATABASE_URL` env variable to prevent the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e)
+5. Wait 3 - 10 minutes until Sentry env variables are added.
+6. Redeploy
+7. Add Vercel production endpoint to OAuth providers' redirect URLs.
+
+**Notes**
+- If the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e) keeps coming up, just wait 30-60 minutes. The error should go away.
 
 # Scripts
 
