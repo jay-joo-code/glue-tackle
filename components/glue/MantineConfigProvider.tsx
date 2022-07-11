@@ -47,9 +47,9 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           "text-blue": ["#BCC8D5", "#9AADC0", "#617181", "#3B4550"],
         },
         spacing: {
-          xs: 4,
-          sm: 8,
-          md: 12,
+          xs: 8,
+          sm: 12,
+          md: 16,
           lg: 20,
           xl: 28,
         },
