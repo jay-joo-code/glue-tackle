@@ -11,23 +11,14 @@ const SWRProvider = ({ children }: ISWRProviderProps) => {
   return (
     <SWRConfig
       value={{
+        errorRetryCount: 0,
         fetcher: async (url, args) => {
           const BASE_URL = "/api"
           const query = args ? `?${qs.stringify(args)}` : ""
           const completeUrl = `${BASE_URL}${url}${query}`
           const res = await fetch(completeUrl)
 
-          if (!res.ok) {
-            const errorInfo = await res.json()
-
-            showNotification({
-              title: "Error",
-              message: errorInfo.message,
-              color: "red",
-            })
-
-            return
-          }
+          // error handling done in /lib/glue/api.ts
 
           return res.json()
         },

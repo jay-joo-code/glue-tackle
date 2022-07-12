@@ -16,7 +16,7 @@ export default async function handle(
   // }
 
   if (!req?.query?.id) {
-    res.status(401).send({ message: "Invalid request: No id specified" })
+    res.status(400).send({ message: "Invalid request: No id specified" })
     return
   }
 
@@ -52,10 +52,18 @@ export default async function handle(
     }
 
     case "DELETE": {
-      const result = await model.delete({
-        where: { id: Number(req?.query?.id) },
-      })
-      res.json(result)
+      try {
+        const result = await model.delete({
+          where: { id: Number(req?.query?.id) },
+        })
+        res.json(result)
+      } catch (error) {
+        if (error?.code === "P2025") {
+          res.status(400).send({ message: error?.meta?.cause })
+        } else {
+          res.status(500).send(error)
+        }
+      }
       break
     }
 
