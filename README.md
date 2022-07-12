@@ -19,7 +19,10 @@ git push glue HEAD:master # to push a commit to glue/master
 
 1. [Create a new Prisma Data Platform project](https://cloud.prisma.io/projects/create)
 2. Follow the steps to create a new project.
-3. Copy paste the connection string starting with `postgres://...` to the `DATABASE_URL` in the `.env` file
+3. Copy paste the connection strings:
+
+- `DATABASE_URL=postgres://...`
+- `DATABASE_URL_PROD=prisma://...`
 
 ### Google auth
 
@@ -40,18 +43,19 @@ git push glue HEAD:master # to push a commit to glue/master
   - https://(app-name).vercel.app/api/auth/callback/google
   - https://proddomain.com/api/auth/callback/google
 
-
 ### Deployment (Vercel)
 
 1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/)
 2. [Create a new Vercel project](https://vercel.com/new) (this deployment should fail)
 3. [Configure Vercel integration in Sentry](https://sentry.io/settings/jay-joo-org/integrations/vercel/138276/)
-4. Add `?schema=public&connection_limit=1` at the end of the `DATABASE_URL` env variable to prevent the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e)
-5. Wait 3 - 10 minutes until Sentry env variables are added.
-6. Redeploy
-7. Add Vercel production endpoint to OAuth providers' redirect URLs.
+4. Save the connection string `prisma://...` under the name `DATABASE_URL`. All other env vars have the same name as the local env vars.
+5. Add `?schema=public&connection_limit=1` at the end of the `DATABASE_URL` env variable to prevent the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e)
+6. Wait 3 - 10 minutes until Sentry env variables are added.
+7. Redeploy
+8. Add Vercel production endpoint to OAuth providers' redirect URLs.
 
 **Notes**
+
 - If the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e) keeps coming up, just wait 30-60 minutes. The error should go away.
 
 # Scripts
