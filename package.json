@@ -10,8 +10,7 @@
     "build": "next build",
     "start": "next start",
     "vercel-build": "prisma generate --data-proxy && next build",
-    "prisma": "npx prisma generate --data-proxy && npx prisma db push",
-    "prisma:generate": "prisma generate --data-proxy",
+    "prisma:generate": "prisma generate --data-proxy && npx prisma db push",
     "lint": "next lint"
   },
   "dependencies": {
