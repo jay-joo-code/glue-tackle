@@ -1,5 +1,6 @@
 node_modules/
 .next/
 .env
-# Sentry
 .sentryclirc
+# sample-data directory used in glue-sentiment
+sample-data/
