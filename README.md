@@ -4,6 +4,7 @@
 
 ### General
 
+- [ ] import this repo to clone it (click on the + sign at the top right side of the page)
 - [ ] rename .env.glue to .env
 - [ ] add glue remote:
 
