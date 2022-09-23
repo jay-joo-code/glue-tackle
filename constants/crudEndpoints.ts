@@ -1,7 +1,5 @@
 import prisma from "lib/glue/prisma"
 
-const crudEndpoints = {
-  "entry-logs": { model: prisma.entryLog },
-}
+const crudEndpoints = {}
 
 export default crudEndpoints
