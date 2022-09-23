@@ -39,10 +39,12 @@ git push glue glue-master:master # to push a commit to glue/master
   - http://localhost:3000
   - https://(app-name).vercel.app
   - https://proddomain.com
+  - https://www.proddomain.com
 - Authorized redirect URIs
   - http://localhost:3000/api/auth/callback/google
   - https://(app-name).vercel.app/api/auth/callback/google
   - https://proddomain.com/api/auth/callback/google
+  - https://www.proddomain.com/api/auth/callback/google
 
 ### Google Analytics
 
