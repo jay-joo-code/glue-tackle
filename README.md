@@ -55,12 +55,12 @@ git push glue glue-master:master # to push a commit to glue/master
 ### Deployment (Vercel)
 
 1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/)
-    2. Create a project new under Jay Joo Org
-    3. Select Next.js
-    4. Select alert me on every issue for Issue Alerts
-    5. Select all for Performance Alerts
-    6. Update project name 
-    7. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production) 
+    1. Create a project new under Jay Joo Org
+    2. Select Next.js
+    3. Select alert me on every issue for Issue Alerts
+    4. Select all for Performance Alerts
+    5. Update project name 
+    6. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production) 
 2. [Create a new Vercel project](https://vercel.com/new) (this deployment should fail)
     1. Make sure to add all environment variables 
     2. `DATABASE_URL_PROD` should be saved as `DATABASE_URL`. All other env vars have the same name as the local env vars.
