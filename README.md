@@ -55,12 +55,12 @@ git push glue glue-master:master # to push a commit to glue/master
 ### Deployment (Vercel)
 
 1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/)
-  1. Create project 
-  2. Select Next.js
-  3. Select alert me on every issue for Issue Alerts
-  4. Select all for Performance Alerts
-  5. Update project name 
-  6. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production) 
+    1. Create project 
+    2. Select Next.js
+    3. Select alert me on every issue for Issue Alerts
+    4. Select all for Performance Alerts
+    5. Update project name 
+    6. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production) 
 3. [Create a new Vercel project](https://vercel.com/new) (this deployment should fail)
 4. [Configure Vercel integration in Sentry](https://sentry.io/settings/jay-joo-org/integrations/vercel/138276/)
 5. Save the connection string `prisma://...` under the name `DATABASE_URL`. All other env vars have the same name as the local env vars.
