@@ -1,5 +1,5 @@
 import { ActionIcon, ActionIconProps, Tooltip } from "@mantine/core"
-import useIsMobile from "hooks/glue/isMobile"
+import useIsDevice from "hooks/glue/useIsDevice"
 import { PolymorphicComponentProps } from "@mantine/utils"
 import React from "react"
 
@@ -23,7 +23,7 @@ interface IIconButtonProps
 
 const IconButton = React.forwardRef<HTMLButtonElement, IIconButtonProps>(
   ({ tooltipLabel, position, children, ...rest }, ref) => {
-    const isMobile = useIsMobile()
+    const { isMobile } = useIsDevice()
 
     if (tooltipLabel) {
       return (

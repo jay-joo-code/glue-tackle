@@ -5,7 +5,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core"
-import useIsMobile from "hooks/glue/isMobile"
+import useIsDevice from "hooks/glue/useIsDevice"
 import Link from "next/link"
 import { useState } from "react"
 import AuthButton from "./AuthButton"
@@ -16,7 +16,7 @@ const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
   const HEIGHT = 48
-  const isMobile = useIsMobile()
+  const { isMobile } = useIsDevice()
 
   return (
     <Container>
@@ -34,11 +34,6 @@ const Header = () => {
             zIndex: 2,
             height: `${HEIGHT}px`,
             background: "rgba(255, 255, 255, 0.92)",
-
-            [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-              paddingLeft: 0,
-              paddingRight: 0,
-            },
           })}
           py="sm"
           px="md"
@@ -47,11 +42,7 @@ const Header = () => {
             justify="space-between"
             sx={(theme) => ({
               width: "100%",
-
-              [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-                width: "70vw",
-                minWidth: theme.breakpoints.xs,
-              },
+              maxWidth: theme.breakpoints.md,
             })}
           >
             <Flex spacing="xs">
