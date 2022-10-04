@@ -2,6 +2,7 @@ import { Button, Group, Text, ThemeIcon, useMantineTheme } from "@mantine/core"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React from "react"
+import IconButton from "./IconButton"
 
 interface INavItemProps {
   icon: React.ReactNode
@@ -24,10 +25,12 @@ const NavItem = ({ icon, label, href, onClick }: INavItemProps) => {
         onClick={onClick}
       >
         <Group style={{ width: "100%" }}>
-          <ThemeIcon color={theme.colors.blue[5]} variant="light">
+          <IconButton color="brand" size="xl">
             {icon}
-          </ThemeIcon>
-          <Text color={theme.colors.gray[8]}>{label}</Text>
+          </IconButton>
+          <Text size="xl" color={theme.colors.text[3]}>
+            {label}
+          </Text>
         </Group>
       </Button>
     </Link>
