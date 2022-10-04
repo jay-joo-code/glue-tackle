@@ -1,6 +1,7 @@
 import { Container, Space, Text, Title } from "@mantine/core"
 import React from "react"
 import Flex from "./Flex"
+import GlueResponsiveRender from "./GlueResponsiveRender"
 
 interface ISplitScreenProps {
   title: string
@@ -16,34 +17,49 @@ const SplitScreen = ({
   illust,
 }: ISplitScreenProps) => {
   return (
-    <Container px="sm">
-      <Title
-        my="2rem"
+    <Flex align="center" justify="center">
+      <Container
+        px="sm"
         sx={(theme) => ({
-          lineHeight: 1.1,
-          fontSize: "4rem",
+          maxWidth: "460px",
         })}
       >
-        {title}
-      </Title>
-      {paragraphs?.map((paragraph) => (
-        <Text
-          key={paragraph}
-          mb="lg"
-          weight={400}
+        <Title
+          mb="3rem"
           sx={(theme) => ({
-            color: theme.colors.text[2],
-            fontSize: "1.2rem",
-            lineHeight: 1.4,
+            lineHeight: 1.1,
+            fontSize: "4rem",
           })}
         >
-          {paragraph}
-        </Text>
-      ))}
-      <Flex justify="center" mt="2.5rem">
-        {buttons}
-      </Flex>
-    </Container>
+          {title}
+        </Title>
+        {paragraphs?.map((paragraph) => (
+          <Text
+            key={paragraph}
+            mb="lg"
+            weight={400}
+            sx={(theme) => ({
+              color: theme.colors.text[2],
+              fontSize: "1.2rem",
+              lineHeight: 1.4,
+            })}
+          >
+            {paragraph}
+          </Text>
+        ))}
+        <Container mt="3.4rem">
+          <GlueResponsiveRender renderIn="mobile">
+            <Flex justify="center">{buttons}</Flex>
+          </GlueResponsiveRender>
+          <GlueResponsiveRender renderIn="desktop">
+            <Flex justify="flex-start">{buttons}</Flex>
+          </GlueResponsiveRender>
+        </Container>
+      </Container>
+      <GlueResponsiveRender renderIn="desktop">
+        <Container>{illust}</Container>
+      </GlueResponsiveRender>
+    </Flex>
   )
 }
 
