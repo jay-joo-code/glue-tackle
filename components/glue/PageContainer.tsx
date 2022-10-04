@@ -7,7 +7,7 @@ import Flex from "./Flex"
 
 interface IPageContainerProps {
   children: React.ReactNode
-  variant: "mobile-only"
+  variant: "mobile-only" | "responsive"
   title?: string
   isPrivate?: boolean
 }
@@ -48,6 +48,23 @@ const PageContainer = ({
             {children}
           </Container>
         </Flex>
+      </>
+    )
+  } else if (variant === "responsive") {
+    return (
+      <>
+        {title && (
+          <Head>
+            <title>{title}</title>
+          </Head>
+        )}
+        <Container
+          sx={(theme) => ({
+            width: "100%",
+          })}
+        >
+          {children}
+        </Container>
       </>
     )
   }
