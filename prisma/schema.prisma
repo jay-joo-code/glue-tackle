@@ -50,7 +50,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  tasks Task[]
+  tasks   Task[]
+  sprints Sprint[]
 
   @@map(name: "users")
 }
@@ -65,14 +66,38 @@ model VerificationToken {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @updatedAt @map(name: "updated_at")
-  userId      Int?     @map("user_id")
-  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isValidated Boolean  @default(false)
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 
-  name String? @default("")
+  userId Int?  @map("user_id")
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  variant    String
+  isComplete Boolean @default(false)
+  indent     Int     @default(0)
+  name       String? @default("")
+  start      String?
+  end        String?
+
+  provider     String?
+  providerId   String?
+  providerData Json?
 
   @@map(name: "tasks")
+}
+
+model Sprint {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  userId Int?  @map("user_id")
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  variant    String
+  name       String?  @default("")
+  isArchived Boolean? @default(false)
+
+  @@map(name: "sprints")
 }
