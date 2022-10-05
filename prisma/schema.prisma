@@ -76,13 +76,17 @@ model Task {
   variant    String
   isComplete Boolean @default(false)
   indent     Int     @default(0)
-  name       String? @default("")
+  rank       Int
+  content    String  @default("")
   start      String?
   end        String?
 
   provider     String?
   providerId   String?
   providerData Json?
+
+  sprintId Int
+  Sprint   Sprint @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 
   @@map(name: "tasks")
 }
@@ -98,6 +102,8 @@ model Sprint {
   variant    String
   name       String?  @default("")
   isArchived Boolean? @default(false)
+
+  tasks Task[]
 
   @@map(name: "sprints")
 }
