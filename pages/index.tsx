@@ -1,4 +1,4 @@
-import DailyDashboard from "components/daily-dashboard/DailyDashboard"
+import DailyResizeWrapper from "components/daily-dashboard/DailyResizeWrapper"
 import Flex from "components/glue/Flex"
 import PageContainer from "components/glue/PageContainer"
 import WeeklyDashboard from "components/weekly-dashboard/WeeklyDashboard"
@@ -15,15 +15,15 @@ const Index = () => {
 
   if (isMobile) {
     if (mobileState === "daily") {
-      return <DailyDashboard />
+      return <DailyResizeWrapper />
     }
     return <WeeklyDashboard />
   }
 
   return (
     <PageContainer variant="responsive" title="Dashboard" isPrivate={true}>
-      <Flex>
-        <DailyDashboard />
+      <Flex spacing="xs">
+        <DailyResizeWrapper />
         <WeeklyDashboard />
       </Flex>
     </PageContainer>
