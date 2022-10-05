@@ -1,14 +1,34 @@
 import { Container, Input } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
+import useGlueQuery from "hooks/glue/useGlueQuery"
 import api from "lib/glue/api"
 import React, { useEffect, useState } from "react"
+import { Draggable, Droppable } from "react-beautiful-dnd"
 
 interface ISprintItemProps {
   sprint: Sprint
 }
 
+const getItems = (count) =>
+  Array.from({ length: count }, (v, k) => k).map((k) => ({
+    id: `item-${k}`,
+    content: `item ${k}`,
+  }))
+
 const SprintItem = ({ sprint }: ISprintItemProps) => {
+  const { data: tasks } = useGlueQuery({
+    url: "/glue/task",
+    args: {
+      where: {
+        sprintId: sprint?.id,
+      },
+      orderBy: {
+        rank: "asc",
+      },
+    },
+  })
+  console.log("tasks", tasks)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
 
@@ -52,6 +72,38 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
           },
         })}
       />
+      <Droppable droppableId={String(sprint?.id)}>
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            // style={getListStyle(snapshot.isDraggingOver)}
+          >
+            {tasks?.map((task, index) => (
+              <Draggable
+                key={`${task.id}`}
+                draggableId={`${task.id}`}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    // style={gettaskStyle(
+                    //   snapshot.isDragging,
+                    //   provided.draggableProps.style
+                    // )}
+                  >
+                    {task.content}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </Container>
   )
 }
