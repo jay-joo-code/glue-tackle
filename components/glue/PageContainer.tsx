@@ -1,4 +1,5 @@
 import { Container } from "@mantine/core"
+import appConfig from "constants/appConfig"
 import { useSession } from "next-auth/react"
 import Head from "next/head"
 import { useRouter } from "next/router"
@@ -27,14 +28,18 @@ const PageContainer = ({
     }
   }, [isPrivate, status])
 
+  const titleComponent = title && (
+    <Head>
+      <title>
+        {title} | {appConfig.name}
+      </title>
+    </Head>
+  )
+
   if (variant === "mobile-only") {
     return (
       <>
-        {title && (
-          <Head>
-            <title>{title}</title>
-          </Head>
-        )}
+        {titleComponent}
         <Flex justify="center">
           <Container
             sx={(theme) => ({
@@ -53,11 +58,7 @@ const PageContainer = ({
   } else if (variant === "responsive") {
     return (
       <>
-        {title && (
-          <Head>
-            <title>{title}</title>
-          </Head>
-        )}
+        {titleComponent}
         <Container
           sx={(theme) => ({
             width: "100%",

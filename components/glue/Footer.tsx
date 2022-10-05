@@ -1,4 +1,5 @@
 import { Container, Text } from "@mantine/core"
+import appConfig from "constants/appConfig"
 import React from "react"
 import Flex from "./Flex"
 
@@ -33,7 +34,7 @@ const Footer = () => {
             cursor: "pointer",
           })}
         >
-          template
+          {appConfig.name}
         </Text>
         <Text color="dimmed" size="sm">
           email@gmail.com

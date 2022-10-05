@@ -5,6 +5,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core"
+import appConfig from "constants/appConfig"
 import useIsDevice from "hooks/glue/useIsDevice"
 import Link from "next/link"
 import { useState } from "react"
@@ -64,7 +65,7 @@ const Header = () => {
                     cursor: "pointer",
                   })}
                 >
-                  prosys
+                  {appConfig.name}
                 </Text>
               </Link>
               {/* <Text size="sm" weight={600} color="dimmed">
