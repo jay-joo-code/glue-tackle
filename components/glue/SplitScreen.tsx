@@ -7,9 +7,9 @@ import useIsDevice from "hooks/glue/useIsDevice"
 
 interface ISplitScreenProps {
   title: string
+  illustPath: string
   paragraphs?: string[]
-  buttons?: React.ReactNode
-  illustPath?: string
+  buttons?: React.ReactNode[]
 }
 
 const SplitScreen = ({
@@ -18,7 +18,7 @@ const SplitScreen = ({
   buttons,
   illustPath,
 }: ISplitScreenProps) => {
-  const { isTablet } = useIsDevice()
+  const { isTablet, isMobile } = useIsDevice()
 
   return (
     <Flex justify="center">
@@ -65,12 +65,9 @@ const SplitScreen = ({
             </Text>
           ))}
           <Container mt="3.4rem">
-            <GlueResponsiveRender renderIn="mobile">
-              <Flex justify="center">{buttons}</Flex>
-            </GlueResponsiveRender>
-            <GlueResponsiveRender renderIn="desktop">
-              <Flex justify="flex-start">{buttons}</Flex>
-            </GlueResponsiveRender>
+            <Flex justify={isMobile ? "center" : "flex-start"}>
+              {buttons?.map((button) => button)}
+            </Flex>
           </Container>
         </Container>
         <GlueResponsiveRender renderIn="desktop">
