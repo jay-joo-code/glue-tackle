@@ -36,7 +36,6 @@ const Header = () => {
             height: `${HEIGHT}px`,
             background: "rgba(255, 255, 255, 0.92)",
           })}
-          py="sm"
           px="md"
         >
           <Flex
