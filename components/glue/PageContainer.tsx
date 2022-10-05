@@ -24,7 +24,12 @@ const PageContainer = ({
 
   useEffect(() => {
     if (isPrivate && status === "unauthenticated") {
-      router.push("/api/auth/signin")
+      router.push({
+        pathname: "/api/auth/signin",
+        query: {
+          callbackUrl: window.location.href,
+        },
+      })
     }
   }, [isPrivate, status])
 
