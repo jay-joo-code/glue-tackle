@@ -82,10 +82,12 @@ const Header = () => {
                 beta
               </Text> */}
             </Flex>
-            <Flex>
-              <Button compact={true} onClick={handleSwitchView}>
-                Switch
-              </Button>
+            <Flex spacing={8}>
+              {isMobile && (
+                <Button compact={true} onClick={handleSwitchView}>
+                  Switch
+                </Button>
+              )}
               {!isMobile && <NavList />}
               <AuthButton />
             </Flex>
