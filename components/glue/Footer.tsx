@@ -34,7 +34,7 @@ const Footer = () => {
           {appConfig.name}
         </Text>
         <Text color="dimmed" size="sm">
-          email@gmail.com
+          jj534@cornell.edu
         </Text>
       </Flex>
     </Flex>
