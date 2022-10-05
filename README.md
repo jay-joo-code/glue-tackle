@@ -1,4 +1,6 @@
-# Jay Boilerplate
+# Tackle
+
+Tackle is an opinionated task management app, which helps Jay **tackle** all the stuff he has to do, elegantly and efficiently. 
 
 # Setup
 
