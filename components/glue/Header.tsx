@@ -6,10 +6,12 @@ import {
   useMantineTheme,
 } from "@mantine/core"
 import appConfig from "constants/appConfig"
+import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useIsDevice from "hooks/glue/useIsDevice"
 import Link from "next/link"
 import { useState } from "react"
 import AuthButton from "./AuthButton"
+import Button from "./Button"
 import Flex from "./Flex"
 import NavList from "./NavList"
 
@@ -18,6 +20,15 @@ const Header = () => {
   const theme = useMantineTheme()
   const HEIGHT = 48
   const { isMobile } = useIsDevice()
+  const [mobileState, setMobileState] = useGlueLocalStorage({
+    key: "mobile-state",
+    defaultValue: "daily",
+  })
+
+  const handleSwitchView = () => {
+    if (mobileState === "daily") setMobileState("weekly")
+    else if (mobileState === "weekly") setMobileState("daily")
+  }
 
   return (
     <Container>
@@ -72,6 +83,9 @@ const Header = () => {
               </Text> */}
             </Flex>
             <Flex>
+              <Button compact={true} onClick={handleSwitchView}>
+                Switch
+              </Button>
               {!isMobile && <NavList />}
               <AuthButton />
             </Flex>
