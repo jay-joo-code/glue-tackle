@@ -18,7 +18,7 @@ import NavList from "./NavList"
 const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
-  const HEIGHT = 48
+  const HEIGHT = 38
   const { isMobile } = useIsDevice()
   const [mobileState, setMobileState] = useGlueLocalStorage({
     key: "mobile-state",
@@ -95,7 +95,7 @@ const Header = () => {
         </Flex>
         <Container
           sx={(theme) => ({
-            height: `${HEIGHT}px`,
+            height: `${HEIGHT - 10}px`,
           })}
         />
       </Flex>
