@@ -20,10 +20,7 @@ const Footer = () => {
         justify="space-between"
         sx={(theme) => ({
           width: "100%",
-
-          [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            width: "85vw",
-          },
+          maxWidth: theme.breakpoints.md,
         })}
       >
         <Text
