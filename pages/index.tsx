@@ -21,7 +21,7 @@ const Index = () => {
   }
 
   return (
-    <PageContainer variant="responsive" title="Dashboard">
+    <PageContainer variant="responsive" title="Dashboard" isPrivate={true}>
       <Flex>
         <DailyDashboard />
         <WeeklyDashboard />
