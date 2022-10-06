@@ -9,9 +9,10 @@ import { useEffect, useRef, useState } from "react"
 interface ITaskItemProps {
   task: Task
   sprintId: number
+  isDragging?: boolean
 }
 
-const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
+const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
   const { updateTask, saveTask } = useTasksQuery(sprintId)
   const [debouncedContent] = useDebouncedValue(task?.content, 500)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -45,13 +46,37 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
     })
   }, [debouncedContent])
 
+  // text variant: format text by sub-variants: category, heading
+  const contentArr = task?.content?.split(" ")
+  const isCategory =
+    task?.variant === "text" &&
+    contentArr?.length > 0 &&
+    contentArr[0]?.toLowerCase() === "cc"
+  const isHeading =
+    task?.variant === "text" &&
+    contentArr?.length > 0 &&
+    contentArr[0]?.toLowerCase() === "hh"
+  let displayContent = task?.content
+  if (isCategory || isHeading) {
+    displayContent = contentArr?.slice(1, contentArr?.length)?.join(" ")
+  }
+
   return (
-    <OutsideClick onOutsideClick={disableEditing} onClick={enableEditing}>
+    <OutsideClick
+      mb=".2rem"
+      onOutsideClick={disableEditing}
+      onClick={enableEditing}
+    >
       <Flex
         align="flex-start"
         spacing={0}
         sx={(theme) => ({
           borderRadius: theme.radius.sm,
+          background: isDragging
+            ? theme.colors.brand[1]
+            : task?.content?.trim()?.length === 0
+            ? theme?.colors?.gray[0]
+            : "unset",
 
           "&:hover": {
             background: theme.colors.gray[0],
@@ -84,10 +109,11 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
             sx={(theme) => ({
               textarea: {
                 padding: ".3rem .4rem",
-                fontSize: "14px",
+                fontSize: isCategory ? "20px" : "14px",
+                fontWeight: isCategory ? 500 : 400,
+                lineHeight: 1.3,
                 minHeight: "unset",
                 height: "unset",
-                lineHeight: 1.3,
                 color: theme.colors.text[3],
               },
             })}
@@ -96,12 +122,15 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
           <Text
             sx={(theme) => ({
               padding: ".3rem .4rem",
-              fontSize: "14px",
+              fontSize: isCategory ? "20px" : "14px",
+              fontWeight: isCategory || isHeading ? 600 : 400,
+              background: isHeading && theme.colors.brand[0],
+              borderRadius: theme.radius.md,
               lineHeight: 1.3,
               minHeight: "28px",
             })}
           >
-            {task?.content}
+            {displayContent}
           </Text>
         )}
       </Flex>

@@ -95,7 +95,11 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <TaskItem task={task} sprintId={sprint?.id} />
+                    <TaskItem
+                      task={task}
+                      sprintId={sprint?.id}
+                      isDragging={snapshot.isDragging}
+                    />
                   </Container>
                 )}
               </Draggable>
