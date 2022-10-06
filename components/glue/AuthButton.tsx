@@ -7,10 +7,10 @@ const AuthButton = () => {
   const { status, data } = useSession()
 
   const PRIVATE_NAV = [
-    {
-      label: "My tasks",
-      href: "/tasks/my-tasks",
-    },
+    // {
+    //   label: "My tasks",
+    //   href: "/tasks/my-tasks",
+    // },
   ]
 
   if (status !== "authenticated") {
@@ -43,7 +43,7 @@ const AuthButton = () => {
           </MenuItem>
         ))}
 
-        <Menu.Divider />
+        {/* <Menu.Divider /> */}
 
         <MenuItem onClick={() => signOut({ redirect: false })} color="red">
           Sign out
