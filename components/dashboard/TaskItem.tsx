@@ -13,7 +13,7 @@ interface ITaskItemProps {
 
 const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
   const { updateTask, saveTask } = useTasksQuery(sprintId)
-  const [debouncedTask] = useDebouncedValue(task, 500)
+  const [debouncedContent] = useDebouncedValue(task?.content, 500)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const enableEditing = () => setIsEditing(true)
   const disableEditing = () => setIsEditing(false)
@@ -39,8 +39,11 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
     })
   }
   useEffect(() => {
-    saveTask(debouncedTask)
-  }, [debouncedTask])
+    saveTask({
+      id: task?.id,
+      content: debouncedContent,
+    })
+  }, [debouncedContent])
 
   return (
     <OutsideClick onOutsideClick={disableEditing} onClick={enableEditing}>
@@ -95,6 +98,7 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
               padding: ".3rem .4rem",
               fontSize: "14px",
               lineHeight: 1.3,
+              minHeight: "28px",
             })}
           >
             {task?.content}

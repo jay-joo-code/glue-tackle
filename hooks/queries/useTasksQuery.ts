@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react"
 import { Task } from "@prisma/client"
 import useGlueQuery from "hooks/glue/useGlueQuery"
 import api from "lib/glue/api"
@@ -43,7 +44,22 @@ const useTasksQuery = (sprintId: number) => {
     })
   }
 
-  return { ...rest, mutate, updateTask, saveTask }
+  const appendEmptyTask = ({ variant, rank, sprintId }) => {
+    mutate(
+      async (tasks) => {
+        const { data: newTask } = await api.post("/glue/task", {
+          variant,
+          rank,
+          sprintId,
+          providerData: undefined,
+        })
+        return [...tasks, newTask]
+      },
+      { revalidate: true }
+    )
+  }
+
+  return { ...rest, mutate, updateTask, saveTask, appendEmptyTask }
 }
 
 export default useTasksQuery

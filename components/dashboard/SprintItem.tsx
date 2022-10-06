@@ -12,7 +12,7 @@ interface ISprintItemProps {
 }
 
 const SprintItem = ({ sprint }: ISprintItemProps) => {
-  const { data: tasks } = useTasksQuery(sprint?.id)
+  const { data: tasks, appendEmptyTask } = useTasksQuery(sprint?.id)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
 
@@ -29,6 +29,20 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
   useEffect(() => {
     updateName()
   }, [debouncedName])
+
+  // automatically add an empty task to end of sprint
+  useEffect(() => {
+    if (
+      tasks &&
+      (tasks?.length === 0 || tasks[tasks?.length - 1]?.content?.length !== 0)
+    ) {
+      appendEmptyTask({
+        variant: "text",
+        rank: tasks?.length === 0 ? 100 : tasks[tasks?.length - 1]?.rank + 100,
+        sprintId: sprint?.id,
+      })
+    }
+  }, [tasks])
 
   return (
     <Container

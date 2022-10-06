@@ -74,9 +74,9 @@ model Task {
   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   variant    String
+  rank       Int
   isComplete Boolean @default(false)
   indent     Int     @default(0)
-  rank       Int
   content    String  @default("")
   start      String?
   end        String?
