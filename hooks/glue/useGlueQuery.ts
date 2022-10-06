@@ -12,7 +12,9 @@ But hopefully, that future version will have better mutation support.
 Ended up building GlueInfiniteScroll.tsx separately. fml.
 */
 
-interface IGlueQueryConfig extends SWRConfiguration {
+// NOTE: cache.get(key) straight up doesn't work in this swr version (wtf?)
+
+export interface IGlueQueryConfig extends SWRConfiguration {
   url?: string
   args?: any
   disabled?: boolean
@@ -35,7 +37,7 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
     autoRefetch = true,
     ...rest
   } = config || {}
-  const queryConfig = !config || disabled ? null : { url, args }
+  const swrKey = !config || disabled ? null : { url, args }
   const refetchConfig = autoRefetch
     ? {}
     : {
@@ -43,7 +45,7 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
       }
-  const swrData = useSWR<T>(queryConfig, { ...refetchConfig, ...rest })
+  const swrData = useSWR<T>(swrKey, { ...refetchConfig, ...rest })
   const optimisticUpdate = <T>({
     variant,
     itemData,
