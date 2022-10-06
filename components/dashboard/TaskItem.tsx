@@ -1,4 +1,11 @@
-import { Container, Input, Radio, Text, Textarea } from "@mantine/core"
+import {
+  Container,
+  Input,
+  Radio,
+  Text,
+  Textarea,
+  useMantineTheme,
+} from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
@@ -24,10 +31,36 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
     event.target.value = val
   }
   const handleChange = (event) => {
-    updateTask({
-      id: task?.id,
-      content: event?.target?.value,
-    })
+    if (event?.target?.value?.charAt(0) === " ") {
+      updateTask({
+        id: task?.id,
+        variant: "task",
+      })
+      saveTask({
+        id: task?.id,
+        variant: "task",
+      })
+    } else {
+      updateTask({
+        id: task?.id,
+        content: event?.target?.value,
+      })
+    }
+  }
+  const handleKeyDown = (event) => {
+    if (
+      event?.target?.selectionEnd === 0 &&
+      (event.key === "Delete" || event.key === "Backspace")
+    ) {
+      updateTask({
+        id: task?.id,
+        variant: "text",
+      })
+      saveTask({
+        id: task?.id,
+        variant: "text",
+      })
+    }
   }
   const toggleComplete = () => {
     updateTask({
@@ -61,6 +94,17 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
     displayContent = contentArr?.slice(1, contentArr?.length)?.join(" ")
   }
 
+  const theme = useMantineTheme()
+  const commonStyles = {
+    padding: isHeading ? ".3rem .7rem" : ".3rem .4rem",
+    fontSize: isCategory ? "22px" : "14px",
+    fontWeight: isCategory || isHeading ? 600 : 400,
+    background: isHeading && theme.colors.brand[0],
+    lineHeight: 1.3,
+    minHeight: "28px",
+    borderRadius: isHeading && theme.radius.md,
+  }
+
   return (
     <OutsideClick
       mb=".2rem"
@@ -70,7 +114,9 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
       <Flex
         align="flex-start"
         spacing={0}
+        noWrap={true}
         sx={(theme) => ({
+          marginTop: isCategory ? "1.5rem" : isHeading ? ".5rem" : 0,
           borderRadius: theme.radius.sm,
           background: isDragging
             ? theme.colors.brand[1]
@@ -106,13 +152,12 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
             value={task?.content}
             onChange={handleChange}
             onFocus={handleFocus}
+            onKeyDown={handleKeyDown}
             sx={(theme) => ({
+              width: "100%",
+
               textarea: {
-                padding: ".3rem .4rem",
-                fontSize: isCategory ? "20px" : "14px",
-                fontWeight: isCategory ? 500 : 400,
-                lineHeight: 1.3,
-                minHeight: "unset",
+                ...commonStyles,
                 height: "unset",
                 color: theme.colors.text[3],
               },
@@ -121,13 +166,7 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
         ) : (
           <Text
             sx={(theme) => ({
-              padding: ".3rem .4rem",
-              fontSize: isCategory ? "20px" : "14px",
-              fontWeight: isCategory || isHeading ? 600 : 400,
-              background: isHeading && theme.colors.brand[0],
-              borderRadius: theme.radius.md,
-              lineHeight: 1.3,
-              minHeight: "28px",
+              ...commonStyles,
             })}
           >
             {displayContent}

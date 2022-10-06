@@ -111,11 +111,6 @@ const Index = () => {
       newRank = Math.floor(prevRank + (nextRank - prevRank) / 2)
     }
 
-    console.log(
-      "Number(result?.destination?.droppableId)",
-      Number(result?.destination?.droppableId)
-    )
-
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),
       rank: newRank,

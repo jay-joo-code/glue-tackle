@@ -73,7 +73,7 @@ model Task {
   userId Int?  @map("user_id")
   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  variant    String
+  variant    String // text | task
   rank       Int
   isComplete Boolean @default(false)
   indent     Int     @default(0)
