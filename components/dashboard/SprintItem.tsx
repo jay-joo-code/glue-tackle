@@ -3,34 +3,35 @@ import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
 import useGlueQuery from "hooks/glue/useGlueQuery"
 import api from "lib/glue/api"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 
 interface ISprintItemProps {
   sprint: Sprint
 }
 
-const getItems = (count) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }))
+export const tasksQuery = (sprintId: number) => ({
+  url: "/glue/task",
+  args: {
+    where: {
+      sprintId,
+    },
+    orderBy: {
+      rank: "asc",
+    },
+  },
+})
 
 const SprintItem = ({ sprint }: ISprintItemProps) => {
-  const { data: tasks } = useGlueQuery({
-    url: "/glue/task",
-    args: {
-      where: {
-        sprintId: sprint?.id,
-      },
-      orderBy: {
-        rank: "asc",
-      },
-    },
-  })
-  console.log("tasks", tasks)
+  const { data: tasks } = useGlueQuery(tasksQuery(sprint?.id))
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
+
+  if (sprint?.id === 10) {
+    tasks?.forEach((task) => {
+      console.log("task?.rank", task?.rank, task?.content)
+    })
+  }
 
   const handleNameChange = (event) => {
     setName(event?.target?.value)
@@ -74,9 +75,14 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       />
       <Droppable droppableId={String(sprint?.id)}>
         {(provided, snapshot) => (
-          <div
+          <Container
             {...provided.droppableProps}
             ref={provided.innerRef}
+            sx={(theme) => ({
+              minHeight: "85vh",
+              background: theme.colors.gray[0],
+              borderRadius: theme.radius.md,
+            })}
             // style={getListStyle(snapshot.isDraggingOver)}
           >
             {tasks?.map((task, index) => (
@@ -86,7 +92,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                 index={index}
               >
                 {(provided, snapshot) => (
-                  <div
+                  <Container
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -96,12 +102,12 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                     // )}
                   >
                     {task.content}
-                  </div>
+                  </Container>
                 )}
               </Draggable>
             ))}
             {provided.placeholder}
-          </div>
+          </Container>
         )}
       </Droppable>
     </Container>
