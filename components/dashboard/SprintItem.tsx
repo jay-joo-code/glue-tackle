@@ -1,29 +1,19 @@
-import { Container, Input } from "@mantine/core"
+import { Container, Input, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
 import useGlueQuery from "hooks/glue/useGlueQuery"
+import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
+import TaskItem from "./TaskItem"
 
 interface ISprintItemProps {
   sprint: Sprint
 }
 
-export const tasksQuery = (sprintId: number) => ({
-  url: "/glue/task",
-  args: {
-    where: {
-      sprintId,
-    },
-    orderBy: {
-      rank: "asc",
-    },
-  },
-})
-
 const SprintItem = ({ sprint }: ISprintItemProps) => {
-  const { data: tasks } = useGlueQuery(tasksQuery(sprint?.id))
+  const { data: tasks } = useTasksQuery(sprint?.id)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
 
@@ -43,7 +33,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
 
   return (
     <Container
-      px="sm"
+      px="xs"
       py="xs"
       sx={(theme) => ({
         background: "#FFFFFF",
@@ -59,6 +49,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
         placeholder="Sprint name"
         value={name}
         onChange={handleNameChange}
+        pl="xs"
         sx={(theme) => ({
           input: {
             fontWeight: 500,
@@ -67,6 +58,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
           },
         })}
       />
+      <Space mb="sm" />
       <Droppable droppableId={String(sprint?.id)}>
         {(provided, snapshot) => (
           <Container
@@ -89,12 +81,8 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    // style={gettaskStyle(
-                    //   snapshot.isDragging,
-                    //   provided.draggableProps.style
-                    // )}
                   >
-                    {task.content}
+                    <TaskItem task={task} sprintId={sprint?.id} />
                   </Container>
                 )}
               </Draggable>

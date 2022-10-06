@@ -1,11 +1,11 @@
 import { Task } from "@prisma/client"
 import DailyResizeWrapper from "components/daily-dashboard/DailyResizeWrapper"
-import { tasksQuery } from "components/dashboard/SprintItem"
 import Flex from "components/glue/Flex"
 import PageContainer from "components/glue/PageContainer"
 import WeeklyDashboard from "components/weekly-dashboard/WeeklyDashboard"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useIsDevice from "hooks/glue/useIsDevice"
+import { tasksSwrKey } from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { DragDropContext } from "react-beautiful-dnd"
 import { useSWRConfig } from "swr"
@@ -41,7 +41,7 @@ const Index = () => {
     if (result?.source?.droppableId === result?.destination?.droppableId) {
       // move task within sprint
       mutate(
-        tasksQuery(Number(result?.source?.droppableId)),
+        tasksSwrKey(Number(result?.source?.droppableId)),
         async (tasks) => {
           targetTask = tasks[result?.source?.index]
           const destIdx = result?.destination?.index
@@ -65,7 +65,7 @@ const Index = () => {
     } else {
       // remove from source sprint
       mutate(
-        tasksQuery(Number(result?.source?.droppableId)),
+        tasksSwrKey(Number(result?.source?.droppableId)),
         async (tasks) => {
           targetTask = tasks[result?.source?.index]
           return tasks?.filter((_, idx) => idx !== result?.source?.index)
@@ -75,7 +75,7 @@ const Index = () => {
 
       // add to destination sprint
       mutate(
-        tasksQuery(Number(result?.destination?.droppableId)),
+        tasksSwrKey(Number(result?.destination?.droppableId)),
         async (tasks) => {
           const destIdx = result?.destination?.index
           const newTasks = insert(tasks, destIdx, targetTask)
