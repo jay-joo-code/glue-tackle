@@ -27,12 +27,6 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
 
-  if (sprint?.id === 10) {
-    tasks?.forEach((task) => {
-      console.log("task?.rank", task?.rank, task?.content)
-    })
-  }
-
   const handleNameChange = (event) => {
     setName(event?.target?.value)
   }
@@ -80,7 +74,6 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
             ref={provided.innerRef}
             sx={(theme) => ({
               minHeight: "85vh",
-              background: theme.colors.gray[0],
               borderRadius: theme.radius.md,
             })}
             // style={getListStyle(snapshot.isDraggingOver)}
