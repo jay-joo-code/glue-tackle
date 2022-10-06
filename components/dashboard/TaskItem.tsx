@@ -110,13 +110,15 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
       mb=".2rem"
       onOutsideClick={disableEditing}
       onClick={enableEditing}
+      sx={(theme) => ({
+        paddingTop: isCategory ? "1.5rem" : isHeading ? ".5rem" : 0,
+      })}
     >
       <Flex
         align="flex-start"
         spacing={0}
         noWrap={true}
         sx={(theme) => ({
-          marginTop: isCategory ? "1.5rem" : isHeading ? ".5rem" : 0,
           borderRadius: theme.radius.sm,
           background: isDragging
             ? theme.colors.brand[1]
