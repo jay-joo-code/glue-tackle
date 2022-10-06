@@ -100,7 +100,6 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
         case "append-end":
           {
             const newData = [...swrData?.data, itemData]
-            console.log("newData", newData)
             swrData?.mutate(
               async () => {
                 await asyncRequest(swrData?.data)
