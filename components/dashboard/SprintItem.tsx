@@ -53,7 +53,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
         height: "95vh",
         overflow: "auto",
         borderRadius: theme.radius.md,
-        width: "240px",
+        width: "340px",
         flexShrink: 0,
       })}
     >
