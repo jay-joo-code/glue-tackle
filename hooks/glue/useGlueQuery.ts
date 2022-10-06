@@ -25,6 +25,8 @@ interface IOptimisticUpdate<T = any> {
   variant: "create" | "update" | "append-start" | "append-end" | "delete"
   itemData: any
   asyncRequest: (prevData: T) => T
+  rollbackOnError?: boolean
+  refetchAfterRequest?: boolean
 }
 
 const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
@@ -48,6 +50,8 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
     variant,
     itemData,
     asyncRequest,
+    rollbackOnError = true,
+    refetchAfterRequest = false,
   }: IOptimisticUpdate) => {
     if (Array.isArray(swrData?.data)) {
       switch (variant) {
@@ -69,8 +73,8 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
               },
               {
                 optimisticData: newData as any,
-                rollbackOnError: true,
-                revalidate: false,
+                rollbackOnError,
+                revalidate: refetchAfterRequest,
               }
             )
           }
@@ -87,8 +91,24 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
               },
               {
                 optimisticData: newData as any,
-                rollbackOnError: true,
-                revalidate: false,
+                rollbackOnError,
+                revalidate: refetchAfterRequest,
+              }
+            )
+          }
+          break
+        case "append-end":
+          {
+            const newData = [...swrData?.data, itemData]
+            swrData?.mutate(
+              async () => {
+                await asyncRequest(swrData?.data)
+                return newData as any
+              },
+              {
+                optimisticData: newData as any,
+                rollbackOnError,
+                revalidate: refetchAfterRequest,
               }
             )
           }
