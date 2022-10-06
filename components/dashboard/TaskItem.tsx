@@ -1,6 +1,7 @@
-import { Container, Input, Text, Textarea } from "@mantine/core"
+import { Container, Input, Radio, Text, Textarea } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
+import Flex from "components/glue/Flex"
 import OutsideClick from "components/glue/OutsideClick"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import { useEffect, useRef, useState } from "react"
@@ -27,13 +28,25 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
       content: event?.target?.value,
     })
   }
+  const toggleComplete = () => {
+    updateTask({
+      ...task,
+      isComplete: !task?.isComplete,
+    })
+    saveTask({
+      ...task,
+      isComplete: !task?.isComplete,
+    })
+  }
   useEffect(() => {
     saveTask(debouncedTask)
   }, [debouncedTask])
 
   return (
     <OutsideClick onOutsideClick={disableEditing} onClick={enableEditing}>
-      <Container
+      <Flex
+        align="flex-start"
+        spacing={0}
         sx={(theme) => ({
           borderRadius: theme.radius.sm,
 
@@ -42,6 +55,19 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
           },
         })}
       >
+        {task?.variant === "task" && (
+          <Radio
+            size="xs"
+            value={`is-complete-${task?.id}`}
+            checked={task?.isComplete}
+            onClick={toggleComplete}
+            sx={(theme) => ({
+              marginTop: ".4rem",
+              marginLeft: ".2rem",
+              cursor: "pointer", // doesn't work for some reason
+            })}
+          />
+        )}
         {isEditing ? (
           <Textarea
             autoFocus={true}
@@ -53,7 +79,7 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
             onFocus={handleFocus}
             sx={(theme) => ({
               textarea: {
-                padding: ".3rem .5rem",
+                padding: ".3rem .4rem",
                 fontSize: "14px",
                 minHeight: "unset",
                 height: "unset",
@@ -65,7 +91,7 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
         ) : (
           <Text
             sx={(theme) => ({
-              padding: ".3rem .5rem",
+              padding: ".3rem .4rem",
               fontSize: "14px",
               lineHeight: 1.3,
             })}
@@ -73,7 +99,7 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
             {task?.content}
           </Text>
         )}
-      </Container>
+      </Flex>
     </OutsideClick>
   )
 }
