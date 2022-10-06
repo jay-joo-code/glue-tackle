@@ -1,14 +1,46 @@
-import { Sprint } from "@prisma/client"
 import Button from "components/glue/Button"
 import Flex from "components/glue/Flex"
+import useGlueQuery from "hooks/glue/useGlueQuery"
+import api from "lib/glue/api"
+import { useSession } from "next-auth/react"
 import SprintItem from "./SprintItem"
 
 interface ISprintListProps {
-  sprints: Sprint[]
-  addEmptySprint: () => void
+  variant: "weekly" | "daily"
 }
 
-const SprintList = ({ sprints, addEmptySprint }: ISprintListProps) => {
+const SprintList = ({ variant }: ISprintListProps) => {
+  const { data: sessionData } = useSession()
+  const { data: sprints, optimisticUpdate } = useGlueQuery({
+    url: "/glue/sprint",
+    args: {
+      where: {
+        userId: sessionData?.user?.id,
+        variant,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    },
+  })
+
+  const addEmptySprint = () => {
+    optimisticUpdate({
+      variant: "append-end",
+      itemData: {
+        name: "Untitled sprint",
+        variant,
+      },
+      asyncRequest: async () => {
+        await api.post("/glue/sprint", {
+          name: "Untitled sprint",
+          variant,
+        })
+      },
+      refetchAfterRequest: true,
+    })
+  }
+
   return (
     <Flex noWrap={true} align="flex-start">
       {sprints?.map((sprint) => (
