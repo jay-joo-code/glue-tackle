@@ -18,14 +18,17 @@ const Index = () => {
   const { isMobile } = useIsDevice()
   const { mutate } = useSWRConfig()
 
-  const insert = (arr, index, newItem) => [
-    // part of the array before the specified index
-    ...arr.slice(0, index),
-    // inserted item
-    newItem,
-    // part of the array after the specified index
-    ...arr.slice(index),
-  ]
+  const insert = (arr, index, newItem) =>
+    arr
+      ? [
+          // part of the array before the specified index
+          ...arr.slice(0, index),
+          // inserted item
+          newItem,
+          // part of the array after the specified index
+          ...arr.slice(index),
+        ]
+      : [newItem]
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -107,6 +110,11 @@ const Index = () => {
       // insert between tasks
       newRank = Math.floor(prevRank + (nextRank - prevRank) / 2)
     }
+
+    console.log(
+      "Number(result?.destination?.droppableId)",
+      Number(result?.destination?.droppableId)
+    )
 
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),

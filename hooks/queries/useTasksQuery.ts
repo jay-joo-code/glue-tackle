@@ -20,7 +20,7 @@ const useTasksQuery = (sprintId: number) => {
     autoRefetch: false,
   })
 
-  const updateTask = (updatedTask: Task) => {
+  const updateTask = (updatedTask: Partial<Task>) => {
     mutate(
       (tasks) => {
         return tasks?.map((task) => {
@@ -37,7 +37,7 @@ const useTasksQuery = (sprintId: number) => {
     )
   }
 
-  const saveTask = async (task: Task) => {
+  const saveTask = async (task: Partial<Task>) => {
     await api.put(`/glue/task/${task?.id}`, {
       ...task,
     })

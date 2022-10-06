@@ -24,17 +24,17 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
   }
   const handleChange = (event) => {
     updateTask({
-      ...task,
+      id: task?.id,
       content: event?.target?.value,
     })
   }
   const toggleComplete = () => {
     updateTask({
-      ...task,
+      id: task?.id,
       isComplete: !task?.isComplete,
     })
     saveTask({
-      ...task,
+      id: task?.id,
       isComplete: !task?.isComplete,
     })
   }
@@ -61,6 +61,7 @@ const TaskItem = ({ task, sprintId }: ITaskItemProps) => {
             value={`is-complete-${task?.id}`}
             checked={task?.isComplete}
             onClick={toggleComplete}
+            onChange={() => {}}
             sx={(theme) => ({
               marginTop: ".4rem",
               marginLeft: ".2rem",

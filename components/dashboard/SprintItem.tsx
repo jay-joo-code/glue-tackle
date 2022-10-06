@@ -57,7 +57,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
           },
         })}
       />
-      <Space mb="sm" />
+      <Space mb="xs" />
       <Droppable droppableId={String(sprint?.id)}>
         {(provided, snapshot) => (
           <Container
