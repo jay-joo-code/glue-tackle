@@ -102,6 +102,7 @@ const useGlueQuery = <T = any>(config: IGlueQueryConfig = {}) => {
     optimisticUpdate,
     refetch: swrData?.mutate,
     isLoading: swrData?.isValidating,
+    swrKey,
   }
 }
 
