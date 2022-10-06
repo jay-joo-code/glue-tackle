@@ -66,7 +66,7 @@ const Index = () => {
       // remove from source sprint
       mutate(
         tasksSwrKey(Number(result?.source?.droppableId)),
-        async (tasks) => {
+        (tasks) => {
           targetTask = tasks[result?.source?.index]
           return tasks?.filter((_, idx) => idx !== result?.source?.index)
         },
@@ -76,7 +76,7 @@ const Index = () => {
       // add to destination sprint
       mutate(
         tasksSwrKey(Number(result?.destination?.droppableId)),
-        async (tasks) => {
+        (tasks) => {
           const destIdx = result?.destination?.index
           const newTasks = insert(tasks, destIdx, targetTask)
 

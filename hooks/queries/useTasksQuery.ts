@@ -15,7 +15,10 @@ export const tasksSwrKey = (sprintId: number) => ({
 })
 
 const useTasksQuery = (sprintId: number) => {
-  const { mutate, ...rest } = useGlueQuery(tasksSwrKey(sprintId))
+  const { mutate, ...rest } = useGlueQuery({
+    ...tasksSwrKey(sprintId),
+    autoRefetch: false,
+  })
 
   const updateTask = (updatedTask: Task) => {
     mutate(

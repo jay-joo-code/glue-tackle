@@ -1,7 +1,6 @@
 import { Container, Input, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
-import useGlueQuery from "hooks/glue/useGlueQuery"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
