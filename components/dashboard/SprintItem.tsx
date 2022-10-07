@@ -30,12 +30,9 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
     updateName()
   }, [debouncedName])
 
-  // automatically add an empty task to end of sprint
+  // automatically insert an empty task if sprint is empty
   useEffect(() => {
-    if (
-      tasks &&
-      (tasks?.length === 0 || tasks[tasks?.length - 1]?.content?.length !== 0)
-    ) {
+    if (tasks && tasks?.length === 0) {
       insertEmptyTask({
         variant: "text",
         rank: tasks?.length === 0 ? 100 : tasks[tasks?.length - 1]?.rank + 100,

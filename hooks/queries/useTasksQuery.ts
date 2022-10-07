@@ -45,7 +45,13 @@ const useTasksQuery = (sprintId: number) => {
     })
   }
 
-  const insertEmptyTask = ({ id, variant, rank, sprintId, index }) => {
+  const insertEmptyTask = ({
+    id = undefined,
+    variant,
+    rank,
+    sprintId,
+    index = 0,
+  }) => {
     mutate(
       async (tasks) => {
         const { data: newTask } = await api.post("/glue/task", {
