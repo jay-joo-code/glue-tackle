@@ -3,7 +3,7 @@ import Flex from "components/glue/Flex"
 import useGlueQuery from "hooks/glue/useGlueQuery"
 import api from "lib/glue/api"
 import { useSession } from "next-auth/react"
-import SprintItem from "./SprintItem"
+import SprintRenderWrapper from "./SprintRenderWrapper"
 
 interface ISprintListProps {
   variant: "weekly" | "daily"
@@ -47,7 +47,7 @@ const SprintList = ({ variant }: ISprintListProps) => {
   return (
     <Flex noWrap={true} align="flex-start">
       {sprints?.map((sprint) => (
-        <SprintItem key={sprint?.id} sprint={sprint} />
+        <SprintRenderWrapper key={sprint?.id} sprint={sprint} />
       ))}
       <Button onClick={() => addEmptySprint()}>Add sprint</Button>
     </Flex>
