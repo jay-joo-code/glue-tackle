@@ -20,6 +20,8 @@ interface ITaskItemProps {
   sprintId: number
   prevRank: number
   nextRank: number
+  prevId: number
+  nextId: number
   index: number
   isDragging?: boolean
 }
@@ -29,6 +31,8 @@ const TaskItem = ({
   sprintId,
   prevRank,
   nextRank,
+  prevId,
+  nextId,
   index,
   isDragging = false,
 }: ITaskItemProps) => {
@@ -90,6 +94,10 @@ const TaskItem = ({
         index: index + 1,
       })
       setFocusedTaskId(newId)
+    } else if (event?.key === "ArrowDown") {
+      if (nextId !== -1) setFocusedTaskId(nextId)
+    } else if (event?.key === "ArrowUp") {
+      if (prevId !== -1) setFocusedTaskId(prevId)
     }
   }
   const toggleComplete = () => {

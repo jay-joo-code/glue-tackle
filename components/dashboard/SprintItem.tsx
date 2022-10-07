@@ -102,6 +102,10 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                           ? -1
                           : tasks[index + 1]?.rank
                       }
+                      prevId={index === 0 ? -1 : tasks[index - 1]?.id}
+                      nextId={
+                        index === tasks?.length - 1 ? -1 : tasks[index + 1]?.id
+                      }
                       index={index}
                     />
                   </Container>
