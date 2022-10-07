@@ -25,14 +25,17 @@ const SprintList = ({ variant }: ISprintListProps) => {
   })
 
   const addEmptySprint = () => {
+    const newSprintId = Math.floor(Math.random() * 100000)
     optimisticUpdate({
       variant: "append-end",
       itemData: {
+        id: newSprintId,
         name: "Untitled sprint",
         variant,
       },
       asyncRequest: async () => {
         await api.post("/glue/sprint", {
+          id: newSprintId,
           name: "Untitled sprint",
           variant,
         })
