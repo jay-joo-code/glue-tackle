@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react"
 import { Task } from "@prisma/client"
 import useGlueQuery from "hooks/glue/useGlueQuery"
 import api from "lib/glue/api"
+import insertAtIndex from "util/glue/insertAtIndex"
 
 export const tasksSwrKey = (sprintId: number) => ({
   url: "/glue/task",
@@ -44,22 +45,29 @@ const useTasksQuery = (sprintId: number) => {
     })
   }
 
-  const appendEmptyTask = ({ variant, rank, sprintId }) => {
+  const insertEmptyTask = ({ id, variant, rank, sprintId, index }) => {
     mutate(
       async (tasks) => {
         const { data: newTask } = await api.post("/glue/task", {
+          id,
           variant,
           rank,
           sprintId,
           providerData: undefined,
         })
-        return [...tasks, newTask]
+        return index === undefined
+          ? [...tasks, newTask]
+          : insertAtIndex({
+              array: [...tasks],
+              index,
+              newItem: newTask,
+            })
       },
       { revalidate: true }
     )
   }
 
-  return { ...rest, mutate, updateTask, saveTask, appendEmptyTask }
+  return { ...rest, mutate, updateTask, saveTask, insertEmptyTask }
 }
 
 export default useTasksQuery

@@ -10,21 +10,39 @@ import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
 import OutsideClick from "components/glue/OutsideClick"
+import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import { useEffect, useRef, useState } from "react"
+import computeNewRank from "util/computeNewRank"
 
 interface ITaskItemProps {
   task: Task
   sprintId: number
+  prevRank: number
+  nextRank: number
+  index: number
   isDragging?: boolean
 }
 
-const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
-  const { updateTask, saveTask } = useTasksQuery(sprintId)
+const TaskItem = ({
+  task,
+  sprintId,
+  prevRank,
+  nextRank,
+  index,
+  isDragging = false,
+}: ITaskItemProps) => {
+  const { updateTask, saveTask, insertEmptyTask } = useTasksQuery(sprintId)
   const [debouncedContent] = useDebouncedValue(task?.content, 500)
-  const [isEditing, setIsEditing] = useState<boolean>(false)
-  const enableEditing = () => setIsEditing(true)
-  const disableEditing = () => setIsEditing(false)
+  const [focusedTaskId, setFocusedTaskId] = useGlueLocalStorage({
+    key: "focused-task-id",
+    defaultValue: null,
+  })
+  const isEditing = focusedTaskId === task?.id
+  const enableEditing = () => setFocusedTaskId(task?.id)
+  const disableEditing = () => {
+    if (isEditing) setFocusedTaskId(null)
+  }
   const handleFocus = (event) => {
     const val = event.target.value
     event.target.value = ""
@@ -60,6 +78,18 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
         id: task?.id,
         variant: "text",
       })
+    } else if (event?.key === "Enter") {
+      event?.preventDefault()
+      const newId = Math.floor(Math.random() * 1000000)
+      const newRank = computeNewRank({ prevRank: task?.rank, nextRank })
+      insertEmptyTask({
+        id: newId,
+        variant: task?.variant,
+        rank: newRank,
+        sprintId,
+        index: index + 1,
+      })
+      setFocusedTaskId(newId)
     }
   }
   const toggleComplete = () => {
@@ -105,13 +135,19 @@ const TaskItem = ({ task, sprintId, isDragging = false }: ITaskItemProps) => {
     borderRadius: isHeading && theme.radius.md,
   }
 
+  let taskPaddingTop: number | string = 0
+  if (prevRank !== -1) {
+    if (isCategory) taskPaddingTop = "1.5rem"
+    if (isHeading) taskPaddingTop = ".5rem"
+  }
+
   return (
     <OutsideClick
       mb=".2rem"
       onOutsideClick={disableEditing}
       onClick={enableEditing}
       sx={(theme) => ({
-        paddingTop: isCategory ? "1.5rem" : isHeading ? ".5rem" : 0,
+        paddingTop: taskPaddingTop,
       })}
     >
       <Flex

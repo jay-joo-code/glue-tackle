@@ -12,7 +12,7 @@ interface ISprintItemProps {
 }
 
 const SprintItem = ({ sprint }: ISprintItemProps) => {
-  const { data: tasks, appendEmptyTask } = useTasksQuery(sprint?.id)
+  const { data: tasks, insertEmptyTask } = useTasksQuery(sprint?.id)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
 
@@ -36,7 +36,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       tasks &&
       (tasks?.length === 0 || tasks[tasks?.length - 1]?.content?.length !== 0)
     ) {
-      appendEmptyTask({
+      insertEmptyTask({
         variant: "text",
         rank: tasks?.length === 0 ? 100 : tasks[tasks?.length - 1]?.rank + 100,
         sprintId: sprint?.id,
@@ -99,6 +99,13 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                       task={task}
                       sprintId={sprint?.id}
                       isDragging={snapshot.isDragging}
+                      prevRank={index === 0 ? -1 : tasks[index - 1]?.rank}
+                      nextRank={
+                        index === tasks?.length - 1
+                          ? -1
+                          : tasks[index + 1]?.rank
+                      }
+                      index={index}
                     />
                   </Container>
                 )}

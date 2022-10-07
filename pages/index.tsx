@@ -9,6 +9,8 @@ import { tasksSwrKey } from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { DragDropContext } from "react-beautiful-dnd"
 import { useSWRConfig } from "swr"
+import computeNewRank from "util/computeNewRank"
+import insertAtIndex from "util/glue/insertAtIndex"
 
 const Index = () => {
   const [mobileState] = useGlueLocalStorage({
@@ -17,18 +19,6 @@ const Index = () => {
   })
   const { isMobile } = useIsDevice()
   const { mutate } = useSWRConfig()
-
-  const insert = (arr, index, newItem) =>
-    arr
-      ? [
-          // part of the array before the specified index
-          ...arr.slice(0, index),
-          // inserted item
-          newItem,
-          // part of the array after the specified index
-          ...arr.slice(index),
-        ]
-      : [newItem]
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -51,7 +41,11 @@ const Index = () => {
           const filteredTasks = tasks?.filter(
             (_, idx) => idx !== result?.source?.index
           )
-          const newTasks = insert(filteredTasks, destIdx, targetTask)
+          const newTasks = insertAtIndex({
+            array: filteredTasks,
+            index: destIdx,
+            newItem: targetTask,
+          })
 
           if (destIdx > 0) {
             prevRank = newTasks[destIdx - 1]?.rank
@@ -81,7 +75,11 @@ const Index = () => {
         tasksSwrKey(Number(result?.destination?.droppableId)),
         (tasks) => {
           const destIdx = result?.destination?.index
-          const newTasks = insert(tasks, destIdx, targetTask)
+          const newTasks = insertAtIndex({
+            array: tasks,
+            index: destIdx,
+            newItem: targetTask,
+          })
 
           if (destIdx > 0) {
             prevRank = newTasks[destIdx - 1]?.rank
@@ -97,19 +95,7 @@ const Index = () => {
       )
     }
 
-    if (prevRank === -1 && nextRank === -1) {
-      // first task in sprint
-      newRank = 100
-    } else if (prevRank === -1) {
-      // append start
-      newRank = Math.floor(nextRank / 2)
-    } else if (nextRank === -1) {
-      // append end
-      newRank = prevRank + 100
-    } else {
-      // insert between tasks
-      newRank = Math.floor(prevRank + (nextRank - prevRank) / 2)
-    }
+    newRank = computeNewRank({ prevRank, nextRank })
 
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),
