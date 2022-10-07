@@ -51,16 +51,19 @@ const useTasksQuery = (sprintId: number) => {
     rank,
     sprintId,
     index = 0,
+    indent = 0,
   }) => {
     mutate(
       async (tasks) => {
-        const { data: newTask } = await api.post("/glue/task", {
+        const newTaskData = {
           id,
           variant,
           rank,
           sprintId,
+          indent,
           providerData: undefined,
-        })
+        }
+        const { data: newTask } = await api.post("/glue/task", newTaskData)
         return index === undefined
           ? [...tasks, newTask]
           : insertAtIndex({
@@ -73,7 +76,24 @@ const useTasksQuery = (sprintId: number) => {
     )
   }
 
-  return { ...rest, mutate, updateTask, saveTask, insertEmptyTask }
+  const deleteEmptyTask = ({ taskId = undefined }) => {
+    mutate(
+      async (tasks) => {
+        api.delete(`/glue/task/${taskId}`)
+        return tasks?.filter((task) => task?.id !== taskId)
+      },
+      { revalidate: false }
+    )
+  }
+
+  return {
+    ...rest,
+    mutate,
+    updateTask,
+    saveTask,
+    insertEmptyTask,
+    deleteEmptyTask,
+  }
 }
 
 export default useTasksQuery

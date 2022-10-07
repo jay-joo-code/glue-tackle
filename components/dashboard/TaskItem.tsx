@@ -36,8 +36,9 @@ const TaskItem = ({
   index,
   isDragging = false,
 }: ITaskItemProps) => {
-  const { updateTask, saveTask, insertEmptyTask } = useTasksQuery(sprintId)
-  const [debouncedContent] = useDebouncedValue(task?.content, 500)
+  const { updateTask, saveTask, insertEmptyTask, deleteEmptyTask } =
+    useTasksQuery(sprintId)
+  const [debouncedContent] = useDebouncedValue(task?.content, 300)
   const [focusedTaskId, setFocusedTaskId] = useGlueLocalStorage({
     key: "focused-task-id",
     defaultValue: null,
@@ -74,14 +75,21 @@ const TaskItem = ({
       event?.target?.selectionEnd === 0 &&
       (event.key === "Delete" || event.key === "Backspace")
     ) {
-      updateTask({
-        id: task?.id,
-        variant: "text",
-      })
-      saveTask({
-        id: task?.id,
-        variant: "text",
-      })
+      if (task?.variant === "task") {
+        updateTask({
+          id: task?.id,
+          variant: "text",
+        })
+        saveTask({
+          id: task?.id,
+          variant: "text",
+        })
+      } else if (task?.variant === "text") {
+        event?.preventDefault() // prevents backspace press from deleting the last char of newly focused task
+        deleteEmptyTask({ taskId: task?.id })
+        const newFocusTaskId = prevId !== -1 ? prevId : nextId
+        setFocusedTaskId(newFocusTaskId)
+      }
     } else if (event?.key === "Enter") {
       event?.preventDefault()
       const newId = Math.floor(Math.random() * 1000000)
@@ -113,7 +121,7 @@ const TaskItem = ({
   useEffect(() => {
     saveTask({
       id: task?.id,
-      content: debouncedContent,
+      content: task?.content,
     })
   }, [debouncedContent])
 
