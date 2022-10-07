@@ -17,7 +17,7 @@ const WeeklyDashboard = () => {
       p="md"
       sx={(theme) => ({
         background: theme.colors.gray[0],
-        height: "100vh",
+        height: `90vh`,
         borderRadius: theme.radius.md,
         width: `${width}px`,
         overflow: "auto",

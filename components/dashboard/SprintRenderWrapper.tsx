@@ -16,7 +16,7 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
     <Container
       ref={containerRef}
       sx={(theme) => ({
-        height: "95vh",
+        height: "85vh",
         width: "340px",
         flexShrink: 0,
       })}

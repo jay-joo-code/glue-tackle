@@ -10,7 +10,7 @@ const DailyDashboard = ({}: IDailyDashboardProps) => {
       p="md"
       sx={(theme) => ({
         background: theme.colors.gray[0],
-        height: `100vh`,
+        height: `90vh`,
         borderRadius: theme.radius.md,
         overflow: "auto",
         width: "100%", // fill the width allocated by the resizer

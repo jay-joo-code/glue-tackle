@@ -47,7 +47,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       py="xs"
       sx={(theme) => ({
         background: "#FFFFFF",
-        height: "95vh",
+        height: "85vh",
         overflow: "auto",
         borderRadius: theme.radius.md,
         width: "340px",
