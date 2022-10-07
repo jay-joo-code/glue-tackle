@@ -4,6 +4,7 @@ import React from "react"
 import Flex from "./Flex"
 
 const Footer = () => {
+  return null
   return (
     <Flex
       justify="center"

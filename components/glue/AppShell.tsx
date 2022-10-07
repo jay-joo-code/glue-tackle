@@ -15,7 +15,7 @@ const AppShell = ({ children }: IAppShellProps) => {
       <Container
         sx={(theme) => ({
           width: "100%",
-          minHeight: "100vh",
+          // minHeight: "100vh",
           color: theme.colors.text[3],
         })}
       >
