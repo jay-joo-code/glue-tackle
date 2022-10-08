@@ -142,12 +142,12 @@ const TaskItem = ({
 
   const theme = useMantineTheme()
   const commonStyles = {
-    padding: isHeading ? ".3rem .7rem" : ".3rem .4rem",
-    fontSize: isCategory ? "22px" : "14px",
+    padding: isHeading ? ".2rem .7rem" : ".3rem .4rem",
+    fontSize: isHeading ? "12px" : isCategory ? "22px" : "14px",
     fontWeight: isCategory || isHeading ? 600 : 400,
-    background: isHeading && theme.colors.brand[0],
+    background: isHeading && theme.colors.brand[1],
     lineHeight: 1.3,
-    minHeight: "28px",
+    minHeight: isHeading ? "22px" : "28px",
     borderRadius: isHeading && theme.radius.md,
   }
 
