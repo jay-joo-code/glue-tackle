@@ -14,7 +14,7 @@ const DailyDashboard = ({}: IDailyDashboardProps) => {
         borderRadius: theme.radius.md,
         overflow: "auto",
         width: "100%", // fill the width allocated by the resizer
-        border: `2px solid ${theme.colors.gray[2]}`,
+        border: `1px solid ${theme.colors.gray[2]}`,
       })}
     >
       <SprintList variant="daily" />
