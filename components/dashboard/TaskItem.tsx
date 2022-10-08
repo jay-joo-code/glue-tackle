@@ -68,7 +68,16 @@ const TaskItem = ({
       event?.target?.selectionEnd === 0 &&
       (event.key === "Delete" || event.key === "Backspace")
     ) {
-      if (task?.variant === "task") {
+      if (task?.indent > 0) {
+        updateTask({
+          id: task?.id,
+          indent: Math.max(task?.indent - 1, 0),
+        })
+        saveTask({
+          id: task?.id,
+          indent: Math.max(task?.indent - 1, 0),
+        })
+      } else if (task?.variant === "task") {
         updateTask({
           id: task?.id,
           variant: "text",
