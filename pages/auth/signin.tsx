@@ -39,12 +39,12 @@ const Signin = ({ providers }: ISigninProps) => {
   // by auto linking accounts
 
   // sign out if already signed in
-  const { status } = useSession()
-  useEffect(() => {
-    if (status === "authenticated") {
-      signOut({ redirect: true })
-    }
-  }, [status])
+  // const { status } = useSession()
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     signOut({ redirect: true })
+  //   }
+  // }, [status])
 
   const ERROR_TO_MESSAGE = useMemo(
     () => ({
