@@ -1,18 +1,11 @@
-import {
-  Container,
-  Input,
-  Radio,
-  Text,
-  Textarea,
-  useMantineTheme,
-} from "@mantine/core"
+import { Radio, Space, Text, Textarea, useMantineTheme } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
 import OutsideClick from "components/glue/OutsideClick"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 import computeNewRank from "util/computeNewRank"
 
 interface ITaskItemProps {
@@ -106,6 +99,26 @@ const TaskItem = ({
       if (nextId !== -1) setFocusedTaskId(nextId)
     } else if (event?.key === "ArrowUp") {
       if (prevId !== -1) setFocusedTaskId(prevId)
+    } else if (event?.key === "Tab" && event?.shiftKey) {
+      event?.preventDefault()
+      updateTask({
+        id: task?.id,
+        indent: Math.max(task?.indent - 1, 0),
+      })
+      saveTask({
+        id: task?.id,
+        indent: Math.max(task?.indent - 1, 0),
+      })
+    } else if (event?.key === "Tab") {
+      event?.preventDefault()
+      updateTask({
+        id: task?.id,
+        indent: task?.indent + 1,
+      })
+      saveTask({
+        id: task?.id,
+        indent: task?.indent + 1,
+      })
     }
   }
   const toggleComplete = () => {
@@ -183,6 +196,9 @@ const TaskItem = ({
           },
         })}
       >
+        {/* indent space */}
+        <Space pr={task?.indent * 19} />
+
         {task?.variant === "task" && (
           <Radio
             size="xs"
