@@ -1,6 +1,7 @@
 import { Container, Input, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
+import appConfig from "constants/appConfig"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
@@ -35,7 +36,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
     if (tasks && tasks?.length === 0) {
       insertEmptyTask({
         variant: "text",
-        rank: tasks?.length === 0 ? 100 : tasks[tasks?.length - 1]?.rank + 100,
+        rank: appConfig?.rankIncrement,
         sprintId: sprint?.id,
       })
     }
