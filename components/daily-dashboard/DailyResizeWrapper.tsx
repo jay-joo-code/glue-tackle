@@ -30,14 +30,15 @@ const DailyResizeWrapper = () => {
         handle={
           <Container
             sx={(theme) => ({
-              height: "30px",
-              width: "12px",
+              height: "50px",
+              width: "22px",
               background: theme.colors.brand[2],
               position: "absolute",
-              right: -10,
+              right: -15,
               top: 80,
               cursor: "pointer",
-              borderRadius: "4px",
+              borderRadius: "8px",
+              border: `2px solid white`,
 
               "&:hover": {
                 background: theme.colors.brand[3],

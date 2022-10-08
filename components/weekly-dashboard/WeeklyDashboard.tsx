@@ -22,6 +22,7 @@ const WeeklyDashboard = () => {
         width: `${width}px`,
         overflow: "auto",
         flexGrow: 2, // take up the remaining width
+        border: `2px solid ${theme.colors.gray[2]}`,
       })}
     >
       <SprintList variant="weekly" />
