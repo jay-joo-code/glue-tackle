@@ -102,6 +102,7 @@ const TaskItem = ({
         rank: newRank,
         sprintId,
         index: index + 1,
+        indent: task?.indent,
       })
       setFocusedTaskId(newId)
     } else if (event?.key === "ArrowDown") {
