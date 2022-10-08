@@ -55,6 +55,9 @@ const Index = () => {
             nextRank = newTasks[destIdx + 1]?.rank
           }
 
+          newRank = computeNewRank({ prevRank, nextRank })
+          newTasks[destIdx].rank = newRank
+
           return newTasks
         },
         { revalidate: false }
@@ -89,13 +92,14 @@ const Index = () => {
             nextRank = newTasks[destIdx + 1]?.rank
           }
 
+          newRank = computeNewRank({ prevRank, nextRank })
+          newTasks[destIdx].rank = newRank
+
           return newTasks
         },
         { revalidate: false }
       )
     }
-
-    newRank = computeNewRank({ prevRank, nextRank })
 
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),
