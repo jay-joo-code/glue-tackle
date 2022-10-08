@@ -56,6 +56,24 @@ const TaskItem = ({
         id: task?.id,
         variant: "task",
       })
+    } else if (event?.target?.value?.slice(-2) === "  ") {
+      // indent with double space
+      updateTask({
+        id: task?.id,
+        content: event?.target?.value?.slice(
+          0,
+          event?.target?.value?.length - 2
+        ),
+        indent: task?.indent + 1,
+      })
+      saveTask({
+        id: task?.id,
+        content: event?.target?.value?.slice(
+          0,
+          event?.target?.value?.length - 2
+        ),
+        indent: task?.indent + 1,
+      })
     } else {
       updateTask({
         id: task?.id,
