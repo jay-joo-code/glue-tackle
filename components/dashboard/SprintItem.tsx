@@ -2,6 +2,7 @@ import { Container, Input, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Sprint } from "@prisma/client"
 import appConfig from "constants/appConfig"
+import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
@@ -17,6 +18,10 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
   const { data: tasks, insertEmptyTask } = useTasksQuery(sprint?.id)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
+  const [draggingTaskId, setDraggingTaskId] = useGlueLocalStorage({
+    key: "dragging-task-id",
+    defaultValue: null,
+  })
 
   const handleNameChange = (event) => {
     setName(event?.target?.value)
@@ -72,7 +77,13 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       <Space mb="xs" />
       <Droppable droppableId={String(sprint?.id)}>
         {(provided, snapshot) => {
-          const draggingTaskId = Number(snapshot?.draggingOverWith)
+          // update dragging task id
+          const newDraggingTaskId = Number(snapshot?.draggingOverWith)
+          if (newDraggingTaskId && !draggingTaskId) {
+            setDraggingTaskId(newDraggingTaskId)
+          }
+
+          // set children ids
           let childrenIds = []
           if (draggingTaskId) {
             const draggingTask = tasks?.find(

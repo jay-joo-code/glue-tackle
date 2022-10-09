@@ -20,6 +20,10 @@ const Index = () => {
   })
   const { isMobile } = useIsDevice()
   const { mutate } = useSWRConfig()
+  const [_, setDraggingTaskId] = useGlueLocalStorage({
+    key: "dragging-task-id",
+    defaultValue: null,
+  })
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -149,6 +153,8 @@ const Index = () => {
         { revalidate: false }
       )
     }
+
+    setDraggingTaskId(null)
 
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),
