@@ -9,7 +9,8 @@ import { tasksSwrKey } from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { DragDropContext } from "react-beautiful-dnd"
 import { useSWRConfig } from "swr"
-import computeNewRank from "util/computeNewRank"
+import { assignNewRanks } from "util/computeNewRank"
+import getTaskChildren from "util/getTaskChildren"
 import insertAtIndex from "util/glue/insertAtIndex"
 
 const Index = () => {
@@ -29,71 +30,119 @@ const Index = () => {
     let targetTask: Task
     let prevRank: number = -1
     let nextRank: number = -1
-    let newRank: number
+    let children: Task[] = []
 
     if (result?.source?.droppableId === result?.destination?.droppableId) {
-      // move task within sprint
       mutate(
         tasksSwrKey(Number(result?.source?.droppableId)),
         async (tasks) => {
-          targetTask = tasks[result?.source?.index]
-          const destIdx = result?.destination?.index
-          const filteredTasks = tasks?.filter(
-            (_, idx) => idx !== result?.source?.index
-          )
-          const newTasks = insertAtIndex({
-            array: filteredTasks,
-            index: destIdx,
-            newItem: targetTask,
+          // remove target and children
+          const startIdx = result?.source?.index
+          targetTask = tasks[startIdx]
+          children = getTaskChildren({
+            tasks,
+            targetTask,
           })
 
+          const endIdx = startIdx + children?.length
+          const filteredTasks = tasks
+            ?.slice(0, startIdx)
+            .concat(tasks?.slice(endIdx + 1))
+
+          // insert target and children
+          let destIdx = result?.destination?.index
+          if (destIdx > startIdx) destIdx -= children?.length
           if (destIdx > 0) {
-            prevRank = newTasks[destIdx - 1]?.rank
+            prevRank = filteredTasks[destIdx - 1]?.rank
           }
 
-          if (destIdx !== newTasks?.length - 1) {
-            nextRank = newTasks[destIdx + 1]?.rank
+          if (destIdx !== filteredTasks?.length) {
+            nextRank = filteredTasks[destIdx]?.rank
           }
 
-          newRank = computeNewRank({ prevRank, nextRank })
-          newTasks[destIdx].rank = newRank
+          const { rankedTargetTask, rankedChildren } = assignNewRanks({
+            prevRank,
+            nextRank,
+            targetTask,
+            children,
+          })
+          targetTask = rankedTargetTask
+          children = rankedChildren
+
+          let newTasks = insertAtIndex({
+            array: filteredTasks,
+            index: destIdx,
+            newItem: rankedTargetTask,
+          })
+
+          rankedChildren?.forEach((childTask, idx) => {
+            newTasks = insertAtIndex({
+              array: newTasks,
+              index: destIdx + 1 + idx,
+              newItem: childTask,
+            })
+          })
 
           return newTasks
         },
         { revalidate: false }
       )
     } else {
-      // remove from source sprint
+      // remove target and children from source sprint
       mutate(
         tasksSwrKey(Number(result?.source?.droppableId)),
-        (tasks) => {
-          targetTask = tasks[result?.source?.index]
-          return tasks?.filter((_, idx) => idx !== result?.source?.index)
+        (tasks: Task[]) => {
+          const startIdx = result?.source?.index
+          targetTask = tasks[startIdx]
+          children = getTaskChildren({
+            tasks,
+            targetTask,
+          })
+
+          const endIdx = startIdx + children?.length
+          const filteredTasks = tasks
+            ?.slice(0, startIdx)
+            .concat(tasks?.slice(endIdx + 1))
+          return filteredTasks
         },
         { revalidate: false }
       )
 
-      // add to destination sprint
+      // add target and children to destination sprint
       mutate(
         tasksSwrKey(Number(result?.destination?.droppableId)),
         (tasks) => {
           const destIdx = result?.destination?.index
-          const newTasks = insertAtIndex({
+          if (destIdx > 0) {
+            prevRank = tasks[destIdx - 1]?.rank
+          }
+
+          if (destIdx !== tasks?.length) {
+            nextRank = tasks[destIdx]?.rank
+          }
+
+          const { rankedTargetTask, rankedChildren } = assignNewRanks({
+            prevRank,
+            nextRank,
+            targetTask,
+            children,
+          })
+          targetTask = rankedTargetTask
+          children = rankedChildren
+
+          let newTasks = insertAtIndex({
             array: tasks,
             index: destIdx,
-            newItem: targetTask,
+            newItem: rankedTargetTask,
           })
 
-          if (destIdx > 0) {
-            prevRank = newTasks[destIdx - 1]?.rank
-          }
-
-          if (destIdx !== newTasks?.length - 1) {
-            nextRank = newTasks[destIdx + 1]?.rank
-          }
-
-          newRank = computeNewRank({ prevRank, nextRank })
-          newTasks[destIdx].rank = newRank
+          rankedChildren?.forEach((childTask, idx) => {
+            newTasks = insertAtIndex({
+              array: newTasks,
+              index: destIdx + 1 + idx,
+              newItem: childTask,
+            })
+          })
 
           return newTasks
         },
@@ -103,7 +152,14 @@ const Index = () => {
 
     api.put(`/glue/task/${targetTask?.id}`, {
       sprintId: Number(result?.destination?.droppableId),
-      rank: newRank,
+      rank: targetTask?.rank,
+    })
+    children?.forEach((childTask) => {
+      console.log("childTask?.rank", childTask?.rank)
+      api.put(`/glue/task/${childTask?.id}`, {
+        sprintId: Number(result?.destination?.droppableId),
+        rank: childTask?.rank,
+      })
     })
   }
 

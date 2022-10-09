@@ -6,7 +6,8 @@ import OutsideClick from "components/glue/OutsideClick"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import { useEffect } from "react"
-import computeNewRank from "util/computeNewRank"
+import { computeNewRank } from "util/computeNewRank"
+import getTextVariant from "util/getTextVariant"
 
 interface ITaskItemProps {
   task: Task
@@ -167,17 +168,10 @@ const TaskItem = ({
   }, [debouncedContent])
 
   // text variant: format text by sub-variants: category, heading
-  const contentArr = task?.content?.split(" ")
-  const isCategory =
-    task?.variant === "text" &&
-    contentArr?.length > 0 &&
-    contentArr[0]?.toLowerCase() === "cc"
-  const isHeading =
-    task?.variant === "text" &&
-    contentArr?.length > 0 &&
-    contentArr[0]?.toLowerCase() === "hh"
+  const { isCategory, isHeading } = getTextVariant(task)
   let displayContent = task?.content
   if (isCategory || isHeading) {
+    const contentArr = task?.content?.split(" ")
     displayContent = contentArr?.slice(1, contentArr?.length)?.join(" ")
   }
 
