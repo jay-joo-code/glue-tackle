@@ -26,6 +26,7 @@ interface ITaskItemProps {
   index: number
   childrenCount: number
   isDragging?: boolean
+  isParentDragging?: boolean
 }
 
 const TaskItem = ({
@@ -38,6 +39,7 @@ const TaskItem = ({
   index,
   childrenCount,
   isDragging = false,
+  isParentDragging = false,
 }: ITaskItemProps) => {
   const { updateTask, saveTask, insertEmptyTask, deleteEmptyTask } =
     useTasksQuery(sprintId)
@@ -47,6 +49,7 @@ const TaskItem = ({
     defaultValue: null,
   })
   const isEditing = focusedTaskId === task?.id
+  // if (isEditing) console.log("task?.id", task?.id)
   const enableEditing = () => setFocusedTaskId(task?.id)
   const disableEditing = () => {
     if (isEditing) setFocusedTaskId(null)
@@ -217,11 +220,13 @@ const TaskItem = ({
         noWrap={true}
         sx={(theme) => ({
           borderRadius: theme.radius.sm,
-          background: isDragging
+          background: isParentDragging
+            ? theme.colors.gray[3]
+            : isDragging
             ? theme.colors.brand[1]
             : task?.content?.trim()?.length === 0
             ? theme?.colors?.gray[0]
-            : "unset",
+            : "#FFFFFF",
 
           "&:hover": {
             background: theme.colors.gray[0],

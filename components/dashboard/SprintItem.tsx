@@ -45,7 +45,6 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
 
   return (
     <Container
-      px="xs"
       py="xs"
       sx={(theme) => ({
         background: "#FFFFFF",
@@ -72,55 +71,77 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       />
       <Space mb="xs" />
       <Droppable droppableId={String(sprint?.id)}>
-        {(provided, snapshot) => (
-          <Container
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            pb="10rem"
-            sx={(theme) => ({
-              minHeight: "85vh",
-              borderRadius: theme.radius.md,
-            })}
-            // style={getListStyle(snapshot.isDraggingOver)}
-          >
-            {tasks?.map((task, index) => (
-              <Draggable
-                key={`${task.id}`}
-                draggableId={`${task.id}`}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <Container
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
+        {(provided, snapshot) => {
+          const draggingTaskId = Number(snapshot?.draggingOverWith)
+          let childrenIds = []
+          if (draggingTaskId) {
+            const draggingTask = tasks?.find(
+              (task) => draggingTaskId === task?.id
+            )
+            childrenIds = getTaskChildren({
+              tasks,
+              targetTask: draggingTask,
+            })?.map((task) => task?.id)
+          }
+          return (
+            <Container
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              p="xs"
+              pb="10rem"
+              sx={(theme) => ({
+                minHeight: "85vh",
+                borderRadius: theme.radius.md,
+                // background: snapshot.isDraggingOver && theme.colors.brand[0],
+              })}
+            >
+              {tasks?.map((task, index) => {
+                const isParentDragging =
+                  childrenIds?.filter((id) => id === task?.id)?.length > 0
+                return (
+                  <Draggable
+                    key={`${task.id}`}
+                    draggableId={`${task.id}`}
+                    index={index}
+                    isDragDisabled={isParentDragging} // not working
                   >
-                    <TaskItem
-                      task={task}
-                      sprintId={sprint?.id}
-                      isDragging={snapshot.isDragging}
-                      prevRank={index === 0 ? -1 : tasks[index - 1]?.rank}
-                      nextRank={
-                        index === tasks?.length - 1
-                          ? -1
-                          : tasks[index + 1]?.rank
-                      }
-                      prevId={index === 0 ? -1 : tasks[index - 1]?.id}
-                      nextId={
-                        index === tasks?.length - 1 ? -1 : tasks[index + 1]?.id
-                      }
-                      index={index}
-                      childrenCount={
-                        getTaskChildren({ tasks, targetTask: task })?.length
-                      }
-                    />
-                  </Container>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Container>
-        )}
+                    {(provided, snapshot) => (
+                      <Container
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <TaskItem
+                          task={task}
+                          sprintId={sprint?.id}
+                          isDragging={snapshot.isDragging}
+                          isParentDragging={isParentDragging}
+                          prevRank={index === 0 ? -1 : tasks[index - 1]?.rank}
+                          nextRank={
+                            index === tasks?.length - 1
+                              ? -1
+                              : tasks[index + 1]?.rank
+                          }
+                          prevId={index === 0 ? -1 : tasks[index - 1]?.id}
+                          nextId={
+                            index === tasks?.length - 1
+                              ? -1
+                              : tasks[index + 1]?.id
+                          }
+                          index={index}
+                          childrenCount={
+                            getTaskChildren({ tasks, targetTask: task })?.length
+                          }
+                        />
+                      </Container>
+                    )}
+                  </Draggable>
+                )
+              })}
+              {provided.placeholder}
+            </Container>
+          )
+        }}
       </Droppable>
     </Container>
   )
