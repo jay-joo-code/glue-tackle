@@ -1,4 +1,11 @@
-import { Radio, Space, Text, Textarea, useMantineTheme } from "@mantine/core"
+import {
+  Badge,
+  Radio,
+  Space,
+  Text,
+  Textarea,
+  useMantineTheme,
+} from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
@@ -17,6 +24,7 @@ interface ITaskItemProps {
   prevId: number
   nextId: number
   index: number
+  childrenCount: number
   isDragging?: boolean
 }
 
@@ -28,6 +36,7 @@ const TaskItem = ({
   prevId,
   nextId,
   index,
+  childrenCount,
   isDragging = false,
 }: ITaskItemProps) => {
   const { updateTask, saveTask, insertEmptyTask, deleteEmptyTask } =
@@ -202,7 +211,8 @@ const TaskItem = ({
       })}
     >
       <Flex
-        align="flex-start"
+        justify="space-between"
+        align="center"
         spacing={0}
         noWrap={true}
         sx={(theme) => ({
@@ -218,51 +228,73 @@ const TaskItem = ({
           },
         })}
       >
-        {/* indent space */}
-        <Space pr={task?.indent * 19} />
+        <Flex
+          align="flex-start"
+          spacing={0}
+          noWrap={true}
+          sx={(theme) => ({
+            width: "100%",
+          })}
+        >
+          {/* indent space */}
+          <Space pr={task?.indent * 19} />
 
-        {task?.variant === "task" && (
-          <Radio
-            size="xs"
-            value={`is-complete-${task?.id}`}
-            checked={task?.isComplete}
-            onClick={toggleComplete}
-            onChange={() => {}}
-            sx={(theme) => ({
-              marginTop: ".4rem",
-              marginLeft: ".2rem",
-              cursor: "pointer", // doesn't work for some reason
-            })}
-          />
-        )}
-        {isEditing ? (
-          <Textarea
-            autoFocus={true}
-            variant="unstyled"
-            autosize={true}
-            minRows={1}
-            value={task?.content}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onKeyDown={handleKeyDown}
-            sx={(theme) => ({
-              width: "100%",
+          {task?.variant === "task" && (
+            <Radio
+              size="xs"
+              value={`is-complete-${task?.id}`}
+              checked={task?.isComplete}
+              onClick={toggleComplete}
+              onChange={() => {}}
+              sx={(theme) => ({
+                marginTop: ".4rem",
+                marginLeft: ".2rem",
+                cursor: "pointer", // doesn't work for some reason
+              })}
+            />
+          )}
 
-              textarea: {
+          {isEditing ? (
+            <Textarea
+              autoFocus={true}
+              variant="unstyled"
+              autosize={true}
+              minRows={1}
+              value={task?.content}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onKeyDown={handleKeyDown}
+              sx={(theme) => ({
+                width: "100%",
+
+                textarea: {
+                  ...commonStyles,
+                  height: "unset",
+                  color: theme.colors.text[3],
+                },
+              })}
+            />
+          ) : (
+            <Text
+              sx={(theme) => ({
                 ...commonStyles,
-                height: "unset",
-                color: theme.colors.text[3],
-              },
-            })}
-          />
-        ) : (
-          <Text
+              })}
+            >
+              {displayContent}
+            </Text>
+          )}
+        </Flex>
+        {isDragging && childrenCount !== 0 && (
+          <Badge
+            color="brand"
+            variant="filled"
+            mr=".5rem"
             sx={(theme) => ({
-              ...commonStyles,
+              flexShrink: 0,
             })}
           >
-            {displayContent}
-          </Text>
+            {childrenCount + 1}
+          </Badge>
         )}
       </Flex>
     </OutsideClick>

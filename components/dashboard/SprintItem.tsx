@@ -6,6 +6,7 @@ import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
+import getTaskChildren from "util/getTaskChildren"
 import TaskItem from "./TaskItem"
 
 interface ISprintItemProps {
@@ -109,6 +110,9 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                         index === tasks?.length - 1 ? -1 : tasks[index + 1]?.id
                       }
                       index={index}
+                      childrenCount={
+                        getTaskChildren({ tasks, targetTask: task })?.length
+                      }
                     />
                   </Container>
                 )}
