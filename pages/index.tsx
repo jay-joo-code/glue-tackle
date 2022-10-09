@@ -155,7 +155,6 @@ const Index = () => {
       rank: targetTask?.rank,
     })
     children?.forEach((childTask) => {
-      console.log("childTask?.rank", childTask?.rank)
       api.put(`/glue/task/${childTask?.id}`, {
         sprintId: Number(result?.destination?.droppableId),
         rank: childTask?.rank,
