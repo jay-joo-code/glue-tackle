@@ -75,6 +75,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
           <Container
             {...provided.droppableProps}
             ref={provided.innerRef}
+            pb="10rem"
             sx={(theme) => ({
               minHeight: "85vh",
               borderRadius: theme.radius.md,
