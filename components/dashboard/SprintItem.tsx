@@ -1,6 +1,9 @@
-import { Container, Input, Space } from "@mantine/core"
+import { Container, Input, Menu, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
+import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined"
 import { Sprint } from "@prisma/client"
+import Flex from "components/glue/Flex"
+import IconButton from "components/glue/IconButton"
 import appConfig from "constants/appConfig"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
@@ -48,6 +51,8 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
     }
   }, [tasks])
 
+  const handleArchive = () => {}
+
   return (
     <Container
       py="xs"
@@ -60,20 +65,43 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
         flexShrink: 0,
       })}
     >
-      <Input
-        variant="unstyled"
-        placeholder="Sprint name"
-        value={name}
-        onChange={handleNameChange}
-        pl="xs"
-        sx={(theme) => ({
-          input: {
-            fontWeight: 500,
-            color: theme.colors.text[2],
-            fontSize: "1rem",
-          },
-        })}
-      />
+      <Flex align="center" justify="space-between" px="md">
+        <Input
+          variant="unstyled"
+          placeholder="Sprint name"
+          value={name}
+          onChange={handleNameChange}
+          sx={(theme) => ({
+            input: {
+              fontWeight: 500,
+              color: theme.colors.text[2],
+              fontSize: "1rem",
+            },
+          })}
+        />
+        {sprint?.variant === "weekly" && (
+          <Container
+            sx={(theme) => ({
+              position: "relative",
+            })}
+          >
+            <Menu position="bottom-end" width={140}>
+              <Menu.Target>
+                <Container>
+                  <IconButton color="button-gray">
+                    <MoreHorizOutlinedIcon />
+                  </IconButton>
+                </Container>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item color="red" onClick={handleArchive}>
+                  Archive
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Container>
+        )}
+      </Flex>
       <Space mb="xs" />
       <Droppable droppableId={String(sprint?.id)}>
         {(provided, snapshot) => {
