@@ -1,3 +1,4 @@
+import { Container, Text } from "@mantine/core"
 import { Task } from "@prisma/client"
 import DailyResizeWrapper from "components/daily-dashboard/DailyResizeWrapper"
 import Flex from "components/glue/Flex"
@@ -22,6 +23,10 @@ const Index = () => {
   const { mutate } = useSWRConfig()
   const [_, setDraggingTaskId] = useGlueLocalStorage({
     key: "dragging-task-id",
+    defaultValue: null,
+  })
+  const [focusedTaskRank] = useGlueLocalStorage({
+    key: "focused-task-rank",
     defaultValue: null,
   })
 
@@ -183,6 +188,14 @@ const Index = () => {
           <WeeklyDashboard />
         </Flex>
       </DragDropContext>
+      {!isMobile && (
+        <Container p="md">
+          <Text size="xs">
+            Rank {Number(focusedTaskRank)?.toLocaleString()} |{" "}
+            {(2147483647 - focusedTaskRank)?.toLocaleString()} from overflow
+          </Text>
+        </Container>
+      )}
     </PageContainer>
   )
 }

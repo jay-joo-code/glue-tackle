@@ -48,8 +48,17 @@ const TaskItem = ({
     key: "focused-task-id",
     defaultValue: null,
   })
+  const [_, setFocusedTaskRank] = useGlueLocalStorage({
+    key: "focused-task-rank",
+    defaultValue: null,
+  })
+  useEffect(() => {
+    if (focusedTaskId === task?.id) {
+      setFocusedTaskRank(task?.rank)
+    }
+  }, [focusedTaskId])
   const isEditing = focusedTaskId === task?.id
-  // if (isEditing) console.log("task?.id", task?.id)
+  // if (isEditing) console.log("task?.id", task?.rank)
   const enableEditing = () => setFocusedTaskId(task?.id)
   const disableEditing = () => {
     if (isEditing) setFocusedTaskId(null)
