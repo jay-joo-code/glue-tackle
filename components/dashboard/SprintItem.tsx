@@ -58,11 +58,15 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
       py="xs"
       sx={(theme) => ({
         background: "#FFFFFF",
-        height: "85vh",
         overflow: "auto",
         borderRadius: theme.radius.md,
         width: "340px",
         flexShrink: 0,
+        height: "75vh",
+
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+          height: "85vh",
+        },
       })}
     >
       <Flex align="center" justify="space-between" px="md">
