@@ -100,8 +100,9 @@ model Sprint {
   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   variant    String
-  name       String?  @default("")
-  isArchived Boolean? @default(false)
+  name       String?   @default("")
+  isArchived Boolean?  @default(false)
+  date       DateTime?
 
   tasks Task[]
 
