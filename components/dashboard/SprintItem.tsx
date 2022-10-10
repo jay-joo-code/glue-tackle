@@ -69,7 +69,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
         },
       })}
     >
-      <Flex align="center" justify="space-between" px="md">
+      <Flex align="center" justify="space-between" px="xs">
         <Input
           variant="unstyled"
           placeholder="Sprint name"
