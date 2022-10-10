@@ -19,10 +19,14 @@ const WeeklyDashboard = () => {
         background: theme.colors.gray[0],
         height: `90vh`,
         borderRadius: theme.radius.md,
-        width: `${width}px`,
         overflow: "auto",
         flexGrow: 2, // take up the remaining width
+        width: "100%",
         border: `1px solid ${theme.colors.gray[2]}`,
+
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+          width: `${width}px`,
+        },
       })}
     >
       <SprintList variant="weekly" />

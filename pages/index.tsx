@@ -172,21 +172,22 @@ const Index = () => {
       })
     })
   }
-
-  if (isMobile) {
-    if (mobileState === "daily") {
-      return <DailyResizeWrapper />
-    }
-    return <WeeklyDashboard />
+  const mobileStateToComponent = {
+    daily: <DailyResizeWrapper />,
+    weekly: <WeeklyDashboard />,
   }
 
   return (
     <PageContainer variant="responsive" title="Dashboard" isPrivate={true}>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Flex spacing="xs">
-          <DailyResizeWrapper />
-          <WeeklyDashboard />
-        </Flex>
+        {isMobile ? (
+          mobileStateToComponent[mobileState]
+        ) : (
+          <Flex spacing="xs">
+            <DailyResizeWrapper />
+            <WeeklyDashboard />
+          </Flex>
+        )}
       </DragDropContext>
       {!isMobile && (
         <Container p="md">
