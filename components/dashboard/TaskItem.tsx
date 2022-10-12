@@ -166,6 +166,8 @@ const TaskItem = ({
         id: task?.id,
         indent: task?.indent + 1,
       })
+    } else if (event?.key === "Escape") {
+      setFocusedTaskId(null)
     }
   }
   const toggleComplete = () => {
