@@ -1,4 +1,5 @@
 import { Container } from "@mantine/core"
+import { useViewportSize } from "@mantine/hooks"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useIsDevice from "hooks/glue/useIsDevice"
 import { useEffect, useState } from "react"
@@ -12,12 +13,23 @@ const DailyResizeWrapper = () => {
   })
   const [width, setWidth] = useState<number>(0)
   const { isMobile } = useIsDevice()
+  const { width: viewportWidth } = useViewportSize()
 
+  // initialize width with persisted width
   useEffect(() => {
     if (persistedWidth !== undefined && width === 0) {
       setWidth(persistedWidth)
     }
   }, [persistedWidth])
+
+  // if persisted width is too big, reset to half of current viewport width
+  useEffect(() => {
+    if (!isMobile && width > viewportWidth * 0.9) {
+      const halfViewport = viewportWidth * 0.5
+      setPersistedWidth(halfViewport)
+      setWidth(halfViewport)
+    }
+  }, [width, viewportWidth])
 
   useEffect(() => {
     if (width !== 0) {
