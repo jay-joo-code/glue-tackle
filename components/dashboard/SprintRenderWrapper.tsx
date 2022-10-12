@@ -13,10 +13,11 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
   const containerRef = useRef(null)
   const leftAnchorRef = useRef(null)
   const rightAnchorRef = useRef(null)
+  const isContainerOnScreen = useOnScreen(containerRef)
   const isLeftAnchorOnScreen = useOnScreen(leftAnchorRef)
   const isRightAnchorOnScreen = useOnScreen(rightAnchorRef)
   const { isMobile } = useIsDevice()
-  const isRender =
+  const isDropEnabled =
     isMobile ||
     (sprint?.variant === "weekly" && isLeftAnchorOnScreen) ||
     (sprint?.variant === "daily" && isRightAnchorOnScreen)
@@ -67,7 +68,9 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
           height: "20px",
         })}
       />
-      {isRender && <SprintItem sprint={sprint} />}
+      {isContainerOnScreen && (
+        <SprintItem sprint={sprint} isDropDisabled={!isDropEnabled} />
+      )}
     </Container>
   )
 }

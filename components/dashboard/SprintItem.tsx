@@ -15,9 +15,10 @@ import TaskItem from "./TaskItem"
 
 interface ISprintItemProps {
   sprint: Sprint
+  isDropDisabled: boolean
 }
 
-const SprintItem = ({ sprint }: ISprintItemProps) => {
+const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
   const { data: tasks, insertEmptyTask } = useTasksQuery(sprint?.id)
   const [name, setName] = useState<string>(sprint?.name)
   const [debouncedName] = useDebouncedValue(name, 500)
@@ -107,7 +108,10 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
         )}
       </Flex>
       <Space mb="xs" />
-      <Droppable droppableId={String(sprint?.id)}>
+      <Droppable
+        droppableId={String(sprint?.id)}
+        isDropDisabled={isDropDisabled}
+      >
         {(provided, snapshot) => {
           // update dragging task id
           const newDraggingTaskId = Number(snapshot?.draggingOverWith)
@@ -150,7 +154,7 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
                     key={`${task.id}`}
                     draggableId={`${task.id}`}
                     index={index}
-                    isDragDisabled={isParentDragging} // not working
+                    isDragDisabled={isDropDisabled} // also disable drag if sprint drop disabled
                   >
                     {(provided, snapshot) => (
                       <Container
