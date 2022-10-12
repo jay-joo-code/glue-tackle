@@ -58,7 +58,7 @@ const TaskItem = ({
     }
   }, [focusedTaskId])
   const isEditing = focusedTaskId === task?.id
-  // if (isEditing) console.log("task?.id", task?.rank)
+  // if (isEditing) console.log("task?.id", isEditing)
   const enableEditing = () => setFocusedTaskId(task?.id)
   const disableEditing = () => {
     if (isEditing) setFocusedTaskId(null)
@@ -69,7 +69,7 @@ const TaskItem = ({
     event.target.value = val
   }
   const handleChange = (event) => {
-    if (event?.target?.value?.charAt(0) === " ") {
+    if (event?.target?.value?.charAt(0) === " " && task?.variant === "text") {
       updateTask({
         id: task?.id,
         variant: "task",
@@ -79,7 +79,7 @@ const TaskItem = ({
         variant: "task",
       })
     } else if (event?.target?.value?.slice(-2) === "  ") {
-      // indent with double space
+      // increment indent if two spaces at the end of task content
       updateTask({
         id: task?.id,
         content: event?.target?.value?.slice(
