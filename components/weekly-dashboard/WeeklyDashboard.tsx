@@ -17,15 +17,16 @@ const WeeklyDashboard = () => {
       p="md"
       sx={(theme) => ({
         background: theme.colors.gray[0],
-        height: `90vh`,
         borderRadius: theme.radius.md,
         overflow: "auto",
         flexGrow: 2, // take up the remaining width
         width: "100%",
         border: `1px solid ${theme.colors.gray[2]}`,
+        height: "80vh",
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
           width: `${width}px`,
+          height: "90vh",
         },
       })}
     >
