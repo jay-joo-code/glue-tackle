@@ -26,11 +26,10 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
   useEffect(() => {
     const today = new Date()
     today.setUTCHours(0, 0, 0, 0)
-    if (
-      isMobile &&
-      new Date(sprint?.date)?.toISOString() === today?.toISOString()
-    ) {
-      containerRef?.current?.scrollIntoView()
+    if (new Date(sprint?.date)?.toISOString() === today?.toISOString()) {
+      containerRef?.current?.scrollIntoView({
+        inline: "start",
+      })
     }
   }, [sprint, containerRef, isMobile])
 
