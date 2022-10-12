@@ -11,10 +11,17 @@ interface ISprintRenderWrapperProps {
 
 const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
   const containerRef = useRef(null)
-  const isOnScreen = useOnScreen(containerRef)
+  const leftAnchorRef = useRef(null)
+  const rightAnchorRef = useRef(null)
+  const isLeftAnchorOnScreen = useOnScreen(leftAnchorRef)
+  const isRightAnchorOnScreen = useOnScreen(rightAnchorRef)
+  const { isMobile } = useIsDevice()
+  const isRender =
+    isMobile ||
+    (sprint?.variant === "weekly" && isLeftAnchorOnScreen) ||
+    (sprint?.variant === "daily" && isRightAnchorOnScreen)
 
   // auto-scroll to today's sprint on mobile
-  const { isMobile } = useIsDevice()
   useEffect(() => {
     const today = new Date()
     today.setUTCHours(0, 0, 0, 0)
@@ -33,13 +40,34 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
         width: "340px",
         flexShrink: 0,
         height: "75vh",
+        position: "relative",
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
           height: "85vh",
         },
       })}
     >
-      {isOnScreen !== undefined && isOnScreen && <SprintItem sprint={sprint} />}
+      <Container
+        ref={leftAnchorRef}
+        sx={(theme) => ({
+          position: "absolute",
+          top: 0,
+          left: 10,
+          width: "20px",
+          height: "20px",
+        })}
+      />
+      <Container
+        ref={rightAnchorRef}
+        sx={(theme) => ({
+          position: "absolute",
+          top: 0,
+          right: 10,
+          width: "20px",
+          height: "20px",
+        })}
+      />
+      {isRender && <SprintItem sprint={sprint} />}
     </Container>
   )
 }
