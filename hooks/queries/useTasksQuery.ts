@@ -72,7 +72,7 @@ const useTasksQuery = (sprintId: number) => {
               newItem: newTask,
             })
       },
-      { revalidate: true }
+      { revalidate: false }
     )
   }
 
