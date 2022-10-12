@@ -133,9 +133,13 @@ const SprintItem = ({ sprint }: ISprintItemProps) => {
               p="xs"
               pb="10rem"
               sx={(theme) => ({
-                minHeight: "85vh",
+                minHeight: "75vh",
                 borderRadius: theme.radius.md,
                 // background: snapshot.isDraggingOver && theme.colors.brand[0],
+
+                [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+                  minHeight: "85vh",
+                },
               })}
             >
               {tasks?.map((task, index) => {

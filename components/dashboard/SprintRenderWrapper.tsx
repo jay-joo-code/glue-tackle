@@ -30,9 +30,13 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
     <Container
       ref={containerRef}
       sx={(theme) => ({
-        height: "85vh",
         width: "340px",
         flexShrink: 0,
+        height: "75vh",
+
+        [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
+          height: "85vh",
+        },
       })}
     >
       {isOnScreen !== undefined && isOnScreen && <SprintItem sprint={sprint} />}
