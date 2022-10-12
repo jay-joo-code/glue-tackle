@@ -72,7 +72,7 @@ const useTasksQuery = (sprintId: number) => {
               newItem: newTask,
             })
       },
-      { revalidate: false }
+      { revalidate: false } // if true, content is wiped if press enter before content is debounced saved
     )
   }
 
