@@ -104,10 +104,7 @@ const TaskItem = ({
     }
   }
   const handleKeyDown = (event) => {
-    if (
-      event?.target?.selectionEnd === 0 &&
-      (event.key === "Delete" || event.key === "Backspace")
-    ) {
+    if (event?.target?.selectionEnd === 0 && event.key === "Backspace") {
       if (task?.indent > 0) {
         updateTask({
           id: task?.id,
