@@ -14,8 +14,8 @@ interface ISprintListProps {
 
 const SprintList = ({ variant }: ISprintListProps) => {
   const { data: sessionData } = useSession()
-  const fiveDaysAgo = useMemo(
-    () => new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 5),
+  const fourDaysAgo = useMemo(
+    () => new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 4),
     [] // prevents infinite loop
   )
   const variantToArgs = {
@@ -38,7 +38,7 @@ const SprintList = ({ variant }: ISprintListProps) => {
           userId: sessionData?.user?.id,
           variant,
           date: {
-            gte: fiveDaysAgo,
+            gte: fourDaysAgo,
           },
         },
         orderBy: {
