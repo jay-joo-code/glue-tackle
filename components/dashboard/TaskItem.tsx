@@ -43,7 +43,7 @@ const TaskItem = ({
 }: ITaskItemProps) => {
   const { updateTask, saveTask, insertEmptyTask, deleteEmptyTask } =
     useTasksQuery(sprintId)
-  const [debouncedContent] = useDebouncedValue(task?.content, 300)
+  const [debouncedContent] = useDebouncedValue(task?.content, 200)
   const [focusedTaskId, setFocusedTaskId] = useGlueLocalStorage({
     key: "focused-task-id",
     defaultValue: null,
@@ -181,11 +181,13 @@ const TaskItem = ({
     })
   }
   useEffect(() => {
-    saveTask({
-      id: task?.id,
-      content: task?.content,
-    })
-  }, [debouncedContent])
+    if (isEditing) {
+      saveTask({
+        id: task?.id,
+        content: task?.content,
+      })
+    }
+  }, [debouncedContent, isEditing])
 
   // text variant: format text by sub-variants: category, heading
   const { isCategory, isHeading } = getTextVariant(task)
