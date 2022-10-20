@@ -80,7 +80,7 @@ const SprintList = ({ variant }: ISprintListProps) => {
       asyncRequest: async () => {
         await api.post("/glue/sprint", newSprintData)
       },
-      refetchAfterRequest: true,
+      refetchAfterRequest: false, // to prevent the entire sprint list from rendering + jumping to today's sprint
     })
   }
 

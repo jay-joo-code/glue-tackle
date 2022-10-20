@@ -22,7 +22,7 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
     (sprint?.variant === "weekly" && isLeftAnchorOnScreen) ||
     (sprint?.variant === "daily" && isRightAnchorOnScreen)
 
-  // auto-scroll to today's sprint on mobile
+  // auto-scroll to today's sprint
   useEffect(() => {
     const today = new Date()
     today.setUTCHours(0, 0, 0, 0)
@@ -31,7 +31,7 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
         inline: "start",
       })
     }
-  }, [sprint, containerRef, isMobile])
+  }, [sprint, containerRef])
 
   return (
     <Container
@@ -74,4 +74,4 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
   )
 }
 
-export default SprintRenderWrapper
+export default React.memo(SprintRenderWrapper)
