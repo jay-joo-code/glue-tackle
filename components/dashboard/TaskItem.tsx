@@ -207,7 +207,6 @@ const TaskItem = ({
     minHeight: isHeading ? "22px" : "28px",
     borderRadius: isHeading && theme.radius.md,
     color: task?.isComplete ? theme.colors.text[2] : theme.colors.text[3],
-    wordBreak: "break-word",
   }
 
   let taskPaddingTop: number | string = 0
@@ -295,6 +294,7 @@ const TaskItem = ({
             <Text
               sx={(theme) => ({
                 ...commonStyles,
+                wordBreak: "break-word",
               })}
             >
               {displayContent}
