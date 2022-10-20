@@ -6,8 +6,10 @@ import Flex from "components/glue/Flex"
 import IconButton from "components/glue/IconButton"
 import appConfig from "constants/appConfig"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
+import useSprints from "hooks/queries/useSprints"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import api from "lib/glue/api"
+import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 import getTaskChildren from "util/getTaskChildren"
@@ -25,6 +27,11 @@ const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
   const [draggingTaskId, setDraggingTaskId] = useGlueLocalStorage({
     key: "dragging-task-id",
     defaultValue: null,
+  })
+  const { data: sessionData } = useSession()
+  const { update: updateSprints } = useSprints({
+    variant: sprint?.variant,
+    sessionData,
   })
 
   const handleNameChange = (event) => {
@@ -52,7 +59,14 @@ const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
     }
   }, [tasks])
 
-  const handleArchive = () => {}
+  const handleArchive = () => {
+    updateSprints("delete-item", {
+      id: sprint?.id,
+    })
+    api.put(`/glue/sprint/${sprint?.id}`, {
+      isArchived: true,
+    })
+  }
 
   return (
     <Container

@@ -1,8 +1,8 @@
 import { Container } from "@mantine/core"
 import Button from "components/glue/Button"
 import Flex from "components/glue/Flex"
-import useGlueQuery from "hooks/glue/useGlueQuery"
 import useOnScreen from "hooks/glue/useOnScreen"
+import useSprints from "hooks/queries/useSprints"
 import api from "lib/glue/api"
 import { useSession } from "next-auth/react"
 import { useEffect, useMemo, useRef } from "react"
@@ -16,42 +16,17 @@ const SprintList = ({ variant }: ISprintListProps) => {
   const { data: sessionData } = useSession()
   const fourDaysAgo = useMemo(
     () => new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 4),
-    [] // prevents infinite loop
+    []
   )
-  const variantToArgs = {
-    weekly: {
-      url: "/glue/sprint",
-      args: {
-        where: {
-          userId: sessionData?.user?.id,
-          variant,
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-    },
-    daily: {
-      url: "/glue/sprint",
-      args: {
-        where: {
-          userId: sessionData?.user?.id,
-          variant,
-          date: {
-            gte: fourDaysAgo,
-          },
-        },
-        orderBy: {
-          date: "asc",
-        },
-      },
-    },
-  }
   const {
     data: sprints,
     optimisticUpdate,
     isLoading,
-  } = useGlueQuery(variantToArgs[variant])
+  } = useSprints({
+    variant,
+    sessionData,
+    fetchSince: fourDaysAgo,
+  })
 
   const addEmptySprint = () => {
     const newSprintId = Math.floor(Math.random() * 100000)
@@ -88,7 +63,7 @@ const SprintList = ({ variant }: ISprintListProps) => {
   const isOnEndScreen = useOnScreen(infiniteScrollObserverRef)
 
   useEffect(() => {
-    if (isOnEndScreen && !isLoading) {
+    if (isOnEndScreen && !isLoading && sprints) {
       addEmptySprint()
     }
   }, [isOnEndScreen])
