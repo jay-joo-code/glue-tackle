@@ -11,9 +11,7 @@ I think this will be possible from a UX perspective rather than a software one. 
 Glue is the culmination of my ~5 years of full-stack web development. It's my ultimate pet project that I hope to cultivate until either the web or I am gone from this world. If Glue survives until my 30s or 40s, I hope to rename it to a more human name and consider it my "baby".
 
 
-# Setup
-
-### General
+# Initial setup
 
 - [ ] import this repo to clone it (click on the + sign at the top right side of the page)
 - [ ] duplicate .env.glue and rename to .env
@@ -47,6 +45,8 @@ $ git branch -u glue/master
 ```bash
 git push glue glue-master:master
 ```
+
+# Integrations
 
 ### Database
 
