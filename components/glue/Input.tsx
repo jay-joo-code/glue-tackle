@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react"
 import { PolymorphicComponentProps } from "@mantine/utils"
 import { useDebouncedValue } from "@mantine/hooks"
 
-interface IInputProps extends PolymorphicComponentProps<"button", InputProps> {
+interface IInputProps
+  extends Omit<PolymorphicComponentProps<"input", InputProps>, "variant"> {
   glueKey?: string
   sourceOfTruth?: "url-query"
   onDebouncedChange?: (value: string) => void
+  variant?: "unstyled" | "default" | "filled" | "subtle"
 }
 
 const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
@@ -15,6 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
     glueKey,
     sourceOfTruth,
     onDebouncedChange,
+    variant: propVariant = "default",
     value: propValue,
     onChange: propOnChange,
     ...rest
@@ -22,10 +25,12 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
 
   // source of truth: url query
   const router = useRouter()
-  const [localValue, setLocalValue] = useState<string>("")
+  const [localValue, setLocalValue] = useState<string>(
+    (propValue as string) || ""
+  )
   const [debouncedLocalValue] = useDebouncedValue(localValue, 300)
 
-  const localOnChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const localOnChange = (event) => {
     setLocalValue(event?.currentTarget?.value)
     if (propOnChange) propOnChange(event)
   }
@@ -64,12 +69,36 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
   //   }
   // }
 
+  // variant: subtle
+  const variant = propVariant === "subtle" ? "unstyled" : propVariant
+  const styles =
+    propVariant === "subtle"
+      ? (theme) => ({
+          input: {
+            background: localValue?.length === 0 && theme.colors.gray[0],
+            transition: "background 200ms ease-in-out",
+            height: "unset",
+            lineHeight: 1.2,
+
+            "&:hover": {
+              background: theme.colors.gray[0],
+            },
+
+            "&:focus": {
+              background: theme.colors.gray[0],
+            },
+          },
+        })
+      : {}
+
   return (
     <MantineInput
       ref={ref}
       {...rest}
       value={sourceOfTruth === "url-query" ? localValue : propValue}
       onChange={localOnChange}
+      variant={variant}
+      styles={styles}
     />
   )
 })
