@@ -98,7 +98,8 @@ git push glue glue-master:master
 3. [Create a new Vercel project](https://vercel.com/new)
    1. Make sure to add all environment variables
    2. `DATABASE_URL_PROD` should be saved as `DATABASE_URL`. All other env vars have the same name as the local env vars.
-   3. Add `?schema=public&connection_limit=1` at the end of the `DATABASE_URL` env variable to prevent the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e)
+   3. Add `?schema=public&connection_limit=1` at the end of the `DATABASE_URL` env variable to prevent the [too many database connections error](https://stackoverflow.com/questions/71259682/prisma-is-opening-too-many-connections-with-postgrsql-when-running-jest-end-to-e).
+   4. Add `&schema=public&connection_limit=1` instead if it's not the first url query.
 4. Vercel project > Settings > Integrations > Browse Marketplace > Add Sentry integration (follow through the steps in the popup window)
 5. Check that Sentry env variables were automatically added.
 6. Redeploy (build should succeed)
