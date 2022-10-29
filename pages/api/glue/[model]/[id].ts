@@ -36,12 +36,19 @@ export default async function handle(
       delete data.updatedAt
       delete data.userId
 
-      const result = await model.update({
-        where: { id: Number(req?.query?.id) },
-        data,
-      })
-
-      res.json(result)
+      try {
+        const result = await model.update({
+          where: { id: Number(req?.query?.id) },
+          data,
+        })
+        res.json(result)
+      } catch (error) {
+        if (error?.meta?.cause === "Record to update not found.") {
+          res.json(data)
+        } else {
+          throw error
+        }
+      }
       break
     }
 
