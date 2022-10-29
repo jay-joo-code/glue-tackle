@@ -16,8 +16,9 @@ Glue is the culmination of my ~5 years of full-stack web development. It's my ul
 ### General
 
 - [ ] import this repo to clone it (click on the + sign at the top right side of the page)
-- [ ] rename .env.glue to .env
-- [ ] add glue remote:
+- [ ] duplicate .env.glue and rename to .env
+
+**Add glue remote**
 
 ```bash
 git remote add glue https://github.com/jay-joo-code/glue-root.git
