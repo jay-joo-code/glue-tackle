@@ -126,6 +126,13 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
               },
             },
           },
+          Input: {
+            styles: {
+              input: {
+                color: "#3B4550",
+              },
+            },
+          },
         },
       }}
     >
