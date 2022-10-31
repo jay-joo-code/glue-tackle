@@ -2,7 +2,7 @@ import { Container } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useIsDevice from "hooks/glue/useIsDevice"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Resizable } from "react-resizable"
 import DailyDashboard from "./DailyDashboard"
 
@@ -11,34 +11,18 @@ const DailyResizeWrapper = () => {
     key: "daily-sprint-width",
     defaultValue: null,
   })
-  const [width, setWidth] = useState<number>(0)
   const { isMobile } = useIsDevice()
   const { width: viewportWidth } = useViewportSize()
 
-  // initialize width with persisted width
   useEffect(() => {
-    if (persistedWidth !== undefined && width === 0) {
-      setWidth(persistedWidth)
-    }
-  }, [persistedWidth])
-
-  // if persisted width is too big, reset to half of current viewport width
-  useEffect(() => {
-    if (!isMobile && width > viewportWidth * 0.9) {
+    if (!isMobile && persistedWidth > viewportWidth * 0.9) {
       const halfViewport = viewportWidth * 0.5
       setPersistedWidth(halfViewport)
-      setWidth(halfViewport)
     }
-  }, [width, viewportWidth])
-
-  useEffect(() => {
-    if (width !== 0) {
-      setPersistedWidth(width)
-    }
-  }, [width])
+  }, [persistedWidth, viewportWidth])
 
   const handleResize = (_, { size }) => {
-    setWidth(size.width)
+    setPersistedWidth(size.width)
   }
 
   if (isMobile) {
@@ -53,7 +37,7 @@ const DailyResizeWrapper = () => {
     >
       <Resizable
         height={400}
-        width={width}
+        width={persistedWidth}
         onResize={handleResize}
         axis="x"
         handle={
@@ -78,7 +62,7 @@ const DailyResizeWrapper = () => {
       >
         <Container
           sx={(theme) => ({
-            width: `${width}px`,
+            width: `${persistedWidth}px`,
           })}
         >
           <DailyDashboard />
