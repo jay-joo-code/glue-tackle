@@ -24,12 +24,14 @@ const SprintRenderWrapper = ({ sprint }: ISprintRenderWrapperProps) => {
 
   // auto-scroll to today's sprint
   useEffect(() => {
-    const today = new Date()
-    today.setUTCHours(0, 0, 0, 0)
-    if (new Date(sprint?.date)?.toISOString() === today?.toISOString()) {
-      containerRef?.current?.scrollIntoView({
-        inline: "start",
-      })
+    if (sprint?.variant === "daily") {
+      const today = new Date()
+      today.setUTCHours(0, 0, 0, 0)
+      if (new Date(sprint?.date)?.toISOString() === today?.toISOString()) {
+        containerRef?.current?.scrollIntoView({
+          inline: "start",
+        })
+      }
     }
   }, [sprint, containerRef])
 

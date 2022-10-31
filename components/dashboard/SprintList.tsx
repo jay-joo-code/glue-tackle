@@ -31,11 +31,12 @@ const SprintList = ({ variant }: ISprintListProps) => {
   const addEmptySprint = () => {
     const newSprintId = Math.floor(Math.random() * 100000)
     const newDate =
-      variant === "daily" &&
-      new Date(
-        new Date(sprints[sprints?.length - 1]?.date).getTime() +
-          1000 * 60 * 60 * 24
-      )
+      variant === "daily"
+        ? new Date(
+            new Date(sprints[sprints?.length - 1]?.date).getTime() +
+              1000 * 60 * 60 * 24
+          )
+        : undefined
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     const newName =
       variant === "daily" && newDate
