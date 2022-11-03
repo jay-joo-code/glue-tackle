@@ -83,16 +83,19 @@ git push glue glue-master:master
 - Setting the `NEXT_PUBLIC_GA_ID`env variable is required (usage tracking is enforced for Glue apps)
 - If GA reports don't show up, give it 2 days. It takes time for the usage report data to show up.
 
+### Error tracking (Sentry)
+
+1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/) 2. Create a new project under Jay Joo Org (do not create a new org or Sentry account) 3. Select Next.js 4. Select alert me on every issue for Issue Alerts 5. Select all for Performance Alerts 6. Update project name 7. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production)
+
+**Notes**
+
+- I should not create a new Sentry account or org, because the jj534@cornell.edu Vercel account won't be able to integrate with a different Sentry account or org
+- I also can't create multiple Vercel accounts to bypass this issue, because their phone number verification only allows for 1 account per phone number
+- I could bypassing it by creating a new Github account and sign up a new Vercel account with that Github account, but honestly it's way too much work
+
 ### Deployment (Vercel)
 
-1. [Create a new Sentry project](https://sentry.io/organizations/jay-joo-org/projects/new/)
-   1. Profile icon in the top left corner > switch organization > create new organization
-   2. Create a new project under the new organization
-   3. Select Next.js
-   4. Select alert me on every issue for Issue Alerts
-   5. Select all for Performance Alerts
-   6. Update project name
-   7. Add `NEXT_PUBLIC_SENTRY_DSN` to env variable (only required in production)
+1. Make sure I have a Sentry project set up
 2. Create a new Vercel account with the project email
    1. Creating a new project in the same account leads to a sentry integration bug.
 3. [Create a new Vercel project](https://vercel.com/new)
