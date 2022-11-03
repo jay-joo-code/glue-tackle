@@ -1,11 +1,9 @@
+import { withSentry } from "@sentry/nextjs"
 import crudEndpoints from "constants/crudEndpoints"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
   const model = crudEndpoints[req?.query?.model as string]?.model
 
@@ -73,3 +71,5 @@ export default async function handle(
   }
   return res.end()
 }
+
+export default withSentry(handle)
