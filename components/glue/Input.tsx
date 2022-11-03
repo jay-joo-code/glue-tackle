@@ -1,6 +1,6 @@
 import { Input as MantineInput, InputProps } from "@mantine/core"
 import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { PolymorphicComponentProps } from "@mantine/utils"
 import { useDebouncedValue } from "@mantine/hooks"
 
@@ -16,49 +16,59 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
   const {
     glueKey,
     sourceOfTruth,
-    onDebouncedChange,
     variant: propVariant = "default",
     value: propValue,
     onChange: propOnChange,
+    onDebouncedChange,
     ...rest
   } = props
+  // TODO: fix this stupid bug that jumps the cursor to the end
 
-  // source of truth: url query
+  // sourceOfTruth = url-query
   const router = useRouter()
-  const [localValue, setLocalValue] = useState<string>(
-    (propValue as string) || ""
-  )
-  const [debouncedLocalValue] = useDebouncedValue(localValue, 300)
-
-  const localOnChange = (event) => {
-    setLocalValue(event?.currentTarget?.value)
-    if (propOnChange) propOnChange(event)
+  const routerQueryValue = router?.query[glueKey]
+  const [urlQueryValue, setUrlQueryValue] = useState<string>()
+  const [debouncedUrlQueryValue] = useDebouncedValue(urlQueryValue, 300)
+  const urlQueryOnChange = (event) => {
+    setUrlQueryValue(event?.target?.value)
   }
 
   useEffect(() => {
-    if (sourceOfTruth === "url-query" && localValue !== "") {
+    if (urlQueryValue === undefined && routerQueryValue !== undefined) {
+      setUrlQueryValue(routerQueryValue as string)
+    }
+  }, [urlQueryValue, routerQueryValue])
+
+  useEffect(() => {
+    if (sourceOfTruth === "url-query" && router?.isReady) {
       router?.replace(
         {
           query: {
             ...router?.query,
-            [glueKey]: debouncedLocalValue,
+            [glueKey]: debouncedUrlQueryValue,
           },
         },
         undefined,
         { shallow: true }
       )
     }
+  }, [sourceOfTruth, debouncedUrlQueryValue])
 
-    if (onDebouncedChange) {
-      onDebouncedChange(debouncedLocalValue)
-    }
-  }, [debouncedLocalValue])
+  // dynamic value, onChange
+  const value =
+    (sourceOfTruth === "url-query" ? urlQueryValue : (propValue as string)) ||
+    ""
+  const onChange =
+    sourceOfTruth === "url-query" ? urlQueryOnChange : propOnChange
+
+  // onDebouncedChange
+  const [debouncedPropValue] = useDebouncedValue(propValue, 300)
 
   useEffect(() => {
-    if (sourceOfTruth === "url-query" && localValue === "") {
-      setLocalValue(router?.query[glueKey] as string)
+    if (onDebouncedChange && debouncedPropValue !== undefined) {
+      onDebouncedChange(debouncedPropValue as string)
     }
-  }, [router?.query])
+  }, [debouncedPropValue])
 
   // TODO: track focus, debounced values, blur, etc
   // const handleTrackedClick = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -69,16 +79,17 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
   //   }
   // }
 
-  // variant: subtle
+  // dynamic styles
   const variant = propVariant === "subtle" ? "unstyled" : propVariant
-  const styles =
+  const dynamicStyles =
     propVariant === "subtle"
       ? (theme) => ({
           input: {
-            background: localValue?.length === 0 && theme.colors.gray[0],
+            background: value?.length === 0 && theme.colors.gray[0],
             transition: "background 200ms ease-in-out",
             height: "unset",
             lineHeight: 1.2,
+            borderRadius: theme.radius.md,
 
             "&:hover": {
               background: theme.colors.gray[0],
@@ -94,11 +105,11 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
   return (
     <MantineInput
       ref={ref}
-      {...rest}
-      value={sourceOfTruth === "url-query" ? localValue : propValue}
-      onChange={localOnChange}
+      value={value}
+      onChange={onChange}
       variant={variant}
-      styles={styles}
+      styles={dynamicStyles}
+      {...rest}
     />
   )
 })
