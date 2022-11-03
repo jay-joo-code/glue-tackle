@@ -89,6 +89,7 @@ git push glue glue-master:master
 
 **Notes**
 
+- Errors will only be sent to Sentry if env variable `BUILD_ENV` is set to `production`
 - I should not create a new Sentry account or org, because the jj534@cornell.edu Vercel account won't be able to integrate with a different Sentry account or org
 - I also can't create multiple Vercel accounts to bypass this issue, because their phone number verification only allows for 1 account per phone number
 - I could bypassing it by creating a new Github account and sign up a new Vercel account with that Github account, but honestly it's way too much work
