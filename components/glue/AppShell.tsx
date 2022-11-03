@@ -20,8 +20,8 @@ const AppShell = ({ children }: IAppShellProps) => {
           minHeight: "100vh",
           color: theme.colors.text[3],
 
-          [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            width: "85vw",
+          [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            width: theme.breakpoints.md,
             maxWidth: "unset",
           },
         })}
