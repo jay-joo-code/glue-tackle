@@ -29,7 +29,7 @@ const Container = React.forwardRef<HTMLDivElement, IContainerProps>(
     } = props
 
     const handleTrackedClick = (event: React.MouseEvent<HTMLDivElement>) => {
-      amplitude.track(`container-click-${toKebabCase(glueKey)}`)
+      amplitude.track(`container-click-${toKebabCase(glueKey || "")}`)
 
       if (onClick) {
         onClick(event)
