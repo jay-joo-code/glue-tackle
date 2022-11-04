@@ -81,14 +81,15 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
 
   // dynamic styles
   const variant = propVariant === "subtle" ? "unstyled" : propVariant
+  const commonWrapperStyles = {
+    padding: ".3rem .8rem",
+  }
   const dynamicStyles =
     propVariant === "subtle"
       ? (theme) => ({
-          input: {
+          wrapper: {
+            ...commonWrapperStyles,
             background: value?.length === 0 && theme.colors.gray[0],
-            transition: "background 200ms ease-in-out",
-            height: "unset",
-            lineHeight: 1.2,
             borderRadius: theme.radius.md,
 
             "&:hover": {
@@ -99,8 +100,18 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
               background: theme.colors.gray[0],
             },
           },
+          input: {
+            background: value?.length === 0 && theme.colors.gray[0],
+            transition: "background 200ms ease-in-out",
+            height: "unset",
+            lineHeight: 1.2,
+          },
         })
-      : {}
+      : {
+          wrapper: {
+            ...commonWrapperStyles,
+          },
+        }
 
   return (
     <MantineInput
