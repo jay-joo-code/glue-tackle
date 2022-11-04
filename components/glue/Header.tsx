@@ -51,6 +51,8 @@ const Header = () => {
         >
           <Flex
             justify="space-between"
+            py="sm"
+            px="md"
             sx={(theme) => ({
               width: "100%",
               maxWidth: theme.breakpoints.md,
