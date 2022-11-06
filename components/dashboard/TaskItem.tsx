@@ -1,15 +1,9 @@
-import {
-  Badge,
-  Radio,
-  Space,
-  Text,
-  Textarea,
-  useMantineTheme,
-} from "@mantine/core"
+import { Badge, Radio, Space, Textarea, useMantineTheme } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { Task } from "@prisma/client"
 import Flex from "components/glue/Flex"
 import OutsideClick from "components/glue/OutsideClick"
+import Text from "components/glue/Text"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useTasksQuery from "hooks/queries/useTasksQuery"
 import { useEffect } from "react"
