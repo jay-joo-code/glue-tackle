@@ -292,6 +292,7 @@ const TaskItem = ({
               sx={(theme) => ({
                 ...commonStyles,
                 wordBreak: "break-word",
+                flexGrow: 2,
               })}
             >
               {displayContent}
