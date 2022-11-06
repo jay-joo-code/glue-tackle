@@ -1,5 +1,5 @@
-import { Container } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
+import Container from "components/glue/Container"
 import useGlueLocalStorage from "hooks/glue/useGlueLocalStorage"
 import useIsDevice from "hooks/glue/useIsDevice"
 import { useEffect } from "react"

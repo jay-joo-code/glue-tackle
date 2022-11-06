@@ -1,7 +1,8 @@
-import { Container, Input, Menu, Space } from "@mantine/core"
+import { Input, Menu, Space } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined"
 import { Sprint } from "@prisma/client"
+import Container from "components/glue/Container"
 import Flex from "components/glue/Flex"
 import IconButton from "components/glue/IconButton"
 import appConfig from "constants/appConfig"
@@ -73,7 +74,7 @@ const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
       py="xs"
       sx={(theme) => ({
         background: "#FFFFFF",
-        overflow: "auto",
+        overflow: "overlay",
         borderRadius: theme.radius.md,
         width: "340px",
         flexShrink: 0,
