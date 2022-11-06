@@ -59,7 +59,9 @@ const TaskItem = ({
   }, [focusedTaskId])
   const isEditing = focusedTaskId === task?.id
   // if (isEditing) console.log("task?.id", isEditing)
-  const enableEditing = () => setFocusedTaskId(task?.id)
+  const enableEditing = () => {
+    setFocusedTaskId(task?.id)
+  }
   const disableEditing = () => {
     if (isEditing) setFocusedTaskId(null)
   }
@@ -170,7 +172,7 @@ const TaskItem = ({
       setFocusedTaskId(null)
     }
   }
-  const toggleComplete = () => {
+  const toggleComplete = (event) => {
     updateTask({
       id: task?.id,
       isComplete: !task?.isComplete,
@@ -180,6 +182,7 @@ const TaskItem = ({
       isComplete: !task?.isComplete,
     })
   }
+
   useEffect(() => {
     if (isEditing) {
       saveTask({
@@ -219,7 +222,6 @@ const TaskItem = ({
     <OutsideClick
       mb=".2rem"
       onOutsideClick={disableEditing}
-      onClick={enableEditing}
       sx={(theme) => ({
         paddingTop: taskPaddingTop,
       })}
@@ -292,6 +294,7 @@ const TaskItem = ({
             />
           ) : (
             <Text
+              onClick={enableEditing}
               sx={(theme) => ({
                 ...commonStyles,
                 wordBreak: "break-word",
