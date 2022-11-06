@@ -70,8 +70,14 @@ const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
   }
 
   return (
-    <ScrollArea
+    <Container
+      py="xs"
       sx={(theme) => ({
+        background: "#FFFFFF",
+        borderRadius: theme.radius.md,
+        width: "340px",
+        flexShrink: 0,
+        overflow: "overlay",
         height: "75vh",
 
         [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
@@ -79,142 +85,126 @@ const SprintItem = ({ sprint, isDropDisabled }: ISprintItemProps) => {
         },
       })}
     >
-      <Container
-        py="xs"
-        sx={(theme) => ({
-          background: "#FFFFFF",
-          borderRadius: theme.radius.md,
-          width: "340px",
-          flexShrink: 0,
-        })}
-      >
-        <Flex align="center" justify="space-between" px="xs">
-          <Input
-            variant="unstyled"
-            placeholder="Sprint name"
-            value={name}
-            onChange={handleNameChange}
+      <Flex align="center" justify="space-between" px="xs">
+        <Input
+          variant="unstyled"
+          placeholder="Sprint name"
+          value={name}
+          onChange={handleNameChange}
+          sx={(theme) => ({
+            input: {
+              fontWeight: 500,
+              color: theme.colors.text[2],
+              fontSize: "1rem",
+            },
+          })}
+        />
+        {sprint?.variant === "weekly" && (
+          <Container
             sx={(theme) => ({
-              input: {
-                fontWeight: 500,
-                color: theme.colors.text[2],
-                fontSize: "1rem",
-              },
+              position: "relative",
             })}
-          />
-          {sprint?.variant === "weekly" && (
+          >
+            <Menu position="bottom-end" width={140}>
+              <Menu.Target>
+                <Container>
+                  <IconButton color="button-gray">
+                    <MoreHorizOutlinedIcon />
+                  </IconButton>
+                </Container>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item color="red" onClick={handleArchive}>
+                  Archive
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Container>
+        )}
+      </Flex>
+      <Space mb="xs" />
+      <Droppable
+        droppableId={String(sprint?.id)}
+        isDropDisabled={isDropDisabled}
+      >
+        {(provided, snapshot) => {
+          // update dragging task id
+          const newDraggingTaskId = Number(snapshot?.draggingOverWith)
+          if (newDraggingTaskId && !draggingTaskId) {
+            setDraggingTaskId(newDraggingTaskId)
+          }
+
+          // set children ids
+          let childrenIds = []
+          if (draggingTaskId) {
+            const draggingTask = tasks?.find(
+              (task) => draggingTaskId === task?.id
+            )
+            childrenIds = getTaskChildren({
+              tasks,
+              targetTask: draggingTask,
+            })?.map((task) => task?.id)
+          }
+          return (
             <Container
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              p="xs"
+              pb="10rem"
               sx={(theme) => ({
-                position: "relative",
+                minHeight: "75vh",
+                borderRadius: theme.radius.md,
               })}
             >
-              <Menu position="bottom-end" width={140}>
-                <Menu.Target>
-                  <Container>
-                    <IconButton color="button-gray">
-                      <MoreHorizOutlinedIcon />
-                    </IconButton>
-                  </Container>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item color="red" onClick={handleArchive}>
-                    Archive
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              {tasks?.map((task, index) => {
+                const isParentDragging =
+                  childrenIds?.filter((id) => id === task?.id)?.length > 0
+                return (
+                  <Draggable
+                    key={`${task.id}`}
+                    draggableId={`${task.id}`}
+                    index={index}
+                    isDragDisabled={isDropDisabled} // also disable drag if sprint drop disabled
+                  >
+                    {(provided, snapshot) => (
+                      <Container
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <TaskItem
+                          task={task}
+                          sprintId={sprint?.id}
+                          isDragging={snapshot.isDragging}
+                          isParentDragging={isParentDragging}
+                          prevRank={index === 0 ? -1 : tasks[index - 1]?.rank}
+                          nextRank={
+                            index === tasks?.length - 1
+                              ? -1
+                              : tasks[index + 1]?.rank
+                          }
+                          prevId={index === 0 ? -1 : tasks[index - 1]?.id}
+                          nextId={
+                            index === tasks?.length - 1
+                              ? -1
+                              : tasks[index + 1]?.id
+                          }
+                          index={index}
+                          childrenCount={
+                            getTaskChildren({ tasks, targetTask: task })?.length
+                          }
+                        />
+                      </Container>
+                    )}
+                  </Draggable>
+                )
+              })}
+              {provided.placeholder}
             </Container>
-          )}
-        </Flex>
-        <Space mb="xs" />
-        <Droppable
-          droppableId={String(sprint?.id)}
-          isDropDisabled={isDropDisabled}
-        >
-          {(provided, snapshot) => {
-            // update dragging task id
-            const newDraggingTaskId = Number(snapshot?.draggingOverWith)
-            if (newDraggingTaskId && !draggingTaskId) {
-              setDraggingTaskId(newDraggingTaskId)
-            }
-
-            // set children ids
-            let childrenIds = []
-            if (draggingTaskId) {
-              const draggingTask = tasks?.find(
-                (task) => draggingTaskId === task?.id
-              )
-              childrenIds = getTaskChildren({
-                tasks,
-                targetTask: draggingTask,
-              })?.map((task) => task?.id)
-            }
-            return (
-              <Container
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                p="xs"
-                pb="10rem"
-                sx={(theme) => ({
-                  minHeight: "75vh",
-                  borderRadius: theme.radius.md,
-                  // background: snapshot.isDraggingOver && theme.colors.brand[0],
-
-                  [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-                    minHeight: "85vh",
-                  },
-                })}
-              >
-                {tasks?.map((task, index) => {
-                  const isParentDragging =
-                    childrenIds?.filter((id) => id === task?.id)?.length > 0
-                  return (
-                    <Draggable
-                      key={`${task.id}`}
-                      draggableId={`${task.id}`}
-                      index={index}
-                      isDragDisabled={isDropDisabled} // also disable drag if sprint drop disabled
-                    >
-                      {(provided, snapshot) => (
-                        <Container
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <TaskItem
-                            task={task}
-                            sprintId={sprint?.id}
-                            isDragging={snapshot.isDragging}
-                            isParentDragging={isParentDragging}
-                            prevRank={index === 0 ? -1 : tasks[index - 1]?.rank}
-                            nextRank={
-                              index === tasks?.length - 1
-                                ? -1
-                                : tasks[index + 1]?.rank
-                            }
-                            prevId={index === 0 ? -1 : tasks[index - 1]?.id}
-                            nextId={
-                              index === tasks?.length - 1
-                                ? -1
-                                : tasks[index + 1]?.id
-                            }
-                            index={index}
-                            childrenCount={
-                              getTaskChildren({ tasks, targetTask: task })
-                                ?.length
-                            }
-                          />
-                        </Container>
-                      )}
-                    </Draggable>
-                  )
-                })}
-                {provided.placeholder}
-              </Container>
-            )
-          }}
-        </Droppable>
-      </Container>
-    </ScrollArea>
+          )
+        }}
+      </Droppable>
+    </Container>
   )
 }
 
